@@ -2,11 +2,12 @@ ofiber
 ==============
 ofiber is a set of Python modules to calculate light propagation through optical fibers
 
+This is in development.  
 Usage
 --------------
 For examples and use cases, see the doc directory
 
-Installation via pip
+Installation via pip  **Not yet**
 --------------
    pip install ofiber
 
