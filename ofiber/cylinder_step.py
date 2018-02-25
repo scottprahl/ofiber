@@ -203,7 +203,7 @@ def PetermannW(V):
     return numpy.sqrt(2) * scipy.special.jn(1, U) / W / scipy.special.jn(0, U)
 
 
-def V_d2bV_by_V(V, ell):
+def _V_d2bV_by_V_scalar(V, ell):
     """
     returns V*d^2(bV)/dV^2 for mode ell of a step index fiber
     using eqn 10.14 in Ghatak
@@ -217,10 +217,27 @@ def V_d2bV_by_V(V, ell):
     W = V * numpy.sqrt(b)
 
     kappa_ell = scipy.special.kn(ell, W)**2 / scipy.special.kn(ell - 1, W) 
-    kappe_ell /= scipy.special.kn(ell + 1, W)
+    kappa_ell /= scipy.special.kn(ell + 1, W)
     sum = 3 * W**2 - 2 * kappa_ell * (W**2 - U**2)
     val = W * (W**2 + U**2 * kappa_ell) * (kappa_ell - 1)
     val *= (scipy.special.kn(ell - 1, W) + scipy.special.kn(ell + 1, W))
     val /= scipy.special.kn(ell, W)
     sum += val
     return 2 * U**2 * kappa_ell / V**2 / W**2 * sum
+
+
+def V_d2bV_by_V(V, ell):
+    """
+    returns V*d^2(bV)/dV^2 for mode ell of a step index fiber
+    using eqn 10.14 in Ghatak
+    result has no units
+    """
+    if numpy.isscalar(V):
+        return _V_d2bV_by_V_scalar(V,ell)
+    else:
+        v_by_v = numpy.empty_like(V)
+        for i in range(len(v_by_v)):
+            v_by_v[i] = _V_d2bV_by_V_scalar(V[i],ell)
+
+    return v_by_v
+
