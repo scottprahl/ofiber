@@ -192,15 +192,85 @@ def Longitudinal_misalignment_loss_db(n, w, D, lambda0):
     return 10 * numpy.log10(1 + dhat**2)
 
 
+def _Bending_loss_db_scalar(n1, Delta, a, Rc, lambda0):
+    """
+    returns the bending loss in dB/m
+    using eqn below eqn 10.29 in Ghatak 
+    a is core radius in [m]
+    n1 is core index
+    Delta is core-cladding difference
+    Rc is radius of curvature in [m]
+    lambda0 is wavelength in vacuum in [m]
+    """
+    k0 = 2*numpy.pi/lambda0
+    V = k0 * a * n1 * numpy.sqrt(2*Delta)
+    b = LP_mode_value(V, 0, 1)
+    U = V * numpy.sqrt(1 - b)
+    W = V * numpy.sqrt(b)
+    if W == 0:
+    	return numpy.nan
+    val = 4.343*numpy.sqrt(numpy.pi/4/a/Rc)
+    val *= (U/V/scipy.special.kn(1, W))**2
+    val *= W**-1.5
+    val *= numpy.exp(-2*W**3*Rc/3/k0**2/a**3/n1**2)
+    return val
+
+
+def Bending_loss_db(n1, Delta, a, Rc, lambda0):
+    """
+    returns the bending loss in dB/m
+    using eqn below eqn 10.29 in Ghatak 
+    a is core radius in [m]
+    n1 is core index
+    Delta is core-cladding difference
+    Rc is radius of curvature in [m]
+    lambda0 is wavelength in vacuum in [m]
+    """
+    if numpy.isscalar(a):
+        alpha = _Bending_loss_db_scalar(n1, Delta, a, Rc, lambda0)
+    else:
+        alpha = numpy.empty_like(a)
+        for i in range(len(alpha)):
+            alpha[i] = _Bending_loss_db_scalar(n1, Delta, a[i], Rc, lambda0)
+    return alpha
+
+
 def MFD(V):
     return 0.65 + 1.619 * V**-1.5 + 2.879 * V**-6
 
 
-def PetermannW(V):
+def _PetermannW_scalar(V):
     b = LP_mode_value(V, 0, 1)
     U = V * numpy.sqrt(1 - b)
     W = V * numpy.sqrt(b)
-    return numpy.sqrt(2) * scipy.special.jn(1, U) / W / scipy.special.jn(0, U)
+    denom =  W * scipy.special.jn(0, U)
+    if denom == 0 :
+        return numpy.nan
+    return numpy.sqrt(2) * scipy.special.jn(1, U) / denom
+
+
+def PetermannW(V):
+    """
+    returns the Petermann-2 radius (divided by core radius) for a step index fiber
+    using eqn 8.86 in Ghatak
+    result has no units
+    """
+    if numpy.isscalar(V):
+        wp = _PetermannW_scalar(V)
+    else:
+        wp = numpy.empty_like(V)
+        for i in range(len(wp)):
+            wp[i] = _PetermannW_scalar(V[i])
+    return wp
+
+
+def PetermannW_Approx(V):
+    """
+    returns approximate Petermann-2 radius for a step index fiber
+    using eqn below eqn 8.86 in Ghatak (good for 1.5<V<2.5)
+    result has no units because it is the spot size divided by core radius
+    """
+    return MFD(V) - 0.016 - 1.567 * V**-7
 
 
 def _V_d2bV_by_V_scalar(V, ell):
