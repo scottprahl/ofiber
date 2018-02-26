@@ -19,4 +19,4 @@ update CHANGELOG.txt  `git shortlog`
 > twine upload dist/*
 
 # install the new version locally
-> pip install --upgrade laserbeamsize
+> pip install --upgrade ofiber
