@@ -16,7 +16,7 @@ _glass = [
     [3.79061862e-3, 1.43810462e-2, 7.49374334e1,
      6.95790000e-1, 4.52497000e-1, 7.12513000e-1],  # [2] P2O2
     [3.83161000e-3, 1.52922902e-2, 8.27910731e1,
-     6.90618000e-1, 4.01996000e-1, 8.98817000e-1],  # [3] B2O3
+     6.90618000e-1, 4.01996000e-1, 8.98817000e-1],  # [3] 13.3% B2O3
     [4.65492353e-3, 1.35629316e-2, 9.98741796e1,
      6.91116000e-1, 3.99166000e-1, 8.90423000e-1],  # [4] F
     [8.90362088e-3, 8.72094500e-3, 3.59958241e1,
@@ -32,25 +32,50 @@ _glass = [
     [-2.40488039e-2, 1.73740457e-2, 4.02611805e2,
      3.05900633e-1, 9.18318740e-1, 1.50695421],     # [10] ZBLAN
     [0.004981838, 0.01375664, 97.93353,
-     0.6910021, 0.4022430, 0.9439644],              # [11]
-    [0.005202431,0.01287730,97.93401,0.7058489,0.4176021,0.8952753]
+     0.6910021, 0.4022430, 0.9439644],              # [11] 5.2% B2O3
+    [0.005202431, 0.01287730, 97.93401,             
+     0.7058489, 0.4176021, 0.8952753],              # [12] 10.5% P2O2
+    [1.03961212, 0.231792344, 1.01046945, 
+     6.00069867e-3, 2.00179144e-2, 103.560653],      # [13] BK7
+    [0.696166300, 0.407942600, 0.897479400, 
+     4.67914826e-3, 1.35120631e-2, 97.9340025],     # [14] fused silica
+    [1.43134930, 0.65054713, 5.3414021, 
+     5.2799261e-3, 1.42382647e-2, 325.017834],      # [15] sapphire (ord. wave)
+    [1.5039759, 0.55069141, 6.5927379, 
+     5.48041129e-3, 1.47994281e-2, 402.89514]       # [16] sapphire (exord. wave)
 ]
 
-_glass_name = numpy.array([
-    "SiO$_2$",          "GeO$_2$", "9.1% P$_2$O$_2$", 
-    "13.3% B$_2$O$_3$", "1.0% F",  "16.9% Na$_2$O : 32.5% B$_2$O$_3$",
-    "ABCY",             "HBL",     "ZBG",  
-    "ZBLA",             "ZBLAN"    "5.2% B$_2$O$_3$"
-    "10.5% P$_2$O$_2$"
+
+all_glass_names = numpy.array([
+    "SiO$_2$",             "GeO$_2$", "9.1% P$_2$O$_2$", 
+    "13.3% B$_2$O$_3$",    "1.0% F",  "16.9% Na$_2$O : 32.5% B$_2$O$_3$",
+    "ABCY",                "HBL",     "ZBG",  
+    "ZBLA",                "ZBLAN"    "5.2% B$_2$O$_3$"
+    "10.5% P$_2$O$_2$",    "BK7",     "fused silica",
+    "sapphire (ordinary)", "sapphire (exordinary)"
     ])
 
 
 def glass(i):
+    """
+    return an array of Sellmeier coefficients for glass with index i
+    Use like this
+        lambda0 = np.linspace(1000,1700,50)*1e-9 # [m]
+        glass = ofiber.refraction.glass(0)       # SiO2
+        n = ofiber.refraction.n(glass,lambda0)    
+        plt.plot(lambda0*1e9, n)
+    """
     return _glass[i]
 
 
 def glass_name(i):
-    return _glass_name[i]
+    """
+    return the name of the glass with index i
+    (A list of all possible names is in the array 
+        ofiber.refraction.all_glass_names
+    )
+    """
+    return all_glass_names[i]
 
 
 def doped_glass(x):
@@ -82,39 +107,39 @@ def doped_glass_name(x):
     return r'%.2f GeO$_2$ : %.2f SiO$_2$' % (x, 1 - x)
 
 
-def _sellmeier(a, b, lambda0):
+def _sellmeier(b, c, lambda0):
     """
     returns the index of refraction using the Sellmeier equation
-    $$ n^2 = 1 + \sum_{i=0}^2 b_i \lambda_0^2/(\lambda_0^2-a_i) $$
+    $$ n^2 = 1 + \sum_{i=0}^2 b_i \lambda_0^2/(\lambda_0^2-c_i) $$
 
-    a is in [um**2]
-    b is in [1/um**2]
+    b is unitless
+    c is in [um**2]
     lambda0 is in [m]
     """
     lam2 = lambda0**2 * 1e12                   # um**2
     nsq = 1
     for i in range(3):
-        nsq += b[i] * lam2 / (lam2 - a[i])
+        nsq += b[i] * lam2 / (lam2 - c[i])
 
     return numpy.sqrt(nsq)
 
 
-def _d_sellmeier(a, b, lambda0):
+def _d_sellmeier(b, c, lambda0):
     """
     returns the first derivative (wrt to wavelength) of the Sellmeier equation
 
-    a is in [um**2]
-    b is in [1/um**2]
+    b is unitless
+    c is in [um**2]
     lambda0 is in [m]
     returned value dn/dlambda is in [1/m]
     """
-    n1 = _sellmeier(a, b, lambda0)
+    n1 = _sellmeier(b, c, lambda0)
     lam = lambda0 * 1e6  # microns
     lam2 = lam**2
 
     dy = 0
     for i in range(3):
-        dy -= a[i] * b[i] / (lam2 - a[i])**2  # 1/um**2
+        dy -= b[i] * c[i] / (lam2 - c[i])**2  # 1/um**2
 
     dy *= lam / n1                            # 1/um
     dy *= 1e6                                 # 1/m
@@ -122,24 +147,24 @@ def _d_sellmeier(a, b, lambda0):
     return dy
 
 
-def _d2_sellmeier(a, b, lambda0):
+def _d2_sellmeier(b, c, lambda0):
     """
     returns the second derivative (wrt to wavelength) of the Sellmeier equation
 
-    a is in [um**2]
-    b is in [1/um**2]
+    b is unitless
+    c is in [um**2]
     lambda0 is in [m]
     returned value d^2 n/dlambda^2 is in [1/m**2]
     """
-    n = _sellmeier(a, b, lambda0)
+    n = _sellmeier(b, c, lambda0)
     lam = lambda0 * 1e6  # to match Sellmeier Coefficients
     lam2 = lam**2
 
     dy = 0
     d2y = 0
     for i in range(3):
-        dy = a[i] * b[i] / (lam2 - a[i])**2                        # 1/um
-        d2y += a[i] * b[i] * (3 * lam2 + a[i]) / (lam2 - a[i])**3  # 1/um**2
+        dy = b[i] * c[i] / (lam2 - c[i])**2                        # 1/um
+        d2y += b[i] * c[i] * (3 * lam2 + c[i]) / (lam2 - c[i])**3  # 1/um**2
 
     d2n = d2y / n - lam2 * dy**2 / n**3                            # 1/um**2
     d2n *= 1e12                                                    # 1/m**2
@@ -151,7 +176,7 @@ def n(glass, lambda0):
     """
     returns the index of refraction for Sellmeier array, glass, at wavelength lambda0
 
-    glass[0:3] is in [um**2]
+    glass[0:3] is unitless
     glass[3:6] is in [1/um**2]
     lambda0 is in [m]
     returned value is in [s/m**]  ... just multiply be 1e6 to get ps/(km nm)
@@ -163,7 +188,7 @@ def dn(glass, lambda0):
     """
     returns the first derivative (wrt to wavelength) of the Sellmeier equation
 
-    glass[0:3] is in [um**2]
+    glass[0:3] is unitless
     glass[3:6] is in [1/um**2]
     lambda0 is in [m]
     returned value is in [1/m]
@@ -175,7 +200,7 @@ def d2n(glass, lambda0):
     """
     returns the second derivative (wrt to wavelength) of the Sellmeier equation
 
-    glass[0:3] is in [um**2]
+    glass[0:3] is unitless
     glass[3:6] is in [1/um**2]
     lambda0 is in [m]
     returned value is in [1/m**2]
@@ -301,7 +326,7 @@ def d2n(glass, lambda0):
 # [-300.80370e-6, 4.03214e-3, 1.51272, -1.21921e-3, -6.77630e-6],
 # [93.67070e-6, 2.94329e-3, 1.49136, -1.25045e-3, -4.01026e-6]
 # ]
-# mendez_glass_names=["ABCY", "HBL",  "ZBG",  "ZBLA", "ZBLAN"]
+# mendezall_glass_namess=["ABCY", "HBL",  "ZBG",  "ZBLA", "ZBLAN"]
 #
 # def mendez_refraction(glass, lambda0):
 #     """
