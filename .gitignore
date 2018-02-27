@@ -1,3 +1,5 @@
 .DS_Store
 *.pyc
 miepython/__pycache__/*
+dist/*
+ofiber.egg-info/*
