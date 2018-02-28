@@ -10,7 +10,16 @@
 # Scott Prahl
 # Feb 2018
 
-import numpy
+__all__ = [ 'all_glass_names',
+			'd2n',
+			'dn',
+			'doped_glass',
+			'doped_glass_name',
+			'glass',
+			'glass_name',
+			'n']
+
+import numpy as np
 
 _glass = [
     # format is [c1, c2, c3, b1, b2, b3]
@@ -52,7 +61,7 @@ _glass = [
 ]
 
 
-all_glass_names = numpy.array([
+all_glass_names = np.array([
     "SiO$_2$",             "GeO$_2$", "9.1% P$_2$O$_2$", 
     "13.3% B$_2$O$_3$",    "1.0% F",  "16.9% Na$_2$O : 32.5% B$_2$O$_3$",
     "ABCY",                "HBL",     "ZBG",  
@@ -90,13 +99,13 @@ def doped_glass(x):
              x GeO_2 : (1 - x)SiO_2 
     where x is the molar fraction of GeO_2 in the mixture
     """
-    SA = numpy.array([0.6961663, 0.4079426, 0.8974794])
-    SL = numpy.array([0.0684043, 0.1162414, 9.896161])
-    GA = numpy.array([0.80686642, 0.71815848, 0.85416831])
-    GL = numpy.array([0.068972606, 0.15396605, 11.841931])
+    SA = np.array([0.6961663, 0.4079426, 0.8974794])
+    SL = np.array([0.0684043, 0.1162414, 9.896161])
+    GA = np.array([0.80686642, 0.71815848, 0.85416831])
+    GL = np.array([0.068972606, 0.15396605, 11.841931])
     a = (SL + x * (GL - SL))**2
     b = abs(SA + x * (GA - SA))
-    return numpy.array([a, b]).reshape(-1)
+    return np.array([a, b]).reshape(-1)
 
 
 def doped_glass_name(x):
@@ -127,7 +136,7 @@ def _sellmeier(b, c, lambda0):
     for i in range(3):
         nsq += b[i] * lam2 / (lam2 - c[i])
 
-    return numpy.sqrt(nsq)
+    return np.sqrt(nsq)
 
 
 def _d_sellmeier(b, c, lambda0):
@@ -213,7 +222,7 @@ def d2n(glass, lambda0):
 
 # code used to generate the Sellmeier coefficients for other_glass below
 # data straight from fleming 1978
-# flemingzz=numpy.array([
+# flemingzz=np.array([
 #     [0.696750, 0.069066, 0.408218, 0.115662, 0.890815, 9.900559],
 #     [0.711040, 0.064270, 0.451885, 0.129408, 0.704048, 9.425478],
 #     [0.695790, 0.061568, 0.452497, 0.119921, 0.712513, 8.656641],
@@ -226,8 +235,8 @@ def d2n(glass, lambda0):
 # a1=l1**2
 # a2=l2**2
 # a3=l3**2
-# fleming_all=numpy.array([a1,a2,a3,b1,b2,b3]).T
-# fleming_names = numpy.array(["Quenched SiO$_2$","13.5% Ge$O_2$",\
+# fleming_all=np.array([a1,a2,a3,b1,b2,b3]).T
+# fleming_names = np.array(["Quenched SiO$_2$","13.5% Ge$O_2$",\
 #     "9.1% P$_2$O$_2$","13.3% B$_2$O$_3$","1.0% F",\
 #     "16.9% Na$_2$O : 32.5% B$_2$O$_3$"])
 #
@@ -311,10 +320,10 @@ def d2n(glass, lambda0):
 #
 # def sell(x,a1,a2,a3,b1,b2,b3):
 #     x2 = x**2
-#     return numpy.sqrt(1 + b1*x2/(x2 - a1) + b2*x2/(x2 - a2) + b3*x2/(x2 - a3))
+#     return np.sqrt(1 + b1*x2/(x2 - a1) + b2*x2/(x2 - a2) + b3*x2/(x2 - a3))
 #
 #
-# lambda0 = numpy.linspace(1500,3500,50)*1e-9 # [m]
+# lambda0 = np.linspace(1500,3500,50)*1e-9 # [m]
 # for i in range(len(ofr.mendez_glass)):
 #     glass = ofr.mendez_glass[i]
 #     n = ofr.mendez_refraction(glass,lambda0)
