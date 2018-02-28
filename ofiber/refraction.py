@@ -1,5 +1,9 @@
 # Useful routines for index of refraction based on Sellmeier coefficients
 #
+# Based on the equation
+#
+#    $$ n^2 = 1 + \sum_{i=0}^2 b_i \lambda_0^2/(\lambda_0^2-c_i) $$
+#
 #   See Fleming 1978
 #   See Book on Optical Properties
 #
@@ -9,6 +13,8 @@
 import numpy
 
 _glass = [
+    # format is [c1, c2, c3, b1, b2, b3]
+    # where b1, b2, b3 are unitless and c1, c2, c3 have units of [microns**2]
     [4.67914826e-3, 1.35120631e-2, 9.79340025e1,
      6.96166300e-1, 4.07942600e-1, 8.97479400e-1],  # [0] SiO2
     [4.75722038e-3, 2.37055446e-2, 1.40231330e2,
@@ -35,14 +41,14 @@ _glass = [
      0.6910021, 0.4022430, 0.9439644],              # [11] 5.2% B2O3
     [0.005202431, 0.01287730, 97.93401,             
      0.7058489, 0.4176021, 0.8952753],              # [12] 10.5% P2O2
-    [1.03961212, 0.231792344, 1.01046945, 
-     6.00069867e-3, 2.00179144e-2, 103.560653],      # [13] BK7
-    [0.696166300, 0.407942600, 0.897479400, 
-     4.67914826e-3, 1.35120631e-2, 97.9340025],     # [14] fused silica
-    [1.43134930, 0.65054713, 5.3414021, 
-     5.2799261e-3, 1.42382647e-2, 325.017834],      # [15] sapphire (ord. wave)
-    [1.5039759, 0.55069141, 6.5927379, 
-     5.48041129e-3, 1.47994281e-2, 402.89514]       # [16] sapphire (exord. wave)
+    [6.00069867e-3, 2.00179144e-2, 103.560653, 
+     1.03961212, 0.231792344, 1.01046945],          # [13] BK7
+    [4.67914826e-3, 1.35120631e-2, 97.9340025, 
+     0.696166300, 0.407942600, 0.897479400],        # [14] fused silica
+    [5.2799261e-3, 1.42382647e-2, 325.017834, 
+     1.43134930, 0.65054713, 5.3414021],            # [15] sapphire (ord. wave)
+    [5.48041129e-3, 1.47994281e-2, 402.89514, 
+     1.5039759, 0.55069141, 6.5927379]              # [16] sapphire (eo wave)
 ]
 
 
@@ -50,7 +56,7 @@ all_glass_names = numpy.array([
     "SiO$_2$",             "GeO$_2$", "9.1% P$_2$O$_2$", 
     "13.3% B$_2$O$_3$",    "1.0% F",  "16.9% Na$_2$O : 32.5% B$_2$O$_3$",
     "ABCY",                "HBL",     "ZBG",  
-    "ZBLA",                "ZBLAN"    "5.2% B$_2$O$_3$"
+    "ZBLA",                "ZBLAN",   "5.2% B$_2$O$_3$",
     "10.5% P$_2$O$_2$",    "BK7",     "fused silica",
     "sapphire (ordinary)", "sapphire (exordinary)"
     ])
@@ -176,36 +182,33 @@ def n(glass, lambda0):
     """
     returns the index of refraction for Sellmeier array, glass, at wavelength lambda0
 
-    glass[0:3] is unitless
-    glass[3:6] is in [1/um**2]
+    glass is an array obtained from ofiber.refraction.glass(i)
     lambda0 is in [m]
     returned value is in [s/m**]  ... just multiply be 1e6 to get ps/(km nm)
     """
-    return _sellmeier(glass[0:3], glass[3:6], lambda0)
+    return _sellmeier(glass[3:6], glass[0:3], lambda0)
 
 
 def dn(glass, lambda0):
     """
     returns the first derivative (wrt to wavelength) of the Sellmeier equation
 
-    glass[0:3] is unitless
-    glass[3:6] is in [1/um**2]
+    glass is an array obtained from ofiber.refraction.glass(i)
     lambda0 is in [m]
     returned value is in [1/m]
     """
-    return _d_sellmeier(glass[0:3], glass[3:6], lambda0)
+    return _d_sellmeier(glass[3:6], glass[0:3], lambda0)
 
 
 def d2n(glass, lambda0):
     """
     returns the second derivative (wrt to wavelength) of the Sellmeier equation
 
-    glass[0:3] is unitless
-    glass[3:6] is in [1/um**2]
+    glass is an array obtained from ofiber.refraction.glass(i)
     lambda0 is in [m]
     returned value is in [1/m**2]
     """
-    return _d2_sellmeier(glass[0:3], glass[3:6], lambda0)
+    return _d2_sellmeier(glass[3:6], glass[0:3], lambda0)
 
 
 # code used to generate the Sellmeier coefficients for other_glass below
