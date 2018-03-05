@@ -1,9 +1,10 @@
 Change Log
 ==========
 
-Date:   Mon Feb 26 08:43:08 2018 -0800
+0.2.0 (03/04/2018)
+- Add noise.py
+- Improve packaging
 
 0.1.0 (02/26/2018)
 ------------------
 - Initial release
-
