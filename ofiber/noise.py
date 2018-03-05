@@ -101,7 +101,7 @@ def thermal_min_power(bitrate,responsivity,capacitance,T,snr):
         optical power                            (W)
     """
     k = 1.38e-23   #J/K
-    val = 2*np.pi*k*T*C*snr
+    val = 2*np.pi*k*T*capacitance*snr
     return bitrate/responsivity*np.sqrt(val)
 
 

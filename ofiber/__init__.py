@@ -7,7 +7,7 @@ ofiber: Design and Analysis of Optical Fibers
 """
 
 __author__ = 'Scott Prahl'
-__version__ = '0.2.0'
+__version__ = '0.2.1'
 
 from ofiber.refraction import *
 from ofiber.dispersion import *
