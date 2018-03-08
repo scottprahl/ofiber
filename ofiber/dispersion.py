@@ -1,25 +1,31 @@
-# Useful routines for cylindrical waveguides based on chapter 10 of
-#
-#    A. Ghatak, K. Thyagarajan, An Introduction to Fiber Optics,
-#    Cambridge University Press, 1998
-#
-# Scott Prahl
-# Feb 2018
+"""
+Useful routines for cylindrical waveguides 
 
-__all__ = [ 'Material_Dispersion',
-			'Waveguide_Dispersion',
-			'V_d2bV_by_V_Approx',
-			'Waveguide_Dispersion_Approx',
-			'Waveguide_Dispersion_Delta',
-			'Total_Dispersion']
+   Based on chapter 10 of A. Ghatak, K. Thyagarajan, An Introduction to Fiber
+   Optics, Cambridge University Press, 1998
+
+Todo:
+    * adhere to google function docstrings
+    * lowercase function names?
+    
+"""
 
 import numpy as np
 import ofiber.refraction as ofr
 import ofiber.cylinder_step as ofc
 
+
+__all__ = ['Material_Dispersion',
+           'Waveguide_Dispersion',
+           'V_d2bV_by_V_Approx',
+           'Waveguide_Dispersion_Approx',
+           'Waveguide_Dispersion_Delta',
+           'Total_Dispersion']
+
+
 def Material_Dispersion(glass, lambda0):
     """
-    returns the material dispersion using Sellmeier coefficients 
+    returns the material dispersion using Sellmeier coefficients
 
     glass[0:3] is in [um**2]
     glass[3:6] is in [1/um**2]
@@ -69,7 +75,7 @@ def Waveguide_Dispersion_Approx(n1, n2, a, lambda0):
 
 def Waveguide_Dispersion_Delta(glass, Delta, a, lambda0):
     """
-    Returns waveguide dispersion for glass with refractive index 
+    Returns waveguide dispersion for glass with refractive index
 
     glass[0:3] is in [um**2] and glass[3:6] is in [1/um**2]
     Delta is the refractive index difference between core and cladding
