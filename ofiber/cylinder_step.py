@@ -1,10 +1,15 @@
-# Useful routines for step-index cylindrical waveguides based on chapter 8 of
-#
-#    A. Ghatak, K. Thyagarajan, An Introduction to Fiber Optics,
-#    Cambridge University Press, 1998
-#
-# Scott Prahl
-# Feb 2018
+"""
+Useful routines for step-index cylindrical waveguides
+
+Based on chapter 8 of A. Ghatak, K. Thyagarajan, An Introduction to Fiber
+Optics, Cambridge University Press, 1998
+
+Todo:
+	* add docstrings to each function
+	* lowercase functions
+	* rename Plot_LP_modes
+
+"""
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -13,22 +18,23 @@ from scipy.special import jn
 from scipy.special import jn_zeros
 from scipy.special import kn
 
-__all__ = [ 'LP_mode_value',
-			'LP_mode_values',
-			'Plot_LP_modes',
-			'LP_core_irradiance',
-			'LP_clad_irradiance',
-			'LP_total_irradiance',
-			'LP_radial_field',
-			'LP_radial_irradiance',
-			'Tranverse_misalignment_loss_db',
-			'Angular_misalignment_loss_db',
-			'Longitudinal_misalignment_loss_db',
-			'Bending_loss_db',
-			'MFD',
-			'PetermannW',
-			'PetermannW_Approx',
-			'V_d2bV_by_V']
+__all__ = ['LP_mode_value',
+           'LP_mode_values',
+           'Plot_LP_modes',
+           'LP_core_irradiance',
+           'LP_clad_irradiance',
+           'LP_total_irradiance',
+           'LP_radial_field',
+           'LP_radial_irradiance',
+           'Tranverse_misalignment_loss_db',
+           'Angular_misalignment_loss_db',
+           'Longitudinal_misalignment_loss_db',
+           'Bending_loss_db',
+           'MFD',
+           'PetermannW',
+           'PetermannW_Approx',
+           'V_d2bV_by_V']
+
 
 def _LHS_eqn_8_40(b, V, ell):
     """
@@ -88,7 +94,7 @@ def LP_mode_value(V, ell, em):
     try:
         b = brentq(_cyl_mode_eqn, lo, hi, args=(V, ell))
     except ValueError:  # happens when both hi and lo values have same sign
-        b = 0           # therefore no such mode exists
+        return 0        # therefore no such mode exists
 
     return b
 
@@ -133,13 +139,12 @@ def Plot_LP_modes(V, ell):
 
     # plot and label all the crossings
     all_b = LP_mode_values(V, ell)
-    for i in range(len(all_b)):
-        bb = all_b[i]
+    for i, bb in enumerate(all_b):
         y = _LHS_eqn_8_40(bb, V, ell)
         plt.scatter([bb], [y], s=30)
-        plt.annotate('   LP%d%d' % (ell, i + 1), xy=(bb, y),va='top')
+        plt.annotate('   LP%d%d' % (ell, i + 1), xy=(bb, y), va='top')
 
-    plt.title('Modes for $\ell$=%d when V=%.3f' % (ell, V))
+    plt.title(r'Modes for $\ell$=%d when V=%.3f' % (ell, V))
     plt.xlabel('b')
     plt.ylim(pltmin, pltmax)
     plt.xlim(0, 1)
@@ -171,7 +176,7 @@ def LP_total_irradiance(V, b, ell):
     W = V * np.sqrt(b)
     val = V**2 / U**2 * kn(ell + 1, W)
     val *= kn(ell - 1, W) / kn(ell, W)**2
-    return val 
+    return val
 
 
 def LP_radial_field(V, b, ell, r_over_a):
@@ -179,8 +184,8 @@ def LP_radial_field(V, b, ell, r_over_a):
     W = V * np.sqrt(b)
 
     values = np.empty_like(r_over_a)
-    for i in range(len(r_over_a)):
-        r = abs(r_over_a[i])
+    for i, r in enumerate(r_over_a):
+        r = abs(r)
         if r < 1:
             values[i] = jn(ell, U * r) / jn(ell, U)
         else:
@@ -213,31 +218,31 @@ def Longitudinal_misalignment_loss_db(n, w, D, lambda0):
 def _Bending_loss_db_scalar(n1, Delta, a, Rc, lambda0):
     """
     returns the bending loss in dB/m
-    using eqn below eqn 10.29 in Ghatak 
+    using eqn below eqn 10.29 in Ghatak
     a is core radius in [m]
     n1 is core index
     Delta is core-cladding difference
     Rc is radius of curvature in [m]
     lambda0 is wavelength in vacuum in [m]
     """
-    k0 = 2*np.pi/lambda0
-    V = k0 * a * n1 * np.sqrt(2*Delta)
+    k0 = 2 * np.pi / lambda0
+    V = k0 * a * n1 * np.sqrt(2 * Delta)
     b = LP_mode_value(V, 0, 1)
     U = V * np.sqrt(1 - b)
     W = V * np.sqrt(b)
     if W == 0:
-    	return np.nan
-    val = 4.343*np.sqrt(np.pi/4/a/Rc)
-    val *= (U/V/kn(1, W))**2
+        return np.nan
+    val = 4.343 * np.sqrt(np.pi / 4 / a / Rc)
+    val *= (U / V / kn(1, W))**2
     val *= W**-1.5
-    val *= np.exp(-2*W**3*Rc/3/k0**2/a**3/n1**2)
+    val *= np.exp(-2 * W**3 * Rc / 3 / k0**2 / a**3 / n1**2)
     return val
 
 
 def Bending_loss_db(n1, Delta, a, Rc, lambda0):
     """
     returns the bending loss in dB/m
-    using eqn below eqn 10.29 in Ghatak 
+    using eqn below eqn 10.29 in Ghatak
     a is core radius in [m]
     n1 is core index
     Delta is core-cladding difference
@@ -248,8 +253,8 @@ def Bending_loss_db(n1, Delta, a, Rc, lambda0):
         alpha = _Bending_loss_db_scalar(n1, Delta, a, Rc, lambda0)
     else:
         alpha = np.empty_like(a)
-        for i in range(len(alpha)):
-            alpha[i] = _Bending_loss_db_scalar(n1, Delta, a[i], Rc, lambda0)
+        for i, aa in enumerate(a):
+            alpha[i] = _Bending_loss_db_scalar(n1, Delta, aa, Rc, lambda0)
     return alpha
 
 
@@ -261,8 +266,8 @@ def _PetermannW_scalar(V):
     b = LP_mode_value(V, 0, 1)
     U = V * np.sqrt(1 - b)
     W = V * np.sqrt(b)
-    denom =  W * jn(0, U)
-    if denom == 0 :
+    denom = W * jn(0, U)
+    if denom == 0:
         return np.nan
     return np.sqrt(2) * jn(1, U) / denom
 
@@ -277,8 +282,8 @@ def PetermannW(V):
         wp = _PetermannW_scalar(V)
     else:
         wp = np.empty_like(V)
-        for i in range(len(wp)):
-            wp[i] = _PetermannW_scalar(V[i])
+        for i, VV in enumerate(V):
+            wp[i] = _PetermannW_scalar(VV)
     return wp
 
 
@@ -304,14 +309,14 @@ def _V_d2bV_by_V_scalar(V, ell):
     U = V * np.sqrt(1 - b)
     W = V * np.sqrt(b)
 
-    kappa_ell = kn(ell, W)**2 / kn(ell - 1, W) 
+    kappa_ell = kn(ell, W)**2 / kn(ell - 1, W)
     kappa_ell /= kn(ell + 1, W)
-    sum = 3 * W**2 - 2 * kappa_ell * (W**2 - U**2)
+    summ = 3 * W**2 - 2 * kappa_ell * (W**2 - U**2)
     val = W * (W**2 + U**2 * kappa_ell) * (kappa_ell - 1)
     val *= (kn(ell - 1, W) + kn(ell + 1, W))
     val /= kn(ell, W)
-    sum += val
-    return 2 * U**2 * kappa_ell / V**2 / W**2 * sum
+    summ += val
+    return 2 * U**2 * kappa_ell / V**2 / W**2 * summ
 
 
 def V_d2bV_by_V(V, ell):
@@ -321,11 +326,10 @@ def V_d2bV_by_V(V, ell):
     result has no units
     """
     if np.isscalar(V):
-        return _V_d2bV_by_V_scalar(V,ell)
+        return _V_d2bV_by_V_scalar(V, ell)
     else:
         v_by_v = np.empty_like(V)
-        for i in range(len(v_by_v)):
-            v_by_v[i] = _V_d2bV_by_V_scalar(V[i],ell)
+        for i, VV in enumerate(V):
+            v_by_v[i] = _V_d2bV_by_V_scalar(VV, ell)
 
     return v_by_v
-
