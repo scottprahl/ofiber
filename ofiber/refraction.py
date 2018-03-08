@@ -1,25 +1,31 @@
-# Useful routines for index of refraction based on Sellmeier coefficients
-#
-# Based on the equation
-#
-#    $$ n^2 = 1 + \sum_{i=0}^2 b_i \lambda_0^2/(\lambda_0^2-c_i) $$
-#
-#   See Fleming 1978
-#   See Book on Optical Properties
-#
-# Scott Prahl
-# Feb 2018
+"""
+Useful routines for index of refraction based on Sellmeier coefficients
 
-__all__ = [ 'all_glass_names',
-			'd2n',
-			'dn',
-			'doped_glass',
-			'doped_glass_name',
-			'glass',
-			'glass_name',
-			'n']
+Included are Sellmeier coefficients for a bunch of common glasses used
+in optical fibers.  Functions are provided to generate the index of refraction,
+as well as its first and second derivatives.
+
+Todo:
+    * add proper citations
+    * convert to objects?
+    * add more glasses
+    * move commented stuff at end to documentation
+
+Scott Prahl
+Feb 2018
+"""
 
 import numpy as np
+
+
+__all__ = ['all_glass_names',
+           'd2n',
+           'dn',
+           'doped_glass',
+           'doped_glass_name',
+           'glass',
+           'glass_name',
+           'n']
 
 _glass = [
     # format is [c1, c2, c3, b1, b2, b3]
@@ -48,27 +54,24 @@ _glass = [
      3.05900633e-1, 9.18318740e-1, 1.50695421],     # [10] ZBLAN
     [0.004981838, 0.01375664, 97.93353,
      0.6910021, 0.4022430, 0.9439644],              # [11] 5.2% B2O3
-    [0.005202431, 0.01287730, 97.93401,             
+    [0.005202431, 0.01287730, 97.93401,
      0.7058489, 0.4176021, 0.8952753],              # [12] 10.5% P2O2
-    [6.00069867e-3, 2.00179144e-2, 103.560653, 
+    [6.00069867e-3, 2.00179144e-2, 103.560653,
      1.03961212, 0.231792344, 1.01046945],          # [13] BK7
-    [4.67914826e-3, 1.35120631e-2, 97.9340025, 
+    [4.67914826e-3, 1.35120631e-2, 97.9340025,
      0.696166300, 0.407942600, 0.897479400],        # [14] fused silica
-    [5.2799261e-3, 1.42382647e-2, 325.017834, 
+    [5.2799261e-3, 1.42382647e-2, 325.017834,
      1.43134930, 0.65054713, 5.3414021],            # [15] sapphire (ord. wave)
-    [5.48041129e-3, 1.47994281e-2, 402.89514, 
+    [5.48041129e-3, 1.47994281e-2, 402.89514,
      1.5039759, 0.55069141, 6.5927379]              # [16] sapphire (eo wave)
 ]
 
 
 all_glass_names = np.array([
-    "SiO$_2$",             "GeO$_2$", "9.1% P$_2$O$_2$", 
-    "13.3% B$_2$O$_3$",    "1.0% F",  "16.9% Na$_2$O : 32.5% B$_2$O$_3$",
-    "ABCY",                "HBL",     "ZBG",  
-    "ZBLA",                "ZBLAN",   "5.2% B$_2$O$_3$",
-    "10.5% P$_2$O$_2$",    "BK7",     "fused silica",
-    "sapphire (ordinary)", "sapphire (exordinary)"
-    ])
+    "SiO$_2$", "GeO$_2$", "9.1% P$_2$O$_2$", "13.3% B$_2$O$_3$", "1.0% F",
+    "16.9% Na$_2$O : 32.5% B$_2$O$_3$", "ABCY", "HBL", "ZBG", "ZBLA", "ZBLAN",
+    "5.2% B$_2$O$_3$", "10.5% P$_2$O$_2$", "BK7", "fused silica",
+    "sapphire (ordinary)", "sapphire (exordinary)"])
 
 
 def glass(i):
@@ -77,7 +80,7 @@ def glass(i):
     Use like this
         lambda0 = np.linspace(1000,1700,50)*1e-9 # [m]
         glass = ofiber.refraction.glass(0)       # SiO2
-        n = ofiber.refraction.n(glass,lambda0)    
+        n = ofiber.refraction.n(glass,lambda0)
         plt.plot(lambda0*1e9, n)
     """
     return _glass[i]
@@ -86,7 +89,7 @@ def glass(i):
 def glass_name(i):
     """
     return the name of the glass with index i
-    (A list of all possible names is in the array 
+    (A list of all possible names is in the array
         ofiber.refraction.all_glass_names
     )
     """
@@ -95,8 +98,8 @@ def glass_name(i):
 
 def doped_glass(x):
     """
-    return Sellmeier coefficients for mixed system 
-             x GeO_2 : (1 - x)SiO_2 
+    return Sellmeier coefficients for mixed system
+             x GeO_2 : (1 - x)SiO_2
     where x is the molar fraction of GeO_2 in the mixture
     """
     SA = np.array([0.6961663, 0.4079426, 0.8974794])
@@ -105,13 +108,13 @@ def doped_glass(x):
     GL = np.array([0.068972606, 0.15396605, 11.841931])
     a = (SL + x * (GL - SL))**2
     b = abs(SA + x * (GA - SA))
-    return np.array([a, b]).reshape(-1)
+    return np.concatenate([a, b])
 
 
 def doped_glass_name(x):
     """
-    return name for the mixed system 
-             x GeO_2 : (1 - x)SiO_2 
+    return name for the mixed system
+             x GeO_2 : (1 - x)SiO_2
     where x is the molar fraction of GeO_2 in the mixture
     """
     if x == 0:
@@ -125,7 +128,6 @@ def doped_glass_name(x):
 def _sellmeier(b, c, lambda0):
     """
     returns the index of refraction using the Sellmeier equation
-    $$ n^2 = 1 + \sum_{i=0}^2 b_i \lambda_0^2/(\lambda_0^2-c_i) $$
 
     b is unitless
     c is in [um**2]
@@ -171,9 +173,9 @@ def _d2_sellmeier(b, c, lambda0):
     lambda0 is in [m]
     returned value d^2 n/dlambda^2 is in [1/m**2]
     """
-    n = _sellmeier(b, c, lambda0)
-    lam = lambda0 * 1e6  # to match Sellmeier Coefficients
-    lam2 = lam**2
+    nn = _sellmeier(b, c, lambda0)    # index of refraction
+    lam = lambda0 * 1e6               # needed because Sellmeier uses [um]
+    lam2 = lam**2                     # [um**2]
 
     dy = 0
     d2y = 0
@@ -181,15 +183,15 @@ def _d2_sellmeier(b, c, lambda0):
         dy = b[i] * c[i] / (lam2 - c[i])**2                        # 1/um
         d2y += b[i] * c[i] * (3 * lam2 + c[i]) / (lam2 - c[i])**3  # 1/um**2
 
-    d2n = d2y / n - lam2 * dy**2 / n**3                            # 1/um**2
-    d2n *= 1e12                                                    # 1/m**2
+    total = d2y / nn - lam2 * dy**2 / nn**3                        # 1/um**2
+    total *= 1e12                                                  # 1/m**2
 
-    return d2n
+    return total
 
 
 def n(glass, lambda0):
     """
-    returns the index of refraction for Sellmeier array, glass, at wavelength lambda0
+    returns index of refraction for glass, a Sellmeier array, at lambda0
 
     glass is an array obtained from ofiber.refraction.glass(i)
     lambda0 is in [m]
