@@ -25,7 +25,7 @@ __all__ = ['shot_noise',
 def shot_noise(I, Idark, bandwidth, M=1, x=0):
     """
     Return the noise current associated with shot/poisson noise
-    Inputs:
+    Args:
         I     = current         (A)
         Idark = dark current    (A)
         M     = APD Gain factor (--)
@@ -40,7 +40,7 @@ def shot_noise(I, Idark, bandwidth, M=1, x=0):
 def thermal_noise(T, Rload, bandwidth):
     """
     Return the noise current associated with thermal processes
-    Inputs:
+    Args:
         T     = temperature (Kelvin)
         Rload = resistance  (Ohms)
         BW    = bandwidth   (Hz)
@@ -54,7 +54,7 @@ def thermal_noise(T, Rload, bandwidth):
 def NEP(Responsivity, Rload, Idark, T):
     """
     Return noise equivalent power
-    Inputs:
+    Args:
         responsivity = photodetector response (A/W)
         Rload        = resistance             (Ohms)
         Idark        = dark current           (A)
@@ -70,7 +70,7 @@ def NEP(Responsivity, Rload, Idark, T):
 def best_APD_gain(I, Rload, Idark, x, T):
     """
     Return best gain for an avalanche photodiode
-    Inputs:
+    Args:
         I     = current         (A)
         Idark = dark current    (A)
         Rload = load resistance (Ohms)
@@ -87,7 +87,7 @@ def best_APD_gain(I, Rload, Idark, x, T):
 def BER_at_SNR(snr):
     """
     Return the bit error rate for a particular signal-to-noise ratio
-    Inputs:
+    Args:
         snr = signal to noise ratio (--)
     Returns:
         bit error rate              (--)
@@ -98,7 +98,7 @@ def BER_at_SNR(snr):
 def SNR_at_BER(ber):
     """
     Return the necessary signal-to-noise ratio to achieve specified BER
-    Inputs:
+    Args:
         ber = bit error rate (--)
     Returns:
         signal to noise ratio (--)
@@ -110,7 +110,7 @@ def thermal_min_power(bitrate, responsivity, capacitance, T, snr):
     """
     Return the minimum optical power needed to achieve a signal-to-noise
     ratio assuming that thermal noise dominates
-    Inputs:
+    Args:
         bitrate      = bits per second           (Hz)
         responsivity = photodetector response    (A/W)
         capacitance  = photodetector capacitance (Farads)
@@ -127,7 +127,7 @@ def thermal_min_power(bitrate, responsivity, capacitance, T, snr):
 def quantum_min_power(bitrate, ber, lambda0):
     """
     Return the minimum optical power needed to achieve a bit error rate
-    Inputs:
+    Args:
         bitrate  = bits per second      (Hz)
         ber      = bit error rate       (--)
         lambda0  = wavelength in vacuum (m)
