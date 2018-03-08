@@ -1,5 +1,5 @@
 """
-Useful routines for cylindrical waveguides 
+Useful routines for cylindrical waveguides
 
    Based on chapter 10 of A. Ghatak, K. Thyagarajan, An Introduction to Fiber
    Optics, Cambridge University Press, 1998
@@ -7,7 +7,7 @@ Useful routines for cylindrical waveguides
 Todo:
     * adhere to google function docstrings
     * lowercase function names?
-    
+
 """
 
 import numpy as np
@@ -25,12 +25,13 @@ __all__ = ['Material_Dispersion',
 
 def Material_Dispersion(glass, lambda0):
     """
-    returns the material dispersion using Sellmeier coefficients
+    Return the material dispersion using Sellmeier coefficients
 
-    glass[0:3] is in [um**2]
-    glass[3:6] is in [1/um**2]
-    lambda0 is in [m]
-    returned value is in [s/m**2]   (multiply by 1e6 to get ps/(km*nm))
+    Args:
+        glass  : an array of Sellmeier coefficients.
+        lambda0: wavelength [m]
+    Returns:
+        material dispersion [s/m**2]   (multiply by 1e6 to get ps/(km*nm))
     """
     c = 2.997e8                                    # m/s
     return -lambda0 * ofr.d2n(glass, lambda0) / c  # s/m**2
@@ -38,10 +39,17 @@ def Material_Dispersion(glass, lambda0):
 
 def Waveguide_Dispersion(n1, n2, a, lambda0):
     """
-    Return the waveguide dispersion of the fundamental
-    mode of a step index fiber (core n1, cladding n2) with
-    radius a [m] and wavelength lambda0 [m]
-    returned dispersion is in [s/m**2]   (multiply by 1e6 to get ps/(km*nm))
+    Return the waveguide dispersion of a step index fiber.
+
+    The waveguide dispersion is for the fundamental mode of the fiber.
+
+    Args:
+        n1:      core index of refraction     [--]
+        n2:      cladding index of refraction [--]
+        a:       radius of the fiber          [m]
+        lambda0: wavelength                   [m]
+    Returns:
+        waveguide dispersion [s/m**2]   (multiply by 1e6 to get ps/(km*nm))
     """
     Delta = (n1**2 - n2**2) / 2 / n1**2
     V = 2 * np.pi / lambda0 * a * np.sqrt(n1**2 - n2**2)
