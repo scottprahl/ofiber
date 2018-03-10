@@ -25,7 +25,8 @@ __all__ = ['all_glass_names',
            'doped_glass_name',
            'glass',
            'glass_name',
-           'n']
+           'n',
+           'n_group']
 
 _glass = [
     # format is [c1, c2, c3, b1, b2, b3]
@@ -88,7 +89,8 @@ def glass(i):
 
 def glass_name(i):
     """
-    return the name of the glass with index i
+    Look up the name of the glass with index i
+    
     (A list of all possible names is in the array
         ofiber.refraction.all_glass_names
     )
@@ -98,9 +100,13 @@ def glass_name(i):
 
 def doped_glass(x):
     """
-    return Sellmeier coefficients for mixed system
-             x GeO_2 : (1 - x)SiO_2
-    where x is the molar fraction of GeO_2 in the mixture
+    Calculate Sellmeier coefficients for SiO_2 doped with GeO_2
+    
+    Arg:
+        x = molar fraction of GeO_2 in the system, 
+                x GeO_2 : (1 - x)SiO_2
+    Returns:
+        Sellmeier coefficients for doped glass (array of six values)
     """
     SA = np.array([0.6961663, 0.4079426, 0.8974794])
     SL = np.array([0.0684043, 0.1162414, 9.896161])
@@ -113,9 +119,12 @@ def doped_glass(x):
 
 def doped_glass_name(x):
     """
-    return name for the mixed system
-             x GeO_2 : (1 - x)SiO_2
-    where x is the molar fraction of GeO_2 in the mixture
+    Create a string the name describing the GeO2 doped glass
+    
+    Arg:
+        x = molar fraction of GeO_2 in the system, 
+    Returns:
+        string describing the doped glass
     """
     if x == 0:
         return r'SiO$_2$'
@@ -127,13 +136,18 @@ def doped_glass_name(x):
 
 def _sellmeier(b, c, lambda0):
     """
-    returns the index of refraction using the Sellmeier equation
+    Calculates the index of refraction using the Sellmeier equation
 
-    b is unitless
-    c is in [um**2]
-    lambda0 is in [m]
+    This is intended as a private method. 
+    
+    Args:
+        b : array of three Sellmeier Coefficients  [--]
+        c : array of three Sellmeier Coefficients  [microns**2]
+        lambda0 : wavelength in vacuum             [m]
+    Returns:
+        returns the index of refraction at lambda0 [-]
     """
-    lam2 = lambda0**2 * 1e12                   # um**2
+    lam2 = lambda0**2 * 1e12  # um**2
     nsq = 1
     for i in range(3):
         nsq += b[i] * lam2 / (lam2 - c[i])
@@ -143,12 +157,16 @@ def _sellmeier(b, c, lambda0):
 
 def _d_sellmeier(b, c, lambda0):
     """
-    returns the first derivative (wrt to wavelength) of the Sellmeier equation
+    Calculates the first derivative (wrt wavelength) of the Sellmeier equation
 
-    b is unitless
-    c is in [um**2]
-    lambda0 is in [m]
-    returned value dn/dlambda is in [1/m]
+    This is a private method. 
+    
+    Args:
+        b : array of three Sellmeier Coefficients  [--]
+        c : array of three Sellmeier Coefficients  [microns**2]
+        lambda0 : wavelength in vacuum             [m]
+    Returns:
+        returns the first derivative of the index of refraction at lambda0 [1/m]
     """
     n1 = _sellmeier(b, c, lambda0)
     lam = lambda0 * 1e6  # microns
@@ -166,12 +184,16 @@ def _d_sellmeier(b, c, lambda0):
 
 def _d2_sellmeier(b, c, lambda0):
     """
-    returns the second derivative (wrt to wavelength) of the Sellmeier equation
+    Calculates the second derivative (wrt wavelength) of the Sellmeier equation
 
-    b is unitless
-    c is in [um**2]
-    lambda0 is in [m]
-    returned value d^2 n/dlambda^2 is in [1/m**2]
+    This is a private method. 
+    
+    Args:
+        b : array of three Sellmeier Coefficients  [--]
+        c : array of three Sellmeier Coefficients  [microns**2]
+        lambda0 : wavelength in vacuum             [m]
+    Returns:
+        returns the second derivative of the refractive index at lambda0 [1/m]
     """
     nn = _sellmeier(b, c, lambda0)    # index of refraction
     lam = lambda0 * 1e6               # needed because Sellmeier uses [um]
@@ -191,36 +213,54 @@ def _d2_sellmeier(b, c, lambda0):
 
 def n(glass, lambda0):
     """
-    returns index of refraction for glass, a Sellmeier array, at lambda0
+    Calculates index of refraction for a glass at lambda0
 
-    glass is an array obtained from ofiber.refraction.glass(i)
-    lambda0 is in [m]
-    returned value is in [s/m**]  ... just multiply be 1e6 to get ps/(km nm)
+    Args:
+        glass: array of Sellmeier coefficients obtained from glass(i)
+        lambda0: wavelength in vacuum [m]
+    Returns:
+        index of refraction [--]
     """
     return _sellmeier(glass[3:6], glass[0:3], lambda0)
 
 
 def dn(glass, lambda0):
     """
-    returns the first derivative (wrt to wavelength) of the Sellmeier equation
+    Calculates the first derivative of the refractiv index w.r.t. wavelength
 
-    glass is an array obtained from ofiber.refraction.glass(i)
-    lambda0 is in [m]
-    returned value is in [1/m]
+    Args:
+        glass: array of Sellmeier coefficients obtained from glass(i)
+        lambda0: wavelength in vacuum [m]
+    Returns:
+        the first derivative of index of refraction [1/m]
     """
     return _d_sellmeier(glass[3:6], glass[0:3], lambda0)
 
 
 def d2n(glass, lambda0):
     """
-    returns the second derivative (wrt to wavelength) of the Sellmeier equation
+    Calculates the second derivative of the refractiv index w.r.t. wavelength
 
-    glass is an array obtained from ofiber.refraction.glass(i)
-    lambda0 is in [m]
-    returned value is in [1/m**2]
+    Args:
+        glass: array of Sellmeier coefficients obtained from glass(i)
+        lambda0: wavelength in vacuum [m]
+    Returns:
+        the second derivative of index of refraction [1/m**2]
     """
     return _d2_sellmeier(glass[3:6], glass[0:3], lambda0)
 
+
+def n_group(glass, lambda0):
+    """
+    Calculates group index of refraction at lambda0
+
+    Args:
+        glass: array of Sellmeier coefficients obtained from glass(i)
+        lambda0: wavelength in vacuum [m]
+    Returns:
+        group index of refraction [--]
+    """
+    return n(glass,lambda0) - lambda0*dn(glass,lambda0)
 
 # code used to generate the Sellmeier coefficients for other_glass below
 # data straight from fleming 1978
