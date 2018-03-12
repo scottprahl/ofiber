@@ -22,6 +22,9 @@ __all__ = ['acceptance_angle',
            'numerical_aperture',
            'numerical_aperture_graded_index',
            'relative_refractive_index',
+           'r_par',
+           'r_per',
+           'r_unpolarized',
            'v_parameter']
 
 
@@ -120,6 +123,53 @@ def relative_refractive_index(n_core, n_clad):
         the relative refractive index (Delta)                    [-]
     """
     return (n_core**2 - n_clad**2) / (2 * n_core**2)
+
+
+def r_par(m,theta):
+    """
+    Calculates the Fresnel reflection for parallel polarized light
+
+    Args:
+        m :     complex index of refraction   [-]
+        theta : angle from normal to surface  [radians]
+    Returns:
+        reflected power                       [-]
+    """
+    m2 = m*m
+    c = np.cos(theta)
+    s = np.sin(theta)
+    d = np.sqrt(m2-s*s)
+    return abs((m2*c - d)/(m2*c + d))**2
+
+
+def r_per(m,theta):
+    """
+    Calculates the Fresnel reflection for perpendicular polarized light
+
+    Args:
+        m :     complex index of refraction   [-]
+        theta : angle from normal to surface  [radians]
+    Returns:
+        reflected power                       [-]
+    """
+    m2 = m*m
+    c = np.cos(theta)
+    s = np.sin(theta)
+    d = np.sqrt(m2-s*s)
+    return abs((c - d)/(c + d))**2
+
+
+def r_unpolarized(m,theta):
+    """
+    Calculates the Fresnel reflection for unpolarized incident light
+
+    Args:
+        m :     complex index of refraction   [-]
+        theta : angle from normal to surface  [radians]
+    Returns:
+        reflected power                       [-]
+    """
+    return (r_par(m,theta)+r_per(m,theta))/2
 
 
 def v_parameter(a, NA, lambda0):
