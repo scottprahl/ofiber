@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+0.3.0 (03/12/2018)
+------------------
+- add basics.py
+- add documentation for functions
+
 0.2.1 (03/04/2018)
 ------------------
 - fix typo
