@@ -19,6 +19,9 @@ from scipy.special import jn_zeros
 __all__ = ['acceptance_angle',
            'critical_angle',
            'cutoff_wavelength',
+           'esi_delta',
+           'esi_radius',
+           'esi_v_parameter',
            'numerical_aperture',
            'numerical_aperture_graded_index',
            'relative_refractive_index',
@@ -71,7 +74,7 @@ def cutoff_wavelength(a, NA, ell=0, q=np.inf):
         a :   radius of the fiber                               [m]
         NA :  numerical aperture of the fiber                   [-]
         ell : (optional) mode number                            [-]
-        q :   (optional) parameter for graded index fiberr      [-]
+        q :   (optional) parameter for graded index fiber       [-]
     Returns:
         shortest wavelength for operation in the specified mode [m]
     """
@@ -79,6 +82,44 @@ def cutoff_wavelength(a, NA, ell=0, q=np.inf):
     if np.isfinite(q):       # graded index fiber
         Vc *= np.sqrt(1 + 2 / q)
     return 2 * np.pi * a * NA / Vc
+
+
+def esi_delta(Delta, q):
+    """
+    Calculates equivalent step index (esi) Delta for a graded-index fiber
+
+    Args:
+        Delta :  relative refractive index     [-]
+    Returns:
+        equivalent relative refractive index   [-]
+    """
+    return q * (2 + q) / (1 + q)**2 * Delta
+
+
+def esi_radius(a, q):
+    """
+    Calculates equivalent step index (esi) radius for a graded-index fiber
+
+    Args:
+        a :   radius of the fiber                  [m]
+        q :   parameter for graded index fiber     [-]
+    Returns:
+        equivalent step index radius               [m]
+    """
+    return a * (1 + q) / (2 + q)
+
+
+def esi_v_parameter(V, q):
+    """
+    Calculates equivalent step index (esi) V for a graded-index fiber
+
+    Args:
+        V :       V parameter                       [-]
+        q :       parameter for graded index fiber  [-]
+    Returns:
+        equivalent step index V-parameter           [-]
+    """
+    return V * np.sqrt(q / (q + 2))
 
 
 def numerical_aperture(n_core, n_clad):
@@ -125,7 +166,7 @@ def relative_refractive_index(n_core, n_clad):
     return (n_core**2 - n_clad**2) / (2 * n_core**2)
 
 
-def r_par(m,theta):
+def r_par(m, theta):
     """
     Calculates the Fresnel reflection for parallel polarized light
 
@@ -135,14 +176,14 @@ def r_par(m,theta):
     Returns:
         reflected power                       [-]
     """
-    m2 = m*m
+    m2 = m * m
     c = np.cos(theta)
     s = np.sin(theta)
-    d = np.sqrt(m2-s*s)
-    return abs((m2*c - d)/(m2*c + d))**2
+    d = np.sqrt(m2 - s * s)
+    return abs((m2 * c - d) / (m2 * c + d))**2
 
 
-def r_per(m,theta):
+def r_per(m, theta):
     """
     Calculates the Fresnel reflection for perpendicular polarized light
 
@@ -152,14 +193,14 @@ def r_per(m,theta):
     Returns:
         reflected power                       [-]
     """
-    m2 = m*m
+    m2 = m * m
     c = np.cos(theta)
     s = np.sin(theta)
-    d = np.sqrt(m2-s*s)
-    return abs((c - d)/(c + d))**2
+    d = np.sqrt(m2 - s * s)
+    return abs((c - d) / (c + d))**2
 
 
-def r_unpolarized(m,theta):
+def r_unpolarized(m, theta):
     """
     Calculates the Fresnel reflection for unpolarized incident light
 
@@ -169,26 +210,19 @@ def r_unpolarized(m,theta):
     Returns:
         reflected power                       [-]
     """
-    return (r_par(m,theta)+r_per(m,theta))/2
+    return (r_par(m, theta) + r_per(m, theta)) / 2
 
 
 def v_parameter(a, NA, lambda0):
     """
     Calculates the V-parameter for an optical fiber
 
-    The default operation is for this function to calculate the cutoff
-    wavelength for the fundamental mode of a step-index fiber.  The cutoff
-    wavelength for higher order modes may be found by specifying a different
-    value of ell.
-
-    If the cutoff wavelength for a graded index fiber is desired, then specify
-    a different value for q.
-
     Args:
-        a :       radius of the fiber                 [m]
-        NA :      numerical aperture of the fiber     [-]
-        lambda0 : wavelength in vacuum                [m]
+        a :       radius of the fiber              [m]
+        NA :      numerical aperture of the fiber  [-]
+        lambda0 : wavelength in vacuum             [m]
     Returns:
-        V-parameter                                   [-]
+        V-parameter                                [-]
     """
-    return 2 * np.pi / lambda0 * a * NA
+    V = 2 * np.pi / lambda0 * a * NA
+    return V
