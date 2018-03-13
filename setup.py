@@ -13,7 +13,7 @@ from setuptools import setup
 setup(
 	name='ofiber',
 	packages=['ofiber'],
-	version='0.2.1',
+	version='0.2.5',
 	description='Light Propagation in Optical Fibers',
 	url='https://github.com/scottprahl/ofiber.git',  
 	author='Scott Prahl',
