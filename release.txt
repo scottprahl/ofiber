@@ -1,5 +1,8 @@
 # Releasing a new version
 
+# make sure files match up
+  check-manifest
+
 # versioning
 # update the version in setup.py and ofiber/__init__.py
   git commit -m 'update version' setup.py ofiber/__init__.py
@@ -18,5 +21,9 @@
   python setup.py sdist
   twine upload dist/*
 
-# install the new version locally
-  pip install --upgrade ofiber
+# test the install by removing local developer version
+# installing, then uninstalling, then restoring developer version
+  conda develop -u .
+  pip install ofiber
+  pip uninstall ofiber
+  pip develop .
