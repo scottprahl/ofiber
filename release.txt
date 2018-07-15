@@ -18,5 +18,9 @@
   python setup.py sdist
   twine upload dist/*
 
-# install the new version locally
-  pip install --upgrade ofiber
+# test the install by removing local developer version
+# installing, then uninstalling, then restoring developer version
+  conda develop -u .
+  pip install ofiber
+  pip uninstall ofiber
+  conda develop .
