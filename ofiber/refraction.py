@@ -18,7 +18,7 @@ Feb 2018
 import numpy as np
 
 
-__all__ = ['all_glass_names',
+__all__ = ['ALL_GLASS_NAMES',
            'd2n',
            'dn',
            'doped_glass',
@@ -26,9 +26,10 @@ __all__ = ['all_glass_names',
            'glass',
            'glass_name',
            'n',
-           'n_group']
+           'n_group',
+           'n_air']
 
-_glass = [
+_GLASS = [
     # format is [c1, c2, c3, b1, b2, b3]
     # where b1, b2, b3 are unitless and c1, c2, c3 have units of [microns**2]
     [4.67914826e-3, 1.35120631e-2, 9.79340025e1,
@@ -68,7 +69,7 @@ _glass = [
 ]
 
 
-all_glass_names = np.array([
+ALL_GLASS_NAMES = np.array([
     "SiO$_2$", "GeO$_2$", "9.1% P$_2$O$_2$", "13.3% B$_2$O$_3$", "1.0% F",
     "16.9% Na$_2$O : 32.5% B$_2$O$_3$", "ABCY", "HBL", "ZBG", "ZBLA", "ZBLAN",
     "5.2% B$_2$O$_3$", "10.5% P$_2$O$_2$", "BK7", "fused silica",
@@ -84,27 +85,27 @@ def glass(i):
         n = ofiber.refraction.n(glass,lambda0)
         plt.plot(lambda0*1e9, n)
     """
-    return _glass[i]
+    return _GLASS[i]
 
 
 def glass_name(i):
     """
     Look up the name of the glass with index i
-    
+
     (A list of all possible names is in the array
-        ofiber.refraction.all_glass_names
+        ofiber.refraction.ALL_GLASS_NAMES
     )
     """
-    return all_glass_names[i]
+    return ALL_GLASS_NAMES[i]
 
 
 def doped_glass(x):
     """
     Calculate Sellmeier coefficients for SiO_2 doped with GeO_2
-    
+
     Arg:
-        x = molar fraction of GeO_2 in the system, 
-                x GeO_2 : (1 - x)SiO_2
+        x = molar fraction of GeO_2 in the system,
+                x * GeO_2 : (1 - x) * SiO_2
     Returns:
         Sellmeier coefficients for doped glass (array of six values)
     """
@@ -120,9 +121,9 @@ def doped_glass(x):
 def doped_glass_name(x):
     """
     Create a string the name describing the GeO2 doped glass
-    
+
     Arg:
-        x = molar fraction of GeO_2 in the system, 
+        x = molar fraction of GeO_2 in the system,
     Returns:
         string describing the doped glass
     """
@@ -138,8 +139,8 @@ def _sellmeier(b, c, lambda0):
     """
     Calculates the index of refraction using the Sellmeier equation
 
-    This is intended as a private method. 
-    
+    This is intended as a private method.
+
     Args:
         b : array of three Sellmeier Coefficients  [--]
         c : array of three Sellmeier Coefficients  [microns**2]
@@ -159,8 +160,8 @@ def _d_sellmeier(b, c, lambda0):
     """
     Calculates the first derivative (wrt wavelength) of the Sellmeier equation
 
-    This is a private method. 
-    
+    This is a private method.
+
     Args:
         b : array of three Sellmeier Coefficients  [--]
         c : array of three Sellmeier Coefficients  [microns**2]
@@ -186,8 +187,8 @@ def _d2_sellmeier(b, c, lambda0):
     """
     Calculates the second derivative (wrt wavelength) of the Sellmeier equation
 
-    This is a private method. 
-    
+    This is a private method.
+
     Args:
         b : array of three Sellmeier Coefficients  [--]
         c : array of three Sellmeier Coefficients  [microns**2]
@@ -211,46 +212,46 @@ def _d2_sellmeier(b, c, lambda0):
     return total
 
 
-def n(glass, lambda0):
+def n(glass_coef, lambda0):
     """
     Calculates index of refraction for a glass at lambda0
 
     Args:
-        glass: array of Sellmeier coefficients obtained from glass(i)
+        glass_coef: array of Sellmeier coefficients obtained from glass(i)
         lambda0: wavelength in vacuum [m]
     Returns:
         index of refraction [--]
     """
-    return _sellmeier(glass[3:6], glass[0:3], lambda0)
+    return _sellmeier(glass_coef[3:6], glass_coef[0:3], lambda0)
 
 
-def dn(glass, lambda0):
+def dn(glass_coef, lambda0):
     """
     Calculates the first derivative of the refractiv index w.r.t. wavelength
 
     Args:
-        glass: array of Sellmeier coefficients obtained from glass(i)
+        glass_coef: array of Sellmeier coefficients obtained from glass(i)
         lambda0: wavelength in vacuum [m]
     Returns:
         the first derivative of index of refraction [1/m]
     """
-    return _d_sellmeier(glass[3:6], glass[0:3], lambda0)
+    return _d_sellmeier(glass_coef[3:6], glass_coef[0:3], lambda0)
 
 
-def d2n(glass, lambda0):
+def d2n(glass_coef, lambda0):
     """
     Calculates the second derivative of the refractiv index w.r.t. wavelength
 
     Args:
-        glass: array of Sellmeier coefficients obtained from glass(i)
+        glass_coef: array of Sellmeier coefficients obtained from glass(i)
         lambda0: wavelength in vacuum [m]
     Returns:
         the second derivative of index of refraction [1/m**2]
     """
-    return _d2_sellmeier(glass[3:6], glass[0:3], lambda0)
+    return _d2_sellmeier(glass_coef[3:6], glass_coef[0:3], lambda0)
 
 
-def n_group(glass, lambda0):
+def n_group(glass_coef, lambda0):
     """
     Calculates group index of refraction at lambda0
 
@@ -260,7 +261,26 @@ def n_group(glass, lambda0):
     Returns:
         group index of refraction [--]
     """
-    return n(glass,lambda0) - lambda0*dn(glass,lambda0)
+    return n(glass_coef, lambda0) - lambda0*dn(glass_coef, lambda0)
+
+
+def n_air(lambda0, temperature=15):
+    """
+    Calculates refractive index of air at atmospheric pressure, following
+    equation given on page 4 of Smith, Modern Optical Engineering
+
+    Args:
+        lambda0: wavelength in vacuum [m]
+        temperature: degrees celsius
+    Returns:
+        index of refraction [--]
+    """
+    nu = 1/(lambda0 * 1e6)
+    n15 = 1e-8 * (8342.1 + 2406030/(130 - nu**2) + 15996/(38.9 - nu**2))
+    if temperature == 15:
+        return 1 + n15
+
+    return 1 + 1.0549*n15/(1+0.00366*temperature)
 
 # code used to generate the Sellmeier coefficients for other_glass below
 # data straight from fleming 1978
