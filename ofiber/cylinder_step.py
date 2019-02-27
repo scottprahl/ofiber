@@ -137,9 +137,10 @@ def LP_mode_value(V, ell, em):
         hi = 1 - abit
     else:
         hi = 1 - (jnz[em - 2] / V)**2 - abit
-        if hi < lo:
-            return 0  # no such mode
-
+    
+    if hi < lo:
+        return 0  # no such mode
+            
     try:
         b = brentq(_cyl_mode_eqn, lo, hi, args=(V, ell))
     except ValueError:  # happens when both hi and lo values have same sign

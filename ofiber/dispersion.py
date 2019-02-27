@@ -8,9 +8,11 @@ Todo:
     * lowercase function names?
 """
 
+import scipy.constants
 import numpy as np
 import ofiber.refraction as ofr
 import ofiber.cylinder_step as ofc
+import ofiber.basics as ofb
 
 
 __all__ = ['Material_Dispersion',
@@ -30,11 +32,11 @@ def Material_Dispersion(glass, lambda0):
     Returns:
         material dispersion [s/m**2]   (multiply by 1e6 to get ps/(km*nm))
     """
-    c = 2.997e8                                    # m/s
+    c = scipy.constants.speed_of_light
     return -lambda0 * ofr.d2n(glass, lambda0) / c  # s/m**2
 
 
-def Waveguide_Dispersion(n1, n2, a, lambda0):
+def Waveguide_Dispersion(n1, n2, a, lambda0, q=1e20):
     """
     Calculates the waveguide dispersion of a step index fiber.
 
@@ -50,12 +52,14 @@ def Waveguide_Dispersion(n1, n2, a, lambda0):
     """
     Delta = (n1**2 - n2**2) / 2 / n1**2
     V = 2 * np.pi / lambda0 * a * np.sqrt(n1**2 - n2**2)
-    c = 2.997e8
-    dw = -n2 * Delta / c / lambda0 * ofc.V_d2bV_by_V(V, 0)
+    c = scipy.constants.speed_of_light
+    esi_Delta = ofb.esi_delta(Delta,q)
+    esi_V = ofb.esi_v_parameter(V,q)
+    dw = -n2 * esi_Delta / c / lambda0 * ofc.V_d2bV_by_V(esi_V, 0)
     return dw
 
 
-def Waveguide_Dispersion_Approx(n1, n2, a, lambda0):
+def Waveguide_Dispersion_Approx(n1, n2, a, lambda0, q=1e20):
     """
     Approximates the waveguide dispersion of the a single mode fiber
 
@@ -69,12 +73,14 @@ def Waveguide_Dispersion_Approx(n1, n2, a, lambda0):
     """
     Delta = (n1**2 - n2**2) / 2 / n1**2
     V = 2 * np.pi / lambda0 * a * np.sqrt(n1**2 - n2**2)
-    c = 2.997e8
-    dw = -n2 * Delta / c / lambda0 * ofc.V_d2bV_by_V_Approx(V)
+    esi_Delta = ofb.esi_delta(Delta,q)
+    esi_V = ofb.esi_v_parameter(V,q)
+    c = scipy.constants.speed_of_light
+    dw = -n2 * esi_Delta / c / lambda0 * ofc.V_d2bV_by_V_Approx(esi_V)
     return dw
 
 
-def Waveguide_Dispersion_Delta(glass, Delta, a, lambda0):
+def Waveguide_Dispersion_Delta(glass, Delta, a, lambda0, q=1e20, approx=False):
     """
     Calculates the waveguide dispersion of a glass optical fiber
 
@@ -86,15 +92,20 @@ def Waveguide_Dispersion_Delta(glass, Delta, a, lambda0):
         Delta:   refractive index difference     [-]
         a:       radius of fiber                 [m]
         lambda0: wavelength in vacuum            [m]
+        q:       power in graded index fiber     [-]
+        approx:  pass True if appoximation is ok 
     Returns:
         waveguide dispersion [s/m**2]   (multiply by 1e6 to get [ps/km/nm])
     """
     n1 = ofr.n(glass, lambda0)
     n2 = n1 * (1 - Delta)
-    return Waveguide_Dispersion(n1, n2, a, lambda0)
+    if approx:
+        return Waveguide_Dispersion_Approx(n1, n2, a, lambda0, q)
+        
+    return Waveguide_Dispersion(n1, n2, a, lambda0, q)
 
 
-def Total_Dispersion(glass, Delta, a, lambda0):
+def Total_Dispersion(glass, Delta, a, lambda0, q=1e20, approx=False):
     """
     Calculate the total dispersion in an optical fiber
 
@@ -110,5 +121,5 @@ def Total_Dispersion(glass, Delta, a, lambda0):
         waveguide dispersion [s/m**2]   (multiply by 1e6 to get [ps/km/nm])
     """
     Dm = Material_Dispersion(glass, lambda0)                   # [s/m**2]
-    Dw = Waveguide_Dispersion_Delta(glass, Delta, a, lambda0)  # [s/m**2]
+    Dw = Waveguide_Dispersion_Delta(glass, Delta, a, lambda0, q, approx)  # [s/m**2]
     return Dw + Dm

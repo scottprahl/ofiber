@@ -25,6 +25,7 @@ __all__ = ['acceptance_angle',
            'numerical_aperture',
            'numerical_aperture_graded_index',
            'relative_refractive_index',
+           'numerical_aperture_from_Delta',
            'r_par',
            'r_per',
            'r_unpolarized',
@@ -128,11 +129,24 @@ def numerical_aperture(n_core, n_clad):
 
     Args:
         n_core : the index of refraction of the fiber core      [-]
-        n_core : the index of refraction of the fiber cladding  [-]
+        n_clad : the index of refraction of the fiber cladding  [-]
     Returns:
         numerical aperture                                      [-]
     """
     return np.sqrt(n_core**2 - n_clad**2)
+
+
+def numerical_aperture_from_Delta(n_core, Delta):
+    """
+    Calculates the numerical aperture of an optical fiber
+
+    Args:
+        n_core : the index of refraction of the fiber core      [-]
+        Delta : relative index of refraction                    [-]
+    Returns:
+        numerical aperture                                      [-]
+    """
+    return n_core * np.sqrt(2*Delta)
 
 
 def numerical_aperture_graded_index(n_core, n_clad, q, r_over_a):
@@ -144,8 +158,8 @@ def numerical_aperture_graded_index(n_core, n_clad, q, r_over_a):
 
     Args:
         n_core :  the index of refraction of the fiber core      [-]
-        n_core :  the index of refraction of the fiber cladding  [-]
-        q :       (optional) parameter for graded index fiber    [-]
+        n_clad :  the index of refraction of the fiber cladding  [-]
+        q :       parameter for graded index fiber               [-]
         r_over_a : ratio of radius to the core radius            [-]
     Returns:
         numerical aperture at r_over_a                           [-]
@@ -159,7 +173,7 @@ def relative_refractive_index(n_core, n_clad):
 
     Args:
         n_core :  the index of refraction of the fiber core      [-]
-        n_core :  the index of refraction of the fiber cladding  [-]
+        n_clad:  the index of refraction of the fiber cladding  [-]
     Returns:
         the relative refractive index (Delta)                    [-]
     """
