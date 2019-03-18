@@ -1,3 +1,6 @@
+# pylint: disable=invalid-name
+# pylint: disable=no-name-in-module
+
 """
 Useful routines for step-index cylindrical waveguides
 
@@ -25,6 +28,8 @@ __all__ = ['LP_mode_value',
            'LP_total_irradiance',
            'LP_radial_field',
            'LP_radial_irradiance',
+           'Gaussian_envelope_Omega',
+           'Gaussian_radial_irradiance',
            'Tranverse_misalignment_loss_db',
            'Angular_misalignment_loss_db',
            'Longitudinal_misalignment_loss_db',
@@ -137,10 +142,10 @@ def LP_mode_value(V, ell, em):
         hi = 1 - abit
     else:
         hi = 1 - (jnz[em - 2] / V)**2 - abit
-    
+
     if hi < lo:
         return 0  # no such mode
-            
+
     try:
         b = brentq(_cyl_mode_eqn, lo, hi, args=(V, ell))
     except ValueError:  # happens when both hi and lo values have same sign
@@ -277,7 +282,7 @@ def LP_total_irradiance(V, b, ell):
 
 def LP_radial_field(V, b, ell, r_over_a):
     """
-    Calculate the field in a step-index fiber.
+    Calculate the normalized field in a step-index fiber.
 
     Args:
         V:        V-parameter for fiber            [-]
@@ -311,6 +316,38 @@ def LP_radial_irradiance(V, b, ell, r_over_a):
     """
     field = LP_radial_field(V, b, ell, r_over_a)
     return field**2
+
+
+def Gaussian_envelope_Omega(V):
+    """
+    Calculate the normalized irradiance in a step-index fiber assuming
+    the Gaussian envelope approximation for the LP_01 mode
+
+    Args:
+        V:        V-parameter for fiber            [-]
+    Returns:
+        Omega_over_core_radius                     [-]
+    """
+    b = LP_mode_value(V, 0, 1)
+    U = V * np.sqrt(1 - b)
+    W = V * np.sqrt(b)
+    Omega_over_a = jn(0, U) * V/U * kn(1, W)/kn(0, W)
+    return Omega_over_a
+
+
+def Gaussian_radial_irradiance(V, r_over_a):
+    """
+    Calculate the normalized irradiance in a step-index fiber assuming
+    the Gaussian envelope approximation for the LP_01 mode f(r)*pi*a**2
+
+    Args:
+        V:        V-parameter for fiber            [-]
+        r_over_a: (radial position)/(core radius)  [-]
+    Returns:
+        normalized irradiance at points r_over_a   [-]
+    """
+    Omega_over_a = Gaussian_envelope_Omega(V)
+    return 1/Omega_over_a**2 * np.exp(-r_over_a**2/Omega_over_a**2)
 
 
 def Tranverse_misalignment_loss_db(w1, w2, u):
@@ -554,10 +591,10 @@ def V_d2bV_by_V(V, ell):
     """
     if np.isscalar(V):
         return _V_d2bV_by_V_scalar(V, ell)
-    else:
-        v_by_v = np.empty_like(V)
-        for i, VV in enumerate(V):
-            v_by_v[i] = _V_d2bV_by_V_scalar(VV, ell)
+
+    v_by_v = np.empty_like(V)
+    for i, VV in enumerate(V):
+        v_by_v[i] = _V_d2bV_by_V_scalar(VV, ell)
 
     return v_by_v
 
