@@ -1,12 +1,15 @@
+# pylint: disable=invalid-name
+
+
 """
-Useful basic routines for optical fibers
+Useful basic routines for optical fibers.
 
 A handful of functions to calculate commonly needed optical fiber parameters.
 Many are so simple that one might reasonably question if making them a
 function has any utility.
 
 Todo:
-    * move MFD here?
+* move MFD here?
 
 Scott Prahl
 Mar 2018
@@ -34,12 +37,13 @@ __all__ = ['acceptance_angle',
 
 def acceptance_angle(NA):
     """
-    Calculates the acceptance angle of an optical fiber
+    Calculate the acceptance angle of an optical fiber.
 
     This is the half-angle in air.
 
     Args:
         NA : numerical aperture of the fiber  [--]
+
     Returns:
         maximum entrance/exit half-angle of the fiber [radians]
     """
@@ -48,11 +52,12 @@ def acceptance_angle(NA):
 
 def critical_angle(n_core, n_clad):
     """
-    Calculates the angle (from the normal) for total internal reflection
+    Calculate the angle (from the normal) for total internal reflection.
 
     Args:
         n_core : the index of refraction of the fiber core  [--]
         n_core : the index of refraction of the fiber cladding  [--]
+
     Returns:
         angle of total internal reflection [radians]
     """
@@ -61,7 +66,7 @@ def critical_angle(n_core, n_clad):
 
 def cutoff_wavelength(a, NA, ell=0, q=np.inf):
     """
-    Calculates the cutoff wavelength for an optical fiber
+    Calculate the cutoff wavelength for an optical fiber.
 
     The default operation is for this function to calculate the cutoff
     wavelength for the fundamental mode of a step-index fiber.  The cutoff
@@ -76,6 +81,7 @@ def cutoff_wavelength(a, NA, ell=0, q=np.inf):
         NA :  numerical aperture of the fiber                   [-]
         ell : (optional) mode number                            [-]
         q :   (optional) parameter for graded index fiber       [-]
+
     Returns:
         shortest wavelength for operation in the specified mode [m]
     """
@@ -87,10 +93,11 @@ def cutoff_wavelength(a, NA, ell=0, q=np.inf):
 
 def esi_delta(Delta, q):
     """
-    Calculates equivalent step index (esi) Delta for a graded-index fiber
+    Calculate equivalent step index (esi) Delta for a graded-index fiber.
 
     Args:
         Delta :  relative refractive index     [-]
+
     Returns:
         equivalent relative refractive index   [-]
     """
@@ -99,11 +106,12 @@ def esi_delta(Delta, q):
 
 def esi_radius(a, q):
     """
-    Calculates equivalent step index (esi) radius for a graded-index fiber
+    Calculate equivalent step index (esi) radius for a graded-index fiber.
 
     Args:
         a :   radius of the fiber                  [m]
         q :   parameter for graded index fiber     [-]
+
     Returns:
         equivalent step index radius               [m]
     """
@@ -112,11 +120,12 @@ def esi_radius(a, q):
 
 def esi_v_parameter(V, q):
     """
-    Calculates equivalent step index (esi) V for a graded-index fiber
+    Calculate equivalent step index (esi) V for a graded-index fiber.
 
     Args:
         V :       V parameter                       [-]
         q :       parameter for graded index fiber  [-]
+
     Returns:
         equivalent step index V-parameter           [-]
     """
@@ -125,11 +134,12 @@ def esi_v_parameter(V, q):
 
 def numerical_aperture(n_core, n_clad):
     """
-    Calculates the numerical aperture of an optical fiber
+    Calculate the numerical aperture of an optical fiber.
 
     Args:
         n_core : the index of refraction of the fiber core      [-]
         n_clad : the index of refraction of the fiber cladding  [-]
+
     Returns:
         numerical aperture                                      [-]
     """
@@ -138,11 +148,12 @@ def numerical_aperture(n_core, n_clad):
 
 def numerical_aperture_from_Delta(n_core, Delta):
     """
-    Calculates the numerical aperture of an optical fiber
+    Calculate the numerical aperture of an optical fiber.
 
     Args:
         n_core : the index of refraction of the fiber core      [-]
         Delta : relative index of refraction                    [-]
+
     Returns:
         numerical aperture                                      [-]
     """
@@ -151,7 +162,7 @@ def numerical_aperture_from_Delta(n_core, Delta):
 
 def numerical_aperture_graded_index(n_core, n_clad, q, r_over_a):
     """
-    Calculates the numerical aperture of a graded-index optical fiber
+    Calculate the numerical aperture of a graded-index optical fiber.
 
     The numerical aperture varies across the face of a graded-index fiber.
     This give the result at the fractional distance across the fiber core.
@@ -161,6 +172,7 @@ def numerical_aperture_graded_index(n_core, n_clad, q, r_over_a):
         n_clad :  the index of refraction of the fiber cladding  [-]
         q :       parameter for graded index fiber               [-]
         r_over_a : ratio of radius to the core radius            [-]
+
     Returns:
         numerical aperture at r_over_a                           [-]
     """
@@ -169,11 +181,12 @@ def numerical_aperture_graded_index(n_core, n_clad, q, r_over_a):
 
 def relative_refractive_index(n_core, n_clad):
     """
-    Calculates the relative refractive index (Delta) for an optical fiber
+    Calculate the relative refractive index (Delta) for an optical fiber.
 
     Args:
         n_core :  the index of refraction of the fiber core      [-]
-        n_clad:  the index of refraction of the fiber cladding  [-]
+        n_clad:  the index of refraction of the fiber cladding   [-]
+
     Returns:
         the relative refractive index (Delta)                    [-]
     """
@@ -182,11 +195,12 @@ def relative_refractive_index(n_core, n_clad):
 
 def r_par(m, theta):
     """
-    Calculates the Fresnel reflection for parallel polarized light
+    Calculate the Fresnel reflection for parallel polarized light.
 
     Args:
         m :     complex index of refraction   [-]
         theta : angle from normal to surface  [radians]
+
     Returns:
         reflected power                       [-]
     """
@@ -199,11 +213,12 @@ def r_par(m, theta):
 
 def r_per(m, theta):
     """
-    Calculates the Fresnel reflection for perpendicular polarized light
+    Calculate the Fresnel reflection for perpendicular polarized light.
 
     Args:
         m :     complex index of refraction   [-]
         theta : angle from normal to surface  [radians]
+
     Returns:
         reflected power                       [-]
     """
@@ -216,11 +231,12 @@ def r_per(m, theta):
 
 def r_unpolarized(m, theta):
     """
-    Calculates the Fresnel reflection for unpolarized incident light
+    Calculate the Fresnel reflection for unpolarized incident light.
 
     Args:
         m :     complex index of refraction   [-]
         theta : angle from normal to surface  [radians]
+
     Returns:
         reflected power                       [-]
     """
@@ -229,12 +245,13 @@ def r_unpolarized(m, theta):
 
 def v_parameter(a, NA, lambda0):
     """
-    Calculates the V-parameter for an optical fiber
+    Calculate the V-parameter for an optical fiber.
 
     Args:
         a :       radius of the fiber              [m]
         NA :      numerical aperture of the fiber  [-]
         lambda0 : wavelength in vacuum             [m]
+
     Returns:
         V-parameter                                [-]
     """
