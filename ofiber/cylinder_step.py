@@ -304,8 +304,10 @@ def LP_radial_field(V, b, ell, r_over_a):
 
 def LP_radial_irradiance(V, b, ell, r_over_a):
     """
-    Calculate the normalized irradiance in a step-index fiber.
-
+    Calculate the normalized irradiance in a step-index fiber such that
+           2*np.trapz(LP(r_over_a)*r_over_a, r_over_a) =1
+    or
+          integral_over_space/(area of core) = 1
     Args:
         V:        V-parameter for fiber            [-]
         b:        normalized propagation constant  [-]
@@ -321,7 +323,7 @@ def LP_radial_irradiance(V, b, ell, r_over_a):
 def Gaussian_envelope_Omega(V):
     """
     Calculate the normalized irradiance in a step-index fiber assuming
-    the Gaussian envelope approximation for the LP_01 mode
+    the Gaussian envelope approximation for the LP_01 mode.
 
     Args:
         V:        V-parameter for fiber            [-]
@@ -338,8 +340,10 @@ def Gaussian_envelope_Omega(V):
 def Gaussian_radial_irradiance(V, r_over_a):
     """
     Calculate the normalized irradiance in a step-index fiber assuming
-    the Gaussian envelope approximation for the LP_01 mode f(r)*pi*a**2
-
+    the Gaussian envelope approximation for the LP_01 mode. The result
+    is normalized such that
+           np.trapz(Gaussian(r_over_a)*r_over_a, r_over_a) =1/2
+           
     Args:
         V:        V-parameter for fiber            [-]
         r_over_a: (radial position)/(core radius)  [-]
