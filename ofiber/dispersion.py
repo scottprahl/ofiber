@@ -17,11 +17,11 @@ import ofiber.cylinder_step as ofc
 import ofiber.basics as ofb
 
 
-__all__ = ['Material_Dispersion',
+__all__ = ('Material_Dispersion',
            'Waveguide_Dispersion',
            'Waveguide_Dispersion_Approx',
            'Waveguide_Dispersion_Delta',
-           'Total_Dispersion']
+           'Total_Dispersion')
 
 
 def Material_Dispersion(glass, lambda0):
@@ -128,5 +128,6 @@ def Total_Dispersion(glass, Delta, a, lambda0, q=1e20, approx=False):
         waveguide dispersion [s/m**2]   (multiply by 1e6 to get [ps/km/nm])
     """
     Dm = Material_Dispersion(glass, lambda0)                   # [s/m**2]
-    Dw = Waveguide_Dispersion_Delta(glass, Delta, a, lambda0, q, approx)  # [s/m**2]
+    Dw = Waveguide_Dispersion_Delta(
+        glass, Delta, a, lambda0, q, approx)  # [s/m**2]
     return Dw + Dm

@@ -1,3 +1,5 @@
+# pylint: disable=invalid-name
+
 """
 Useful routines for step-index planar waveguides
 
@@ -16,7 +18,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import brentq
 
-__all__ = ['TE_crossing',
+__all__ = ('TE_crossing',
            'TE_crossings',
            'TE_field',
            'TE_mode_plot',
@@ -25,7 +27,7 @@ __all__ = ['TE_crossing',
            'TM_crossings',
            'TM_field',
            'TM_mode_plot',
-           'TM_propagation_constant']
+           'TM_propagation_constant')
 
 
 def _base_mode_plot(V):

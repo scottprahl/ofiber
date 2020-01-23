@@ -1,56 +1,58 @@
+# pylint: disable=invalid-name
+# pylint: disable=too-many-arguments
+# pylint: disable=too-many-locals
+
 """
-Useful basic routines for parabolic graded-index optical fibers
+Useful basic routines for parabolic graded-index optical fibers.
 
 Todo:
-    * finish
+    * this is unfinished
 
 Scott Prahl
 Mar 2018
 """
 
-__all__ = ['power_law_profile',
-           'first_derivative',
-           'curvature',
-           'transverse_location']
-
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import brentq
 
-__all__ = ['parabolic_crossing',
+__all__ = ('parabolic_crossing',
            'parabolic_crossings',
            'parabolic_field',
            'parabolic_mode_plot',
-           'parabolic_propagation_constant']
+           'parabolic_propagation_constant')
 
-def herm(n,x):
+
+def herm(n, x):
     """Calculate the Hermite polynomial H_n(x)."""
-    c = np.zeros(n+1,dtype="i4")
-    c[n]=1
-    return np.polynomial.hermite.hermval(x,c)
+    c = np.zeros(n+1, dtype="i4")
+    c[n] = 1
+    return np.polynomial.hermite.hermval(x, c)
 
 
 def _modal_dist(gamma, m, x):
     xi = gamma * x
     mfact = np.math.factorial(m)
-    Nm=np.sqrt(gamma/(2**m * mfact * np.sqrt(np.pi)))
-    psi = Nm * herm(m,xi) * np.exp(-0.5*xi**2)
+    Nm = np.sqrt(gamma/(2**m * mfact * np.sqrt(np.pi)))
+    psi = Nm * herm(m, xi) * np.exp(-0.5*xi**2)
     return psi
 
 
-def TEM_field(m, n, V, a, x, y):
+def TEM_field(m, n, V, a, x, y, n1, n2):
+    """TEM field at a point."""
     gamma = np.sqrt(V/a)
     psi_x = _modal_dist(gamma, m, x)
     psi_y = _modal_dist(gamma, n, y)
     psi_mn = psi_x * psi_y
     Delta = (n1**2-n2**2)/(2*n1**2)
-    k = 2 * np.pi / Lambda
+    lambda0 = 2*m+1
+    k = 2 * np.pi / lambda0
     gamma = np.sqrt(n1*k*np.sqrt(2*Delta)/a)
     xi = gamma * x
-    Lambda = 2*m+1
-    psi = Nm * herm(m,xi) * np.exp(-0.5*xi**2)
+    psi = psi_mn * herm(m, xi) * np.exp(-0.5*xi**2)
     beta = n1*k*np.sqrt(1-(2*m+1)*(1/n1/k)*np.sqrt(2*Delta)/a)
     return beta, psi
+
 
 def _base_mode_plot(V):
     """
@@ -64,7 +66,7 @@ def _base_mode_plot(V):
     """
     abit = 1e-5
 
-    fig, ax = plt.subplots(figsize=(8, 8))
+    _, ax = plt.subplots(figsize=(8, 8))
     ax.set_aspect('equal')
 
     xi = np.linspace(abit, np.pi / 2 - abit, 50)
@@ -109,7 +111,9 @@ def parabolic_mode_plot(V):
 
 def _parabolic_mode(xi, *args):
     """
-    This is the eigenvalue equation for parabolic modes.  The zeros of this function
+    Return the eigenvalue equation for parabolic modes.
+
+    The zeros of this function
     can be used to determine the propagation factor beta for a particular mode.
 
     Args:
@@ -124,13 +128,15 @@ def _parabolic_mode(xi, *args):
     mode = args[1]
     if mode % 2 == 0:
         return xi * np.tan(xi) - np.sqrt(V**2 / 4 - xi * xi)
-    else:
-        return xi / np.tan(xi) + np.sqrt(V**2 / 4 - xi * xi)
+
+    return xi / np.tan(xi) + np.sqrt(V**2 / 4 - xi * xi)
 
 
 def parabolic_crossing(V, mode):
     """
-    Finds the xi value for a planar waveguide that solves the eigenvalue
+    Find the xi value for a planar waveguide.
+
+    This is the value that solves the eigenvalue
     equation for the specified parabolic mode.
 
     Args:
@@ -156,8 +162,9 @@ def parabolic_crossing(V, mode):
 
 def parabolic_crossings(V):
     """
-    Finds all xi values that for a planar waveguide that are solutions
-    to the eigenvalue equation.
+    Find all xi values that for a planar waveguide.
+
+    These are the solutions to the eigenvalue equation.
 
     Args:
         V    : the V-parameter for the waveguide
@@ -205,7 +212,9 @@ def TM_mode_plot(V, n1, n2):
 
 def _TM_mode(xi, *args):
     """
-    This is the eigenvalue equation for TM modes.  The zeros of this function
+    Return the eigenvalue equation for TM modes.
+
+    The zeros of this function
     can be used to determine the propagation factor beta for a particular mode.
 
     Args:
@@ -224,14 +233,15 @@ def _TM_mode(xi, *args):
     mode = args[3]
     if mode % 2 == 0:
         return xi * np.tan(xi) - (n1 / n2)**2 * np.sqrt(V**2 / 4 - xi**2)
-    else:
-        return xi / np.tan(xi) + (n1 / n2)**2 * np.sqrt(V**2 / 4 - xi**2)
+
+    return xi / np.tan(xi) + (n1 / n2)**2 * np.sqrt(V**2 / 4 - xi**2)
 
 
 def TM_crossing(V, n1, n2, mode):
     """
-    Finds the xi value for a planar waveguide that solves the eigenvalue
-    tequation for the specified TM mode.
+    Find the xi value for a planar waveguide.
+
+    This solves the eigenvalue equation for the specified TM mode.
 
     Args:
         V    : the V-parameter for the waveguide
@@ -258,7 +268,7 @@ def TM_crossing(V, n1, n2, mode):
 
 def TM_crossings(V, n1, n2):
     """
-    Finds all TM eigenvalues for a planar waveguide
+    Find all TM eigenvalues for a planar waveguide.
 
     Args:
         V    : the V-parameter for the waveguide
@@ -279,7 +289,7 @@ def TM_crossings(V, n1, n2):
 
 def _basic_field(V, d, x, mode, xi):
     """
-    Calculates a field at location(s) x in a planar waveguide
+    Calculate a field at location(s) x in a planar waveguide.
 
     Args:
         V    : the V-parameter for the waveguide
@@ -307,7 +317,7 @@ def _basic_field(V, d, x, mode, xi):
 
 def parabolic_field(V, d, x, mode):
     """
-    Calculates the parabolic field at location(s) x in a planar waveguide
+    Calculate the parabolic field at location(s) x in a planar waveguide.
 
     Args:
         V    : the V-parameter for the waveguide
@@ -325,7 +335,7 @@ def parabolic_field(V, d, x, mode):
 
 def TM_field(V, n1, n2, d, x, mode):
     """
-    Calculates the TM field at location(s) x in a planar waveguide
+    Calculate the TM field at location(s) x in a planar waveguide.
 
     Args:
         V    : the V-parameter for the waveguide
@@ -345,8 +355,9 @@ def TM_field(V, n1, n2, d, x, mode):
 
 def parabolic_propagation_constant(V, mode):
     """
-    Calculates the dimensionless propagation constants for
-    parabolic modes in a planar waveguide
+    Calculate the dimensionless propagation constants.
+
+    These are the parabolic modes in a planar waveguide.
 
     Args:
         V    : the V-parameter for the waveguide
@@ -367,8 +378,9 @@ def parabolic_propagation_constant(V, mode):
 
 def TM_propagation_constant(V, n1, n2, mode):
     """
-    Calculates the dimensionless propagation constants for
-    TM modes in a planar waveguide
+    Calculate the dimensionless propagation constants.
+
+    These are for the TM modes in a planar waveguide
 
     Args:
         V    : the V-parameter for the waveguide

@@ -1,2 +1,6 @@
 include *.txt
-include miepython/examples/*.py
+include doc/0-Basics.ipynb
+include doc/1-Refractive-Index.ipynb
+include conf.py
+include index.rst
+include Makefile

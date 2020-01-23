@@ -2,7 +2,7 @@
 # pylint: disable=no-name-in-module
 
 """
-Useful routines for step-index cylindrical waveguides
+Useful routines for step-index cylindrical waveguides.
 
 Based on chapter 8 of A. Ghatak, K. Thyagarajan, An Introduction to Fiber
 Optics, Cambridge University Press, 1998
@@ -20,7 +20,7 @@ from scipy.special import jn
 from scipy.special import jn_zeros
 from scipy.special import kn
 
-__all__ = ['LP_mode_value',
+__all__ = ('LP_mode_value',
            'LP_mode_values',
            'Plot_LP_modes',
            'LP_core_irradiance',
@@ -39,12 +39,12 @@ __all__ = ['LP_mode_value',
            'PetermannW',
            'PetermannW_Approx',
            'V_d2bV_by_V',
-           'V_d2bV_by_V_Approx']
+           'V_d2bV_by_V_Approx')
 
 
 def _LHS_eqn_8_40(b, V, ell):
     """
-    Calculates the left hand side of the eigenvalue eqn 8.40 in Ghatak
+    Calculate the left hand side of the eigenvalue eqn 8.40 in Ghatak.
 
     Also works for ell=0 (but is multiplied by -1 relative to eqn 8.41).
     This is private method that should not be needed outside this module.
@@ -62,7 +62,7 @@ def _LHS_eqn_8_40(b, V, ell):
 
 def _RHS_eqn_8_40(b, V, ell):
     """
-    Calculates the right hand side of the eigenvalue eqn 8.40 in Ghatak
+    Calculate the right hand side of the eigenvalue eqn 8.40 in Ghatak.
 
     Also works for ell=0 (but is multiplied by -1 relative to eqn 8.41).
     This is private method that should not be needed outside this module.
@@ -80,7 +80,7 @@ def _RHS_eqn_8_40(b, V, ell):
 
 def _cyl_mode_eqn(b, *args):
     """
-    Returns the difference of RHS and LHS of 8.40 in Ghatak
+    Return the difference of RHS and LHS of 8.40 in Ghatak.
 
     This function is zero when a guided mode exists in the step index fiber.
     This is a private function and should not be needed outside this module.
@@ -101,7 +101,7 @@ def _cyl_mode_eqn(b, *args):
 
 def LP_mode_value(V, ell, em):
     """
-    Calculate guided b for mode (ell,em) in a circular step-index fiber
+    Calculate guided b for mode (ell,em) in a circular step-index fiber.
 
     b is the normalized propagation constant.  Each guided mode in an optical
     fiber has a specific value of b that depends on the fiber parameter V
@@ -122,7 +122,6 @@ def LP_mode_value(V, ell, em):
     Returns:
         guided normalized propagation constant for mode (ell,em)  [-]
     """
-
     if ell < 0:
         ell *= -1   # negative ells are same as positive ones
 
@@ -156,7 +155,7 @@ def LP_mode_value(V, ell, em):
 
 def LP_mode_values(V, ell):
     """
-    Calculate all guided b for mode ell in a circular step-index fiber
+    Calculate all guided b for mode ell in a circular step-index fiber.
 
     If there is no such mode, returns an empty array
 
@@ -180,7 +179,7 @@ def LP_mode_values(V, ell):
 
 def Plot_LP_modes(V, ell):
     """
-    Produce a plot show possible eigenvalue solutions for step index fiber
+    Produce a plot show possible eigenvalue solutions for step index fiber.
 
     The solutions correspond to places where the curves cross one another.  No
     crossing means that there is no guided mode for that mode value.
@@ -225,7 +224,7 @@ def Plot_LP_modes(V, ell):
 
 def LP_core_irradiance(V, b, ell):
     """
-    Calculate the core irradiance for a step-index fiber
+    Calculate the core irradiance for a step-index fiber.
 
     See Ghatak equation 8.56.  The returned value is the total
     core power divided by the area of the core.
@@ -243,7 +242,7 @@ def LP_core_irradiance(V, b, ell):
 
 def LP_clad_irradiance(V, b, ell):
     """
-    Calculate the cladding irradiance for a step-index fiber
+    Calculate the cladding irradiance for a step-index fiber.
 
     See Ghatak equation 8.57.  The returned value is the total
     cladding power divided by the area of the core.
@@ -261,7 +260,7 @@ def LP_clad_irradiance(V, b, ell):
 
 def LP_total_irradiance(V, b, ell):
     """
-    Calculate the total irradiance for a step-index fiber
+    Calculate the total irradiance for a step-index fiber.
 
     See Ghatak equation 8.58.  The returned value is the total
     power (cladding + core) divided by the area of the core.
@@ -304,7 +303,9 @@ def LP_radial_field(V, b, ell, r_over_a):
 
 def LP_radial_irradiance(V, b, ell, r_over_a):
     """
-    Calculate the normalized irradiance in a step-index fiber such that
+    Calculate the normalized irradiance in a step-index fiber.
+
+    The normalization is done such that
            2*np.trapz(LP(r_over_a)*r_over_a, r_over_a) =1
     or
           integral_over_space/(area of core) = 1
@@ -322,7 +323,9 @@ def LP_radial_irradiance(V, b, ell, r_over_a):
 
 def Gaussian_envelope_Omega(V):
     """
-    Calculate the normalized irradiance in a step-index fiber assuming
+    Calculate the normalized irradiance in a step-index fiber.
+
+    The normalization is done assuming
     the Gaussian envelope approximation for the LP_01 mode.
 
     Args:
@@ -339,11 +342,13 @@ def Gaussian_envelope_Omega(V):
 
 def Gaussian_radial_irradiance(V, r_over_a):
     """
-    Calculate the normalized irradiance in a step-index fiber assuming
+    Calculate the normalized irradiance in a step-index fiber.
+
+    The normalization is done assuming
     the Gaussian envelope approximation for the LP_01 mode. The result
     is normalized such that
            np.trapz(Gaussian(r_over_a)*r_over_a, r_over_a) =1/2
-           
+
     Args:
         V:        V-parameter for fiber            [-]
         r_over_a: (radial position)/(core radius)  [-]
@@ -356,7 +361,7 @@ def Gaussian_radial_irradiance(V, r_over_a):
 
 def Tranverse_misalignment_loss_db(w1, w2, u):
     """
-    Calculates the loss due to transverse fiber misalignment.
+    Calculate the loss due to transverse fiber misalignment.
 
     See Ghatak eqn 8.69
 
@@ -374,7 +379,7 @@ def Tranverse_misalignment_loss_db(w1, w2, u):
 
 def Angular_misalignment_loss_db(n, w, theta, lambda0):
     """
-    Calculates the loss due to angular fiber misalignment.
+    Calculate the loss due to angular fiber misalignment.
 
     See Ghatak eqn 8.75
 
@@ -391,7 +396,7 @@ def Angular_misalignment_loss_db(n, w, theta, lambda0):
 
 def Longitudinal_misalignment_loss_db(n1, w, D, lambda0):
     """
-    Calculates the loss due to longitudinal fiber misalignment.
+    Calculate the loss due to longitudinal fiber misalignment.
 
     See Ghatak eqn 8.81
 
@@ -409,7 +414,7 @@ def Longitudinal_misalignment_loss_db(n1, w, D, lambda0):
 
 def _Bending_loss_db_scalar(n1, Delta, a, Rc, lambda0):
     """
-    Calculates the bending loss in dB/m
+    Calculate the bending loss in dB/m.
 
     The bending loss is given by eqn 10.29 in Ghatak.  This private method
     only works for scalar values.
@@ -439,7 +444,7 @@ def _Bending_loss_db_scalar(n1, Delta, a, Rc, lambda0):
 
 def Bending_loss_db(n1, Delta, a, Rc, lambda0):
     """
-    Calculates the bending loss in dB/m
+    Calculate the bending loss in dB/m.
 
     This is a convenience method that works when a is an array.
 
@@ -463,7 +468,7 @@ def Bending_loss_db(n1, Delta, a, Rc, lambda0):
 
 def MFR(V):
     """
-    Approximates the mode field radius for a step-index single mode fiber.
+    Approximate the mode field radius for a step-index single mode fiber.
 
     The approximation is fairly accurate for V>1. In the multimode range
     (V > 2.405), it applies to the fundamental mode.
@@ -481,7 +486,7 @@ def MFR(V):
 
 def MFD(V):
     """
-    Approximates the mode field diameter for a step-index single mode fiber.
+    Approximate the mode field diameter for a step-index single mode fiber.
 
     See MFR() for details.
 
@@ -495,7 +500,7 @@ def MFD(V):
 
 def _PetermannW_scalar(V):
     """
-    Calculates the Petermann-2 radius for a step-index fiber.
+    Calculate the Petermann-2 radius for a step-index fiber.
 
     This private method only works when V is a scalar.
 
@@ -515,7 +520,7 @@ def _PetermannW_scalar(V):
 
 def PetermannW(V):
     """
-    Calculates the Petermann-2 radius for a step-index fiber.
+    Calculate the Petermann-2 radius for a step-index fiber.
 
     This is a convenience function that works when V is an array.
 
@@ -535,7 +540,7 @@ def PetermannW(V):
 
 def PetermannW_Approx(V):
     """
-    Approximates the Petermann-2 radius for a step-index fiber.
+    Approximate the Petermann-2 radius for a step-index fiber.
 
     The approximation is valid for single mode fibers (1.5<V<2.5).  The result
     is the ratio of the Petermann-2 radius to the core radius.
@@ -554,7 +559,7 @@ def PetermannW_Approx(V):
 
 def _V_d2bV_by_V_scalar(V, ell):
     """
-    Calculates V*d^2(bV)/dV^2 for mode ell of a step-index fiber.
+    Calculate V*d^2(bV)/dV^2 for mode ell of a step-index fiber.
 
     This private function only works for scalar values of V and ell. It
     finds V*d^2(bV)/dV^2 for mode ell of a step-index fiber using eqn 10.14
@@ -583,7 +588,7 @@ def _V_d2bV_by_V_scalar(V, ell):
 
 def V_d2bV_by_V(V, ell):
     """
-    Calculates V*d^2(bV)/dV^2 for mode ell of a step-index fiber
+    Calculate V*d^2(bV)/dV^2 for mode ell of a step-index fiber.
 
     This value is needed to determine the waveguide dispersion.  This
     routine is a convenience function that works when V is an array.
@@ -605,7 +610,7 @@ def V_d2bV_by_V(V, ell):
 
 def V_d2bV_by_V_Approx(V):
     """
-    Approximates V*d^2(bV)/dV^2 for single mode fiber
+    Approximate V*d^2(bV)/dV^2 for single mode fiber.
 
     This value is needed to determine the waveguide dispersion.  This
     approximation is for the fundamental mode in the fiber and is good

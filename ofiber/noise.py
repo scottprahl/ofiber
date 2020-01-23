@@ -1,5 +1,8 @@
+# pylint: disable=invalid-name
+# pylint: disable=no-member
+
 """
-Useful routines for noise in optical communications
+Useful routines for noise in optical communications.
 
 Based on chapter 13 of A. Ghatak, K. Thyagarajan, An Introduction to
 Fiber Optics, Cambridge University Press, 1998
@@ -8,23 +11,23 @@ ToDo:
     * Add equation numbers to functions
 """
 
+import scipy.special
 import numpy as np
-from scipy.special import erfc
-from scipy.special import erfcinv
 
-__all__ = ['shot_noise',
+__all__ = ('shot_noise',
            'thermal_noise',
            'NEP',
            'best_APD_gain',
            'BER_at_SNR',
            'SNR_at_BER',
            'thermal_min_power',
-           'quantum_min_power']
+           'quantum_min_power')
 
 
 def shot_noise(I, Idark, bandwidth, M=1, x=0):
     """
-    Return the noise current associated with shot/poisson noise
+    Return the noise current associated with shot/poisson noise.
+
     Args:
         I     = current         (A)
         Idark = dark current    (A)
@@ -39,7 +42,8 @@ def shot_noise(I, Idark, bandwidth, M=1, x=0):
 
 def thermal_noise(T, Rload, bandwidth):
     """
-    Return the noise current associated with thermal processes
+    Return the noise current associated with thermal processes.
+
     Args:
         T     = temperature (Kelvin)
         Rload = resistance  (Ohms)
@@ -53,7 +57,8 @@ def thermal_noise(T, Rload, bandwidth):
 
 def NEP(Responsivity, Rload, Idark, T):
     """
-    Return noise equivalent power
+    Return noise equivalent power.
+
     Args:
         responsivity = photodetector response (A/W)
         Rload        = resistance             (Ohms)
@@ -69,7 +74,8 @@ def NEP(Responsivity, Rload, Idark, T):
 
 def best_APD_gain(I, Rload, Idark, x, T):
     """
-    Return best gain for an avalanche photodiode
+    Return best gain for an avalanche photodiode.
+
     Args:
         I     = current         (A)
         Idark = dark current    (A)
@@ -86,30 +92,33 @@ def best_APD_gain(I, Rload, Idark, x, T):
 
 def BER_at_SNR(snr):
     """
-    Return the bit error rate for a particular signal-to-noise ratio
+    Return the bit error rate for a particular signal-to-noise ratio.
+
     Args:
         snr = signal to noise ratio (--)
     Returns:
         bit error rate              (--)
     """
-    return 0.5 * erfc(np.sqrt(snr / 8))
+    return 0.5 * scipy.special.erfc(np.sqrt(snr / 8))
 
 
 def SNR_at_BER(ber):
     """
-    Return the necessary signal-to-noise ratio to achieve specified BER
+    Return the necessary signal-to-noise ratio to achieve specified BER.
+
     Args:
         ber = bit error rate (--)
     Returns:
         signal to noise ratio (--)
     """
-    return 8 * erfcinv(2 * ber)**2
+    return 8 * scipy.special.erfcinv(2 * ber)**2
 
 
 def thermal_min_power(bitrate, responsivity, capacitance, T, snr):
     """
-    Return the minimum optical power needed to achieve a signal-to-noise
-    ratio assuming that thermal noise dominates
+    Return the minimum optical power needed to achieve a signal-to-noise of 1.
+
+    The assumption is that thermal noise dominates
     Args:
         bitrate      = bits per second           (Hz)
         responsivity = photodetector response    (A/W)
@@ -126,7 +135,8 @@ def thermal_min_power(bitrate, responsivity, capacitance, T, snr):
 
 def quantum_min_power(bitrate, ber, lambda0):
     """
-    Return the minimum optical power needed to achieve a bit error rate
+    Return the minimum optical power needed to achieve a bit error rate.
+
     Args:
         bitrate  = bits per second      (Hz)
         ber      = bit error rate       (--)

@@ -4,13 +4,8 @@ Welcome to ofiber's documentation!
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
-   doc/basics.ipynb
-   doc/Lecture3.ipynb
-   doc/Lecture5.ipynb
-   doc/Lecture6.ipynb
-   doc/Lecture7.ipynb
-   doc/Lecture8.ipynb
-   doc/Lecture9.ipynb
+   doc/0-Basics.ipynb
+   doc/1-Refractive-Index.ipynb
 
 .. automodapi:: ofiber.basics.py
 .. automodapi:: ofiber.refraction.py

@@ -19,7 +19,7 @@ import numpy as np
 from scipy.special import jn_zeros
 
 
-__all__ = ['acceptance_angle',
+__all__ = ('acceptance_angle',
            'critical_angle',
            'cutoff_wavelength',
            'esi_delta',
@@ -32,7 +32,7 @@ __all__ = ['acceptance_angle',
            'r_par',
            'r_per',
            'r_unpolarized',
-           'v_parameter']
+           'v_parameter')
 
 
 def acceptance_angle(NA):
