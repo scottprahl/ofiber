@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+0.4.0 (01/20/2020)
+------------------
+- improve packaging
+- add some documentation
+- more glasses
+- more functions
+
 0.3.0 (03/12/2018)
 ------------------
 - add basics.py
