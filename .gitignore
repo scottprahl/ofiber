@@ -3,3 +3,6 @@
 miepython/__pycache__/*
 dist/*
 ofiber.egg-info/*
+doc/.ipynb_checkpoints/*
+doc/Lecture*
+doc/lecture*
