@@ -1,11 +1,12 @@
 # Releasing a new version
 
-# make sure files match up
+# make sure things are not broken and that files match up
+  make check
   check-manifest
+  pyroma -d .
 
-# versioning
-# update the version in setup.py and ofiber/__init__.py
-  git commit -m 'update version' setup.py ofiber/__init__.py
+# update the version in setup.py
+  git commit -m 'update version' setup.py
   git push
 
 # update CHANGELOG.txt  `git shortlog`

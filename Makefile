@@ -29,6 +29,8 @@ clean:
 	rm -rf ofiber/*.pyc
 	
 check:
+	-check-manifest
+	-pyroma -d .
 	-pylint ofiber/basics.py
 	-pep257 ofiber/basics.py
 	-pylint ofiber/cylinder_step.py
@@ -40,3 +42,4 @@ check:
 	-pylint ofiber/parabolic.py
 	-pep257 ofiber/parabolic.py
 	
+.PHONEY: clean check
