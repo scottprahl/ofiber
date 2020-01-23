@@ -33,7 +33,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 setup(
 	name='ofiber',
 	packages=['ofiber'],
-	version='0.4.0',
+	version='0.4.2',
 	description='Light Propagation in Optical Fibers',
 	url='https://github.com/scottprahl/ofiber.git',  
 	author='Scott Prahl',
