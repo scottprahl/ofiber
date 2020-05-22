@@ -1,23 +1,20 @@
-Welcome to ofiber's documentation!
-==================================
+.. :include: ../README.rst
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
-   doc/0-Basics.ipynb
-   doc/1-Refractive-Index.ipynb
+   
+   0-Basics.ipynb
+   1-Refractive-Index.ipynb
+   2-Materials.ipynb
+   2-Planar-Waveguide-Modes.ipynb
+   3-Circular-Step-Index-Fiber.ipynb
 
-.. automodapi:: ofiber.basics.py
-.. automodapi:: ofiber.refraction.py
-.. automodapi:: ofiber.dispersion.py
-.. automodapi:: ofiber.cylinder_step.py
-.. automodapi:: ofiber.planar_step.py
-.. automodapi:: ofiber.noise.py
-.. automodapi:: ofiber.graded_index.py
+.. automodapi:: ofiber.basics
+.. automodapi:: ofiber.refraction
+.. automodapi:: ofiber.dispersion
+.. automodapi:: ofiber.cylinder_step
+.. automodapi:: ofiber.planar_step
+.. automodapi:: ofiber.noise
+.. automodapi:: ofiber.graded_index
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+.. :include: ../CHANGELOG.rst

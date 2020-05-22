@@ -1,0 +1,5 @@
+numpy
+matplotlib
+scipy
+nbsphinx
+sphinx-automodapi

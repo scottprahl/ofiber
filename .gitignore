@@ -3,4 +3,6 @@
 ofiber/__pycache__/*
 dist/*
 ofiber.egg-info/*
-docs/.ipynb_checkpoints/*
+docs/.ipynb_checkpoints/
+docs/_build/
+docs/api/
