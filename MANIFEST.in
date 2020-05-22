@@ -1,5 +1,6 @@
 include CHANGELOG.rst
 include LICENSE.txt
+exclude docs/requirements.txt
 exclude .gitignore
 exclude Makefile
 exclude docs/*.ipynb
