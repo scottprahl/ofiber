@@ -1,6 +1,8 @@
-include *.txt
-include doc/0-Basics.ipynb
-include doc/1-Refractive-Index.ipynb
-include conf.py
-include index.rst
-include Makefile
+include CHANGELOG.rst
+include LICENSE.txt
+exclude .gitignore
+exclude Makefile
+exclude docs/*.ipynb
+exclude docs/index.rst
+exclude docs/conf.py
+exclude release.txt

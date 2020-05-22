@@ -1,8 +1,6 @@
 .DS_Store
 *.pyc
-miepython/__pycache__/*
+ofiber/__pycache__/*
 dist/*
 ofiber.egg-info/*
-doc/.ipynb_checkpoints/*
-doc/Lecture*
-doc/lecture*
+docs/.ipynb_checkpoints/*

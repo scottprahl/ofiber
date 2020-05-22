@@ -5,8 +5,8 @@
 # from the environment for the first two.
 SPHINXOPTS    ?=
 SPHINXBUILD   ?= sphinx-build
-SOURCEDIR     = .
-BUILDDIR      = _build
+SOURCEDIR     = docs
+BUILDDIR      = docs/_build
 
 # Put it first so that "make" without argument is like "make help".
 help:
@@ -20,14 +20,16 @@ help:
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
 clean:
-	rm -rf _build 
-	rm -rf api 
-	rm -rf build 
+	rm -rf docs/_build 
+	rm -rf docs/api 
+	rm -rf docs/_build/.buildinfo
+	rm -rf docs/_build/.doctrees
 	rm -rf dist
 	rm -rf ofiber.egg-info
 	rm -rf ofiber/__pycache__
 	rm -rf ofiber/*.pyc
-	
+	rm -rf .tox
+
 check:
 	-check-manifest
 	-pyroma -d .

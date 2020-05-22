@@ -1,27 +1,31 @@
-Change Log
+Changelog
 ==========
 
-0.4.0 (01/20/2020)
+0.5.0
+-----
+- sphinx docs
+
+v0.4.0 (01/20/2020)
 ------------------
 - improve packaging
 - add some documentation
 - more glasses
 - more functions
 
-0.3.0 (03/12/2018)
+v0.3.0 (03/12/2018)
 ------------------
 - add basics.py
 - add documentation for functions
 
-0.2.1 (03/04/2018)
+v0.2.1 (03/04/2018)
 ------------------
 - fix typo
 
-0.2.0 (03/04/2018)
+v0.2.0 (03/04/2018)
 ------------------
 - Add noise.py
 - Improve packaging
 
-0.1.0 (02/26/2018)
+v0.1.0 (02/26/2018)
 ------------------
 - Initial release
