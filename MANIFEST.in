@@ -7,3 +7,4 @@ exclude docs/*.ipynb
 exclude docs/index.rst
 exclude docs/conf.py
 exclude release.txt
+exclude todo.rst
