@@ -6,8 +6,8 @@
    0-Basics.ipynb
    1-Refractive-Index.ipynb
    2-Materials.ipynb
-   2-Planar-Waveguide-Modes.ipynb
-   3-Circular-Step-Index-Fiber.ipynb
+   3-Planar-Waveguide-Modes.ipynb
+   4-Circular-Step-Index-Fiber.ipynb
 
 .. automodapi:: ofiber.basics
 .. automodapi:: ofiber.refraction
