@@ -1,5 +1,7 @@
-.. :include: ../README.rst
+.. include:: ../README.rst
 
+Example Usage
+=============
 .. toctree::
    :maxdepth: 2
    
@@ -17,4 +19,4 @@
 .. automodapi:: ofiber.noise
 .. automodapi:: ofiber.graded_index
 
-.. :include: ../CHANGELOG.rst
+.. include:: ../CHANGELOG.rst
