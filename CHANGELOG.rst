@@ -4,6 +4,7 @@ Changelog
 0.5.0
 -----
 - sphinx docs
+- reorganize and improve docs
 
 v0.4.0 (01/20/2020)
 ------------------
