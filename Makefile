@@ -28,24 +28,29 @@ clean:
 	rm -rf ofiber/*.pyc
 	rm -rf .tox
 
-check:
-	-check-manifest
-	-pyroma -d .
+lint:
 	-pylint ofiber/basics.py
 	-pep257 ofiber/basics.py
 	-pylint ofiber/cylinder_step.py
 	-pep257 ofiber/cylinder_step.py
+	-pylint ofiber/dispersion.py
+	-pep257 ofiber/dispersion.py
 	-pylint ofiber/graded_index.py
 	-pep257 ofiber/graded_index.py
 	-pylint ofiber/noise.py
 	-pep257 ofiber/noise.py
 	-pylint ofiber/parabolic.py
 	-pep257 ofiber/parabolic.py
+	-pylint ofiber/planar_step.py
+	-pep257 ofiber/planar_step.py
+	-pylint ofiber/refraction.py
+	-pep257 ofiber/refraction.py
 
 rcheck:
 	make clean
 	touch docs/*ipynb
 	touch docs/*rst
+	make lint
 	make html
 	check-manifest
 	pyroma -d .
