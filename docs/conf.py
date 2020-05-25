@@ -22,6 +22,8 @@ author = 'Scott Prahl'
 # The full version, including alpha/beta/rc tags
 release = '0.5.0'
 
+master_doc = 'index'
+
 # -- General configuration ---------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
@@ -50,7 +52,8 @@ templates_path = ['_templates']
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '**.ipynb_checkpoints']
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '.tox', '**.ipynb_checkpoints',
+                    'sources/*', 'first_version/*']
 
 # I execute the notebooks manually in advance. If notebooks test the code,
 # they should be run at build time.
@@ -58,7 +61,7 @@ nbsphinx_execute = 'never'
 nbsphinx_allow_errors = True
 
 # Add type of source files
-source_suffix = ['.rst', '.md', '.ipynb']
+source_suffix = ['.rst', '.ipynb']
 
 # -- Options for HTML output -------------------------------------------------
 
