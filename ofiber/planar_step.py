@@ -1,17 +1,10 @@
 # pylint: disable=invalid-name
-
+# pylint: disable=too-many-arguments
 """
-Useful routines for step-index planar waveguides
+Useful routines for step-index planar waveguides.
 
-Based on chapter 7 of A. Ghatak, K. Thyagarajan, An Introduction to 
+Based on chapter 7 of A. Ghatak, K. Thyagarajan, An Introduction to
 Fiber Optics, Cambridge University Press, 1998
-	
-Todo:
-    * Normalize field functions
-    * Plot and label points at eigenvalue crossings
-    * sort out language about eigenvalues
-    * check TM solutions
-
 """
 
 import numpy as np
@@ -42,7 +35,7 @@ def _base_mode_plot(V):
     """
     abit = 1e-5
 
-    fig, ax = plt.subplots(figsize=(8, 8))
+    _, ax = plt.subplots(figsize=(8, 8))
     ax.set_aspect('equal')
 
     xi = np.linspace(abit, np.pi / 2 - abit, 50)
@@ -87,8 +80,13 @@ def TE_mode_plot(V):
 
 def _TE_mode(xi, *args):
     """
-    This is the eigenvalue equation for TE modes.  The zeros of this function
-    can be used to determine the propagation factor beta for a particular mode.
+    Return the value of TE eigenvalue equation.
+
+    The zeros of eigenvalue equation determine the eigenvalues which
+    in turn are needed to determine the propagation factor for a planar
+    waveguide.
+
+    The planar waveguide characteristics are passed as a 2-element array.
 
     Args:
         xi    : non-dimensional propagation value in waveguide
@@ -102,14 +100,19 @@ def _TE_mode(xi, *args):
     mode = args[1]
     if mode % 2 == 0:
         return xi * np.tan(xi) - np.sqrt(V**2 / 4 - xi * xi)
-    else:
-        return xi / np.tan(xi) + np.sqrt(V**2 / 4 - xi * xi)
+
+    return xi / np.tan(xi) + np.sqrt(V**2 / 4 - xi * xi)
 
 
 def TE_crossing(V, mode):
     """
-    Finds the xi value for a planar waveguide that solves the eigenvalue
-    equation for the specified TE mode.
+    Return the TE eigenvalue for a planar waveguide mode.
+
+    The eigenvalue, xi, satisfies the eigenvalue equation for
+    the specified TE mode in a planar waveguide.
+
+    The solution is found numerically using the Brent method. The
+    only tricky bit is setting the proper range to search within.
 
     Args:
         V    : the V-parameter for the waveguide
@@ -134,12 +137,10 @@ def TE_crossing(V, mode):
 
 def TE_crossings(V):
     """
-    Finds all xi values that for a planar waveguide that are solutions
-    to the eigenvalue equation.
+    Return all the TE eigenvalues for a planar waveguide.
 
     Args:
         V    : the V-parameter for the waveguide
-
     Returns:
         an array eigenvalues.
     """
@@ -183,8 +184,13 @@ def TM_mode_plot(V, n1, n2):
 
 def _TM_mode(xi, *args):
     """
-    This is the eigenvalue equation for TM modes.  The zeros of this function
-    can be used to determine the propagation factor beta for a particular mode.
+    Return the value of TM eigenvalue equation.
+
+    The zeros of eigenvalue equation determine the eigenvalues which
+    in turn are needed to determine the propagation factor for a planar
+    waveguide.
+
+    The planar waveguide characteristics are passed as a 4-element array.
 
     Args:
         xi    : non-dimensional propagation value in waveguide
@@ -202,14 +208,19 @@ def _TM_mode(xi, *args):
     mode = args[3]
     if mode % 2 == 0:
         return xi * np.tan(xi) - (n1 / n2)**2 * np.sqrt(V**2 / 4 - xi**2)
-    else:
-        return xi / np.tan(xi) + (n1 / n2)**2 * np.sqrt(V**2 / 4 - xi**2)
+
+    return xi / np.tan(xi) + (n1 / n2)**2 * np.sqrt(V**2 / 4 - xi**2)
 
 
 def TM_crossing(V, n1, n2, mode):
     """
-    Finds the xi value for a planar waveguide that solves the eigenvalue
-    tequation for the specified TM mode.
+    Return the TM eigenvalue for a planar waveguide mode.
+
+    The eigenvalue, xi, satisfies the eigenvalue equation for
+    the specified TM mode in a planar waveguide.
+
+    The solution is found numerically using the Brent method. The
+    only tricky bit is setting the proper range to search within.
 
     Args:
         V    : the V-parameter for the waveguide
@@ -236,7 +247,7 @@ def TM_crossing(V, n1, n2, mode):
 
 def TM_crossings(V, n1, n2):
     """
-    Finds all TM eigenvalues for a planar waveguide
+    Return all the TM eigenvalues for a planar waveguide.
 
     Args:
         V    : the V-parameter for the waveguide
@@ -257,7 +268,7 @@ def TM_crossings(V, n1, n2):
 
 def _basic_field(V, d, x, mode, xi):
     """
-    Calculates a field at location(s) x in a planar waveguide
+    Calculate a field in a planar waveguide.
 
     Args:
         V    : the V-parameter for the waveguide
@@ -285,7 +296,7 @@ def _basic_field(V, d, x, mode, xi):
 
 def TE_field(V, d, x, mode):
     """
-    Calculates the TE field at location(s) x in a planar waveguide
+    Calculate the TE field in a planar waveguide.
 
     Args:
         V    : the V-parameter for the waveguide
@@ -303,7 +314,7 @@ def TE_field(V, d, x, mode):
 
 def TM_field(V, n1, n2, d, x, mode):
     """
-    Calculates the TM field at location(s) x in a planar waveguide
+    Calculate the TM field in a planar waveguide.
 
     Args:
         V    : the V-parameter for the waveguide
@@ -323,8 +334,7 @@ def TM_field(V, n1, n2, d, x, mode):
 
 def TE_propagation_constant(V, mode):
     """
-    Calculates the dimensionless propagation constants for
-    TE modes in a planar waveguide
+    Calculate the propagation constants for TE modes in a planar waveguide.
 
     Args:
         V    : the V-parameter for the waveguide
@@ -345,8 +355,7 @@ def TE_propagation_constant(V, mode):
 
 def TM_propagation_constant(V, n1, n2, mode):
     """
-    Calculates the dimensionless propagation constants for
-    TM modes in a planar waveguide
+    Calculate the propagation constants for TM modes in a planar waveguide.
 
     Args:
         V    : the V-parameter for the waveguide

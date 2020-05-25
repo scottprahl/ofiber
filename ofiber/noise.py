@@ -6,9 +6,6 @@ Useful routines for noise in optical communications.
 
 Based on chapter 13 of A. Ghatak, K. Thyagarajan, An Introduction to
 Fiber Optics, Cambridge University Press, 1998
-
-ToDo:
-    * Add equation numbers to functions
 """
 
 import scipy.special
@@ -118,7 +115,8 @@ def thermal_min_power(bitrate, responsivity, capacitance, T, snr):
     """
     Return the minimum optical power needed to achieve a signal-to-noise of 1.
 
-    The assumption is that thermal noise dominates
+    The assumption is that thermal noise dominates.
+
     Args:
         bitrate      = bits per second           (Hz)
         responsivity = photodetector response    (A/W)

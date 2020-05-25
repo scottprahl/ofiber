@@ -1,13 +1,11 @@
 # pylint: disable=invalid-name
+# pylint: disable=too-many-arguments
 
 """
 Useful routines for cylindrical waveguides.
 
    Based on chapter 10 of A. Ghatak, K. Thyagarajan, An Introduction to Fiber
    Optics, Cambridge University Press, 1998
-
-Todo:
-    * lowercase function names?
 """
 
 import scipy.constants

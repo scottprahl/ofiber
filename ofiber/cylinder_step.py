@@ -1,16 +1,10 @@
 # pylint: disable=invalid-name
 # pylint: disable=no-name-in-module
-
 """
 Useful routines for step-index cylindrical waveguides.
 
 Based on chapter 8 of A. Ghatak, K. Thyagarajan, An Introduction to Fiber
 Optics, Cambridge University Press, 1998
-
-Todo:
-    * lowercase functions
-    * rename Plot_LP_modes
-    * sort out normalization for fields and irradiances
 """
 
 import numpy as np
@@ -306,9 +300,10 @@ def LP_radial_irradiance(V, b, ell, r_over_a):
     Calculate the normalized irradiance in a step-index fiber.
 
     The normalization is done such that
-           2*np.trapz(LP(r_over_a)*r_over_a, r_over_a) =1
+    integral_over_space/(area of core) = 1
     or
-          integral_over_space/(area of core) = 1
+    2*np.trapz(LP(r_over_a)*r_over_a, r_over_a) =1
+
     Args:
         V:        V-parameter for fiber            [-]
         b:        normalized propagation constant  [-]
@@ -347,7 +342,7 @@ def Gaussian_radial_irradiance(V, r_over_a):
     The normalization is done assuming
     the Gaussian envelope approximation for the LP_01 mode. The result
     is normalized such that
-           np.trapz(Gaussian(r_over_a)*r_over_a, r_over_a) =1/2
+    np.trapz(Gaussian(r_over_a)*r_over_a, r_over_a) = 1/2
 
     Args:
         V:        V-parameter for fiber            [-]

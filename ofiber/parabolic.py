@@ -5,11 +5,7 @@
 """
 Useful basic routines for parabolic graded-index optical fibers.
 
-Todo:
-    * this is unfinished
-
-Scott Prahl
-Mar 2018
+UNFINISHED!  Ignore for now.
 """
 
 import numpy as np
