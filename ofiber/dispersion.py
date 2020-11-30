@@ -55,8 +55,8 @@ def Waveguide_Dispersion(n1, n2, a, lambda0, q=1e20):
     Delta = (n1**2 - n2**2) / 2 / n1**2
     V = 2 * np.pi / lambda0 * a * np.sqrt(n1**2 - n2**2)
     c = scipy.constants.speed_of_light
-    esi_Delta = ofb.esi_delta(Delta, q)
-    esi_V = ofb.esi_v_parameter(V, q)
+    esi_Delta = ofb.esi_Delta(Delta, q)
+    esi_V = ofb.esi_V_parameter(V, q)
     dw = -n2 * esi_Delta / c / lambda0 * ofc.V_d2bV_by_V(esi_V, 0)
     return dw
 
@@ -76,8 +76,8 @@ def Waveguide_Dispersion_Approx(n1, n2, a, lambda0, q=1e20):
     """
     Delta = (n1**2 - n2**2) / 2 / n1**2
     V = 2 * np.pi / lambda0 * a * np.sqrt(n1**2 - n2**2)
-    esi_Delta = ofb.esi_delta(Delta, q)
-    esi_V = ofb.esi_v_parameter(V, q)
+    esi_Delta = ofb.esi_Delta(Delta, q)
+    esi_V = ofb.esi_V_parameter(V, q)
     c = scipy.constants.speed_of_light
     dw = -n2 * esi_Delta / c / lambda0 * ofc.V_d2bV_by_V_Approx(esi_V)
     return dw
