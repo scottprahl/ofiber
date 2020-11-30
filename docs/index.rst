@@ -12,12 +12,6 @@ Example Usage
    4-Circular-Step-Index-Fiber.ipynb
    5-Dispersion.ipynb 
 
-.. automodapi:: ofiber.basics
-.. automodapi:: ofiber.refraction
-.. automodapi:: ofiber.dispersion
-.. automodapi:: ofiber.cylinder_step
-.. automodapi:: ofiber.planar_step
-.. automodapi:: ofiber.noise
-.. automodapi:: ofiber.graded_index
+   ofiber
 
 .. include:: ../CHANGELOG.rst
