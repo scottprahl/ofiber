@@ -2,17 +2,34 @@
 
 
 """
-Useful basic routines for optical fibers.
+Basic optical fibers parameters https://ofiber.readthedocs.io/en/latest/0-Basics.html.
 
-A handful of functions to calculate commonly needed optical fiber parameters.
-Many are so simple that one might reasonably question if making them a
-function has any utility.
+Functions to calculate commonly used optical fiber parameters.  Specifically::
 
-Todo:
-* move MFD here?
+    acceptance_angle(NA, n_outside=1)
+    critical_angle(n_core, n_clad)
+    cutoff_wavelength(a, NA, ell=0, q=np.inf)
+    numerical_aperture(n_core, n_clad)
+    numerical_aperture_from_Delta(n_core, Delta)
+    relative_refractive_index(n_core, n_clad)
 
-Scott Prahl
-Mar 2018
+If you want Δ (Delta), then use `relative_refractive_index`
+
+
+Some are just generic Fresnel equations::
+
+    critical_angle(n_core, n_clad)
+    R_par(m, theta)
+    R_per(m, theta)
+    R_unpolarized(m, theta)
+
+And finally, some apply to graded index fibers where 'esi' is short for
+'equivalent step index'::
+
+    esi_Delta(Delta, q):
+    esi_radius(a, q)
+    esi_V_parameter(V, q):
+    numerical_aperture_graded_index(n_core, n_clad, q, r_over_a)
 """
 
 import numpy as np
@@ -22,32 +39,37 @@ from scipy.special import jn_zeros
 __all__ = ('acceptance_angle',
            'critical_angle',
            'cutoff_wavelength',
-           'esi_delta',
+           'esi_Delta',
            'esi_radius',
-           'esi_v_parameter',
+           'esi_V_parameter',
            'numerical_aperture',
            'numerical_aperture_graded_index',
            'relative_refractive_index',
            'numerical_aperture_from_Delta',
-           'r_par',
-           'r_per',
-           'r_unpolarized',
-           'v_parameter')
+           'R_par',
+           'R_per',
+           'R_unpolarized',
+           'V_parameter')
 
 
-def acceptance_angle(NA):
+def acceptance_angle(NA, n_outside=1):
     """
-    Calculate the acceptance angle of an optical fiber.
+    The acceptance angle for a cone of light into or out of an optical fiber.
 
-    This is the half-angle in air.
+    This is the half-angle measured from the normal to the fiber face
+    to the edge of the entering (or exiting) cone of light.
+
+    The face of the optical fiber is in a medium that defaults to
+    air, but whose index can be specified.
 
     Args:
         NA : numerical aperture of the fiber  [--]
+        n_outside : (optional) refractive index of medium outside fiber [--]
 
     Returns:
         maximum entrance/exit half-angle of the fiber [radians]
     """
-    return np.arcsin(NA)
+    return np.arcsin(NA/n_outside)
 
 
 def critical_angle(n_core, n_clad):
@@ -91,7 +113,7 @@ def cutoff_wavelength(a, NA, ell=0, q=np.inf):
     return 2 * np.pi * a * NA / Vc
 
 
-def esi_delta(Delta, q):
+def esi_Delta(Delta, q):
     """
     Calculate equivalent step index (esi) Delta for a graded-index fiber.
 
@@ -118,7 +140,7 @@ def esi_radius(a, q):
     return a * (1 + q) / (2 + q)
 
 
-def esi_v_parameter(V, q):
+def esi_V_parameter(V, q):
     """
     Calculate equivalent step index (esi) V for a graded-index fiber.
 
@@ -149,6 +171,8 @@ def numerical_aperture(n_core, n_clad):
 def numerical_aperture_from_Delta(n_core, Delta):
     """
     Calculate the numerical aperture of an optical fiber.
+
+    Just a convenience function.
 
     Args:
         n_core : the index of refraction of the fiber core      [-]
@@ -193,9 +217,12 @@ def relative_refractive_index(n_core, n_clad):
     return (n_core**2 - n_clad**2) / (2 * n_core**2)
 
 
-def r_par(m, theta):
+def R_par(m, theta):
     """
     Calculate the Fresnel reflection for parallel polarized light.
+
+    This is the fraction of reflected intensity (not field) for light with an
+    electric field parallel to the plane of incidence.
 
     Args:
         m :     complex index of refraction   [-]
@@ -211,9 +238,12 @@ def r_par(m, theta):
     return abs((m2 * c - d) / (m2 * c + d))**2
 
 
-def r_per(m, theta):
+def R_per(m, theta):
     """
     Calculate the Fresnel reflection for perpendicular polarized light.
+
+    This is the fraction of reflected intensity (not field) for light with an
+    electric field perpendicular to the plane of incidence.
 
     Args:
         m :     complex index of refraction   [-]
@@ -229,9 +259,12 @@ def r_per(m, theta):
     return abs((c - d) / (c + d))**2
 
 
-def r_unpolarized(m, theta):
+def R_unpolarized(m, theta):
     """
     Calculate the Fresnel reflection for unpolarized incident light.
+
+    This is the fraction of reflected intensity (not field) for unpolarized
+    incident light.
 
     Args:
         m :     complex index of refraction   [-]
@@ -240,10 +273,10 @@ def r_unpolarized(m, theta):
     Returns:
         reflected power                       [-]
     """
-    return (r_par(m, theta) + r_per(m, theta)) / 2
+    return (R_par(m, theta) + R_per(m, theta)) / 2
 
 
-def v_parameter(a, NA, lambda0):
+def V_parameter(a, NA, lambda0):
     """
     Calculate the V-parameter for an optical fiber.
 
