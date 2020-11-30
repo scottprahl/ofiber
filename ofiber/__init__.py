@@ -1,3 +1,6 @@
+"""
+Modules to calculate propagation through optical fibers https://ofiber.readthedocs.io.
+"""
 from .basics import *
 from .cylinder_step import *
 from .dispersion import *
