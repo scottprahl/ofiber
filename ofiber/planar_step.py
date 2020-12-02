@@ -3,8 +3,40 @@
 """
 Useful routines for step-index planar waveguides.
 
-Based on chapter 7 of A. Ghatak, K. Thyagarajan, An Introduction to
-Fiber Optics, Cambridge University Press, 1998
+A step-index planar waveguide is a flat waveguide that consists of three layers.
+Let z be the direction of light propagation through the waveguide.  Let x be the
+direction normal to the surface, and then the y-direction is parallel to the
+planes of the waveguide.
+
+The top and bottom layers are semi-infinite with constant index of refraction.
+The middle layer has a fixed thickness and a fixed index of refraction. This 
+waveguide is slightly simpler mathematically to solve than the cylindrical
+waveguide and serves as a useful preliminary model that exhibits general 
+behaviors found in most waveguides.
+
+The functions fall into two classes, those for transverse electric fields (TE)
+and those for transverse magnetic fields (TM).  A transverse electric field
+only has an electric field in the y-direction.  Similarly the TM field only has
+a magnetic field in the y-direction.
+
+The transverse electric field routines are::
+
+    TE_crossing(V, mode)
+    TE_crossings(V)
+    TE_field(V, d, x, mode)
+    TE_mode_plot(V)
+    TE_propagation_constant(V, mode)
+
+The transverse electric routines are::
+
+    TM_crossing(V, mode)
+    TM_crossings(V)
+    TM_field(V, n1, n2, d, x, mode)
+    TM_mode_plot(V)
+    TM_propagation_constant(V, mode, n1, n2)
+
+Based on chapter 7 of Ghatak and Thyagarajan, *An Introduction to
+Fiber Optics*, Cambridge University Press, 1998.
 """
 
 import numpy as np
