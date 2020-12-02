@@ -8,3 +8,4 @@ from .graded_index import *
 from .noise import *
 from .planar_step import *
 from .refraction import *
+from .planar_parabolic import *
