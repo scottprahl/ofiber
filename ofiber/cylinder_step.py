@@ -5,6 +5,39 @@ Useful routines for step-index cylindrical waveguides.
 
 Based on chapter 8 of A. Ghatak, K. Thyagarajan, An Introduction to Fiber
 Optics, Cambridge University Press, 1998
+
+Functions to calculate and plot modes for step index fibers.  Specifically::
+
+    LP_mode_value(V, ell, em)
+    LP_mode_values(V, ell)
+    LP_core_irradiance(V, b, ell)
+    LP_clad_irradiance(V, b, ell)
+    LP_total_irradiance(V, b, ell)
+    LP_radial_field(V, b, ell, r_over_a)
+    LP_radial_irradiance(V, b, ell, r_over_a)
+    gaussian_envelope_Omega(V)
+    gaussian_radial_irradiance(V, r_over_a)
+    plot_LP_modes(V, ell)
+
+Functions to estimate losses::
+
+    angular_misalignment_loss_db(n, w, theta, lambda0)
+    bending_loss_db(n1, Delta, a, Rc, lambda0)
+    longitudinal_misalignment_loss_db(n1, w, D, lambda0)
+    transverse_misalignment_loss_db(w1, w2, u)
+
+Functions to find equivalent core diameters::
+
+    MFR(V)
+    MFD(V)
+    PetermannW(V)
+    PetermannW_Approx(V)
+
+And finally, a couple of routines to help with waveguide dispersion
+calculations::
+
+    V_d2bV_by_V(V, ell)
+    V_d2bV_by_V_Approx(V, ell)
 """
 
 import numpy as np
@@ -16,18 +49,18 @@ from scipy.special import kn
 
 __all__ = ('LP_mode_value',
            'LP_mode_values',
-           'Plot_LP_modes',
+           'plot_LP_modes',
            'LP_core_irradiance',
            'LP_clad_irradiance',
            'LP_total_irradiance',
            'LP_radial_field',
            'LP_radial_irradiance',
-           'Gaussian_envelope_Omega',
-           'Gaussian_radial_irradiance',
-           'Tranverse_misalignment_loss_db',
-           'Angular_misalignment_loss_db',
-           'Longitudinal_misalignment_loss_db',
-           'Bending_loss_db',
+           'gaussian_envelope_Omega',
+           'gaussian_radial_irradiance',
+           'transverse_misalignment_loss_db',
+           'angular_misalignment_loss_db',
+           'longitudinal_misalignment_loss_db',
+           'bending_loss_db',
            'MFR',
            'MFD',
            'PetermannW',
@@ -171,7 +204,7 @@ def LP_mode_values(V, ell):
     return all_b
 
 
-def Plot_LP_modes(V, ell):
+def plot_LP_modes(V, ell):
     """
     Produce a plot show possible eigenvalue solutions for step index fiber.
 
@@ -316,7 +349,7 @@ def LP_radial_irradiance(V, b, ell, r_over_a):
     return field**2
 
 
-def Gaussian_envelope_Omega(V):
+def gaussian_envelope_Omega(V):
     """
     Calculate the normalized irradiance in a step-index fiber.
 
@@ -335,7 +368,7 @@ def Gaussian_envelope_Omega(V):
     return Omega_over_a
 
 
-def Gaussian_radial_irradiance(V, r_over_a):
+def gaussian_radial_irradiance(V, r_over_a):
     """
     Calculate the normalized irradiance in a step-index fiber.
 
@@ -350,11 +383,11 @@ def Gaussian_radial_irradiance(V, r_over_a):
     Returns:
         normalized irradiance at points r_over_a   [-]
     """
-    Omega_over_a = Gaussian_envelope_Omega(V)
+    Omega_over_a = gaussian_envelope_Omega(V)
     return 1/Omega_over_a**2 * np.exp(-r_over_a**2/Omega_over_a**2)
 
 
-def Tranverse_misalignment_loss_db(w1, w2, u):
+def transverse_misalignment_loss_db(w1, w2, u):
     """
     Calculate the loss due to transverse fiber misalignment.
 
@@ -372,7 +405,7 @@ def Tranverse_misalignment_loss_db(w1, w2, u):
     return -10 * np.log10(loss)
 
 
-def Angular_misalignment_loss_db(n, w, theta, lambda0):
+def angular_misalignment_loss_db(n, w, theta, lambda0):
     """
     Calculate the loss due to angular fiber misalignment.
 
@@ -389,7 +422,7 @@ def Angular_misalignment_loss_db(n, w, theta, lambda0):
     return 4.34 * (np.pi * w * theta * n / lambda0)**2
 
 
-def Longitudinal_misalignment_loss_db(n1, w, D, lambda0):
+def longitudinal_misalignment_loss_db(n1, w, D, lambda0):
     """
     Calculate the loss due to longitudinal fiber misalignment.
 
@@ -407,7 +440,7 @@ def Longitudinal_misalignment_loss_db(n1, w, D, lambda0):
     return 10 * np.log10(1 + dhat**2)
 
 
-def _Bending_loss_db_scalar(n1, Delta, a, Rc, lambda0):
+def _bending_loss_db_scalar(n1, Delta, a, Rc, lambda0):
     """
     Calculate the bending loss in dB/m.
 
@@ -437,7 +470,7 @@ def _Bending_loss_db_scalar(n1, Delta, a, Rc, lambda0):
     return val
 
 
-def Bending_loss_db(n1, Delta, a, Rc, lambda0):
+def bending_loss_db(n1, Delta, a, Rc, lambda0):
     """
     Calculate the bending loss in dB/m.
 
@@ -453,11 +486,11 @@ def Bending_loss_db(n1, Delta, a, Rc, lambda0):
         bending loss in dB/m                  [1/m]
     """
     if np.isscalar(a):
-        alpha = _Bending_loss_db_scalar(n1, Delta, a, Rc, lambda0)
+        alpha = _bending_loss_db_scalar(n1, Delta, a, Rc, lambda0)
     else:
         alpha = np.empty_like(a)
         for i, aa in enumerate(a):
-            alpha[i] = _Bending_loss_db_scalar(n1, Delta, aa, Rc, lambda0)
+            alpha[i] = _bending_loss_db_scalar(n1, Delta, aa, Rc, lambda0)
     return alpha
 
 
