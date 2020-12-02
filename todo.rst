@@ -11,7 +11,7 @@
 
 `ofiber.cylinder_step.py`::
     * lowercase functions
-    * rename Plot_LP_modes
+    * rename plot_LP_modes
     * sort out normalization for fields and irradiances
 
 `ofiber.planar_step.py`::
