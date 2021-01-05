@@ -2,9 +2,11 @@
 
 
 """
-Basic optical fibers parameters https://ofiber.readthedocs.io/en/latest/0-Basics.html.
+Calculate simple optical fibers parameters.
 
-Functions to calculate commonly used optical fiber parameters.  Specifically::
+See <https://ofiber.readthedocs.io> for usage examples.
+
+Basic parameters that can be found are::
 
     acceptance_angle(NA, n_outside=1)
     critical_angle(n_core, n_clad)
@@ -14,7 +16,6 @@ Functions to calculate commonly used optical fiber parameters.  Specifically::
     relative_refractive_index(n_core, n_clad)
 
 If you want Δ (Delta), then use `relative_refractive_index`
-
 
 Some are just generic Fresnel equations::
 

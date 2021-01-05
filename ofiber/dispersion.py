@@ -2,10 +2,12 @@
 # pylint: disable=too-many-arguments
 
 """
-Useful routines for cylindrical waveguides.
+Useful routines for dispersion in cylindrical waveguides.
 
-   Based on chapter 10 of A. Ghatak, K. Thyagarajan, An Introduction to Fiber
-   Optics, Cambridge University Press, 1998
+See <https://ofiber.readthedocs.io> for usage examples.
+
+Based on chapter 10 of A. Ghatak, K. Thyagarajan, An Introduction to Fiber
+Optics, Cambridge University Press, 1998
 """
 
 import scipy.constants

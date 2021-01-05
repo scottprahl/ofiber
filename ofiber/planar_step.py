@@ -3,6 +3,8 @@
 """
 Useful routines for step-index planar waveguides.
 
+See <https://ofiber.readthedocs.io> for usage examples.
+
 A step-index planar waveguide is a flat waveguide that consists of three layers.
 Let z be the direction of light propagation through the waveguide.  Let x be the
 direction normal to the surface, and then the y-direction is parallel to the

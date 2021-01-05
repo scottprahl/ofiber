@@ -1,7 +1,13 @@
 # pylint: disable=invalid-name
 # pylint: disable=too-many-arguments
 
-"""Useful basic routines for graded-index optical fibers."""
+"""
+Useful basic routines for graded-index optical fibers.
+
+See <https://ofiber.readthedocs.io> for usage examples.
+
+This needs more testing.
+"""
 
 import numpy as np
 

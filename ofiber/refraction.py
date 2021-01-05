@@ -3,6 +3,8 @@
 """
 Useful routines for index of refraction based on Sellmeier coefficients.
 
+See <https://ofiber.readthedocs.io> for usage examples.
+
 Included are Sellmeier coefficients for a bunch of common glasses used
 in optical fibers.  Functions are provided to generate the index of refraction,
 as well as its first and second derivatives.

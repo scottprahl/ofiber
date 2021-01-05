@@ -5,6 +5,8 @@
 """
 Planar parabolic graded-index optical waveguides.
 
+See <https://ofiber.readthedocs.io> for usage examples.
+
 A graded-index planar waveguide is an infinite waveguide in which confinement
 takes place in the x-direction because of a parabolic index of refraction
 gradient.
@@ -13,7 +15,7 @@ Let z be the direction of light propagation through the waveguide.  Let x be the
 direction in which the index of refraction varies, and then the y-direction is
 perpendicular to both x and z.  The index of refraction n(x) is given by::
 
-n(x)**2 = n_1**2 * ( 1- 2Δ (x/a)**2 )
+    n(x)**2 = n_1**2 * ( 1 - 2*Δ*(x/a)**2 )
 
 where n_1 is the index of refraction in the center of the waveguide (x=0)
 and Δ is the usual relative refractive index.  In this case there are not

@@ -4,6 +4,8 @@
 """
 Useful routines for noise in optical communications.
 
+See <https://ofiber.readthedocs.io> for usage examples.
+
 Based on chapter 13 of A. Ghatak, K. Thyagarajan, An Introduction to
 Fiber Optics, Cambridge University Press, 1998
 """

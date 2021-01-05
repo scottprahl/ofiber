@@ -3,6 +3,8 @@
 """
 Useful routines for step-index cylindrical waveguides.
 
+See <https://ofiber.readthedocs.io> for usage examples.
+
 Based on chapter 8 of A. Ghatak, K. Thyagarajan, An Introduction to Fiber
 Optics, Cambridge University Press, 1998
 
