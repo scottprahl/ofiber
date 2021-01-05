@@ -11,9 +11,9 @@ direction normal to the surface, and then the y-direction is parallel to the
 planes of the waveguide.
 
 The top and bottom layers are semi-infinite with constant index of refraction.
-The middle layer has a fixed thickness and a fixed index of refraction. This 
+The middle layer has a fixed thickness and a fixed index of refraction. This
 waveguide is slightly simpler mathematically to solve than the cylindrical
-waveguide and serves as a useful preliminary model that exhibits general 
+waveguide and serves as a useful preliminary model that exhibits general
 behaviors found in most waveguides.
 
 The functions fall into two classes, those for transverse electric fields (TE)

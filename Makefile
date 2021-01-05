@@ -39,12 +39,14 @@ lint:
 	-pep257 ofiber/graded_index.py
 	-pylint ofiber/noise.py
 	-pep257 ofiber/noise.py
-	-pylint ofiber/parabolic.py
-	-pep257 ofiber/parabolic.py
+	-pylint ofiber/planar_parabolic.py
+	-pep257 ofiber/planar_parabolic.py
 	-pylint ofiber/planar_step.py
 	-pep257 ofiber/planar_step.py
 	-pylint ofiber/refraction.py
 	-pep257 ofiber/refraction.py
+	-pylint ofiber/__init__.py
+	-pep257 ofiber/__init__.py
 
 rcheck:
 	make clean

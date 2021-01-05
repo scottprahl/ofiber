@@ -1,6 +1,12 @@
 Changelog
 ==========
 
+v0.6.0 (1/5/2021)
+------------------
+   * improve help()
+   * improve sphinx docs
+   * new names
+
 v0.5.0 (5/25/2020)
 ------------------
    * sphinx docs

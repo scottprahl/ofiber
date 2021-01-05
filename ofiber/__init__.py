@@ -6,7 +6,7 @@ For full documentation see <https://ofiber.readthedocs.io>
 Info about calculating simple optical fibers parameters::
 
     help(ofiber.basics)
-    
+
 Info about modes and other characteristics of cylindrical fibers::
 
     help(ofiber.cylinder_step)

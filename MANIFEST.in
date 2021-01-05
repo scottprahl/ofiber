@@ -5,6 +5,7 @@ exclude .gitignore
 exclude Makefile
 exclude docs/*.ipynb
 exclude docs/index.rst
+exclude docs/ofiber.rst
 exclude docs/conf.py
 exclude release.txt
 exclude todo.rst

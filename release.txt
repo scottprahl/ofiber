@@ -4,9 +4,9 @@
   make rcheck
 
 # update the version in setup.py
-  git commit -m 'update version' setup.py
+  git commit -m 'update version' setup.cfg docs/conf.py
 
-# update CHANGELOG.txt  `git shortlog`
+# update CHANGELOG.txt  `git shortlog v0.5.0..HEAD`
   git commit -m 'update recent changes' CHANGELOG.txt
   git push
 
