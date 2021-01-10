@@ -19,6 +19,9 @@
   python3 setup.py sdist
   python3 -m twine upload dist/*
 
-# test the release 
-  pip install ofiber
-  pip uninstall ofiber
+# manually update release at
+  https://github.com/scottprahl/ofiber
+  
+# check releases at pypi and readthedocs
+  https://pypi.org/project/ofiber/
+  https://ofiber.readthedocs.io

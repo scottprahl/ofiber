@@ -13,7 +13,7 @@ Installation
 
 Just use `pip`::
 
-   pip install --upgrade ofiber
+   pip install --user --upgrade ofiber
 
 License
 -------
