@@ -14,4 +14,4 @@ Example Usage
 
    ofiber
 
-.. include:: ../CHANGELOG.rst
+   changelog
