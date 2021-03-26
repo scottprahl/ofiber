@@ -11,6 +11,8 @@ Example Usage
    3-Planar-Waveguide-Modes.ipynb
    4-Circular-Step-Index-Fiber.ipynb
    5-Dispersion.ipynb 
+   6-Zero-Dispersion.ipynb
+   7-Detectors.ipynb
 
    ofiber
 
