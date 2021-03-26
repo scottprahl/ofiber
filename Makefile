@@ -17,7 +17,14 @@ clean:
 	rm -rf ofiber/*.pyc
 	rm -rf .tox
 
-lint:
+rstcheck:
+	-rstcheck README.rst
+	-rstcheck CHANGELOG.rst
+	-rstcheck docs/index.rst
+	-rstcheck docs/changelog.rst
+	-rstcheck --ignore-directives automodule docs/ofiber.rst
+
+pylint:
 	-pylint ofiber/basics.py
 	-pydocstyle ofiber/basics.py
 	-pylint ofiber/cylinder_step.py
@@ -41,7 +48,8 @@ rcheck:
 	make clean
 	touch docs/*ipynb
 	touch docs/*rst
-	make lint
+	make pylint
+	make rstcheck
 	make html
 	check-manifest
 	pyroma -d .
