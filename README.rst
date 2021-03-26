@@ -19,7 +19,7 @@ ofiber
 -----
 
 A set of Python modules to calculate light propagation through optical fibers following
-the approach presented in `Ghatak and Thyagarajan, *An Introduction to Fiber Optics*, 
+the approach presented in `Ghatak and Thyagarajan, *An Introduction to Fiber Optics,*
 Cambridge University Press (1980) <https://doi.org/10.1017/CBO9781139174770>`_
 
 Usage
