@@ -11,11 +11,10 @@
   git push
 
 # create release tag on github
-  git tag v0.6.0
-  git push origin v0.6.0
+  git tag v0.6.1
+  git push origin v0.6.1
 
 # upload source to pypi
-  rm -rf dist/*
   python3 setup.py sdist
   python3 -m twine upload dist/*
 

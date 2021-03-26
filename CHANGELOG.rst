@@ -1,6 +1,13 @@
 Changelog
 ==========
 
+v0.6.1 (3/26/2021)
+------------------
+   * add colab and binder badges
+   * improve docs
+   * rename dispersion api
+   * start using more descriptive names in notebooks
+
 v0.6.0 (1/5/2021)
 ------------------
    * improve help()
