@@ -55,7 +55,7 @@ __all__ = ('acceptance_angle',
 
 def acceptance_angle(NA, n_outside=1):
     """
-    The acceptance angle for a cone of light into or out of an optical fiber.
+    Find the acceptance angle for a cone of light in/out of an optical fiber.
 
     This is the half-angle measured from the normal to the fiber face
     to the edge of the entering (or exiting) cone of light.

@@ -24,7 +24,7 @@ rstcheck:
 	-rstcheck docs/changelog.rst
 	-rstcheck --ignore-directives automodule docs/ofiber.rst
 
-pylint:
+pycheck:
 	-pylint ofiber/basics.py
 	-pydocstyle ofiber/basics.py
 	-pylint ofiber/cylinder_step.py
@@ -48,7 +48,7 @@ rcheck:
 	make clean
 	touch docs/*ipynb
 	touch docs/*rst
-	make pylint
+	make pycheck
 	make rstcheck
 	make html
 	check-manifest

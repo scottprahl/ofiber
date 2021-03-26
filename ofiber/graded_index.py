@@ -18,10 +18,10 @@ __all__ = ('power_law_profile',
            'transverse_location')
 
 
-def power_law_profile(ncore, nclad, q, a, x):
+def power_law_profile(n_core, nclad, q, a, x):
     """Calculate the index of refraction at a particular radius."""
-    delta = (ncore**2 - nclad**2) / 2 / ncore**2
-    nsqr = ncore**2 * (1 - 2 * delta * (np.abs(x) / a)**q)
+    delta = (n_core**2 - nclad**2) / 2 / n_core**2
+    nsqr = n_core**2 * (1 - 2 * delta * (np.abs(x) / a)**q)
     if not np.isscalar(x):
         np.place(nsqr, abs(x) >= a, nclad**2)
     return np.sqrt(nsqr)
@@ -35,10 +35,10 @@ def first_derivative(x, f):
     return deriv / dx
 
 
-def curvature(ncore, nclad, q, a, x, theta):
+def curvature(n_core, nclad, q, a, x, theta):
     """Return the curvature at a position x on the fiber profile."""
-    beta = ncore * np.cos(theta)
-    nsqr = power_law_profile(ncore, nclad, q, a, x)**2
+    beta = n_core * np.cos(theta)
+    nsqr = power_law_profile(n_core, nclad, q, a, x)**2
     curve = first_derivative(x, nsqr) / 2 / beta**2
     return curve
 
@@ -50,21 +50,20 @@ def transverse_location(n1, theta1, Delta, a, z):
     A = a * np.sin(theta1) / np.sqrt(2 * Delta)
     return A * np.sin(Gamma * z)
 
-def velocity(ncore, q, beta_invariant, material_dispersion=None):
+def velocity(n_core, q, beta_invariant, material_dispersion=None):
     """
-    The velocity for a power-law circular fiber.
-    
+    Find the light velocity in a power-law circular fiber.
+
     Equation 5.4 in Ghatak.
     """
     c = scipy.constants.speed_of_light
-    if glass is None:
+    if material_dispersion is None:
         A = 2/c/(2+q)
-        B = q * ncore**2/c/(2+q)
+        B = q * n_core**2/c/(2+q)
     else:
-        N1 = ncore + material_dispersion
-        y = 2* ncore/N1
-        A = 2 * N1/ncore  * (1+0.25*y)/c/(q+2)
-        B = q *ncore**2*A-1/4/c*N1*ncore*y
-    
+        N1 = n_core + material_dispersion
+        y = 2* n_core/N1
+        A = 2 * N1/n_core  * (1+0.25*y)/c/(q+2)
+        B = q *n_core**2*A-1/4/c*N1*n_core*y
+
     return A*beta_invariant + B/beta_invariant
-    return (A * beta_invariant + B/beta_invariant)

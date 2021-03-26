@@ -40,13 +40,13 @@ def Material_Dispersion(core, λ):
 def Waveguide_Dispersion(n_core, n_clad, r_core, λ, q=1e20, approx=False):
     """
     Calculate the waveguide dispersion of a fiber.
-    
+
     The default value of q represents a step index fiber.  Other values
     allow parabolic (q=2) or triangular (q=1) profiles.
 
     The waveguide dispersion is for the fundamental mode of the fiber.
-    
-    The approximation is reasonably good for values from 1.6<V<2.6 
+
+    The approximation is reasonably good for values from 1.6<V<2.6
 
     Args:
         n_core: core index of refraction          [-]
@@ -93,7 +93,7 @@ def Dispersion(core, n_clad, r_core, λ, q=1e20, approx=False):
         approx: approximate when True             [True/False]
 
     Returns:
-        material, waveguide, and total dispersion [s/m**2] 
+        material, waveguide, and total dispersion [s/m**2]
     """
     n_core = ofr.n(core, λ)
     Dm = Material_Dispersion(core, λ)

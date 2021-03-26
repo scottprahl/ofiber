@@ -1,12 +1,8 @@
 include CHANGELOG.rst
 include LICENSE.txt
-exclude requirements.txt
 exclude .gitignore
+exclude docs/*
 exclude Makefile
-exclude docs/*.ipynb
-exclude docs/index.rst
-exclude docs/ofiber.rst
-exclude docs/changelog.rst
-exclude docs/conf.py
 exclude release.txt
+exclude requirements.txt
 exclude todo.rst
