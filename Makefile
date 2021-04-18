@@ -24,31 +24,36 @@ rstcheck:
 	-rstcheck docs/changelog.rst
 	-rstcheck --ignore-directives automodule docs/ofiber.rst
 
-pycheck:
+lintcheck:
 	-pylint ofiber/basics.py
-	-pydocstyle ofiber/basics.py
 	-pylint ofiber/cylinder_step.py
-	-pydocstyle ofiber/cylinder_step.py
 	-pylint ofiber/dispersion.py
-	-pydocstyle ofiber/dispersion.py
 	-pylint ofiber/graded_index.py
-	-pydocstyle ofiber/graded_index.py
 	-pylint ofiber/noise.py
-	-pydocstyle ofiber/noise.py
 	-pylint ofiber/planar_parabolic.py
-	-pydocstyle ofiber/planar_parabolic.py
 	-pylint ofiber/planar_step.py
-	-pydocstyle ofiber/planar_step.py
 	-pylint ofiber/refraction.py
-	-pydocstyle ofiber/refraction.py
 	-pylint ofiber/__init__.py
+
+doccheck:
+	-pydocstyle ofiber/basics.py
+	-pydocstyle ofiber/cylinder_step.py
+	-pydocstyle ofiber/dispersion.py
+	-pydocstyle ofiber/graded_index.py
+	-pydocstyle ofiber/noise.py
+	-pydocstyle ofiber/planar_parabolic.py
+	-pydocstyle ofiber/planar_step.py
+	-pydocstyle ofiber/refraction.py
 	-pydocstyle ofiber/__init__.py
 
-rcheck:
+notecheck:
 	make clean
-	touch docs/*ipynb
-	touch docs/*rst
-	make pycheck
+	pytest --verbose -n 4 test_all_notebooks.py
+
+rcheck:
+	make notecheck
+	make lintcheck
+	make doccheck
 	make rstcheck
 	make html
 	check-manifest
