@@ -6,17 +6,6 @@ BUILDDIR      = docs/_build
 html:
 	$(SPHINXBUILD) -b html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS)
 
-clean:
-	rm -rf docs/api 
-	rm -rf docs/_build 
-	rm -rf docs/_build/.buildinfo
-	rm -rf docs/_build/.doctrees
-	rm -rf dist
-	rm -rf ofiber.egg-info
-	rm -rf ofiber/__pycache__
-	rm -rf ofiber/*.pyc
-	rm -rf .tox
-
 rstcheck:
 	-rstcheck README.rst
 	-rstcheck CHANGELOG.rst
@@ -60,4 +49,15 @@ rcheck:
 	pyroma -d .
 #	tox
 
-.PHONY: clean rcheck html lint
+clean:
+	rm -rf docs/api 
+	rm -rf docs/_build 
+	rm -rf dist
+	rm -rf ofiber.egg-info
+	rm -rf ofiber/__pycache__
+	rm -rf ofiber/*.pyc
+	rm -rf .tox
+	rm -rf __pycache__
+
+
+.PHONY: clean rcheck html rstcheck lintcheck doccheck rcheck
