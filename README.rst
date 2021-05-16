@@ -1,6 +1,9 @@
 ofiber
 ======
 
+.. image:: https://img.shields.io/pypi/v/ofiber.svg
+   :target: https://pypi.org/project/ofiber/
+
 .. image:: https://mybinder.org/badge_logo.svg
    :target: https://mybinder.org/v2/gh/scottprahl/ofiber/master?filepath=docs
 
