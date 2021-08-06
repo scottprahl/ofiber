@@ -1,6 +1,12 @@
 Changelog
 ==========
 
+v0.6.2 (9/5/2021)
+-----------------
+* create pure python packages
+* include wheel file
+* package as python3 only
+
 v0.6.1 (3/26/2021)
 ------------------
    * add colab and binder badges

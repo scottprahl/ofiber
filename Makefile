@@ -58,6 +58,7 @@ clean:
 	rm -rf ofiber/*.pyc
 	rm -rf .tox
 	rm -rf __pycache__
+	rm -rf build
 
 
 .PHONY: clean rcheck html rstcheck lintcheck doccheck rcheck
