@@ -136,7 +136,7 @@ def LP_mode_value(V, ell, em):
     fiber has a specific value of b that depends on the fiber parameter V
     and the mode number.
 
-    If no mode exists, a value of 0 is returned
+    If no mode exists, a value of None is returned
 
     The LP_lm is specified by the (ell,em) to avoid confusion between the
     number 1 and the letter l.
@@ -155,10 +155,10 @@ def LP_mode_value(V, ell, em):
         ell *= -1   # negative ells are same as positive ones
 
     if em <= 0:
-        return 0    # modes start with 1, e.g., LP_01
+        return None    # modes start with 1, e.g., LP_01
 
     if V <= 0:
-        return 0    # V must be positive
+        return None    # V must be positive
 
     abit = 1e-3
 
@@ -172,12 +172,12 @@ def LP_mode_value(V, ell, em):
         hi = 1 - (jnz[em - 2] / V)**2 - abit
 
     if hi < lo:
-        return 0  # no such mode
+        return None  # no such mode
 
     try:
         b = brentq(_cyl_mode_eqn, lo, hi, args=(V, ell))
     except ValueError:  # happens when both hi and lo values have same sign
-        return 0        # therefore no such mode exists
+        return None     # therefore no such mode exists
 
     return b
 
@@ -199,7 +199,7 @@ def LP_mode_values(V, ell):
     all_b = np.array([])
     for em in range(1, 10):
         b = LP_mode_value(V, ell, em)
-        if b == 0:
+        if b is None:
             break
         all_b = np.append(all_b, b)
 
@@ -461,10 +461,10 @@ def _bending_loss_db_scalar(n1, Delta, a, Rc, lambda0):
     k0 = 2 * np.pi / lambda0
     V = k0 * a * n1 * np.sqrt(2 * Delta)
     b = LP_mode_value(V, 0, 1)
+    if b is None:
+        return np.nan
     U = V * np.sqrt(1 - b)
     W = V * np.sqrt(b)
-    if W == 0:
-        return np.nan
     val = 4.343 * np.sqrt(np.pi / 4 / a / Rc)
     val *= (U / V / kn(1, W))**2
     val *= W**-1.5
@@ -540,11 +540,11 @@ def _PetermannW_scalar(V):
         approximate Petermann-2 radius normalized by core radius  [--]
     """
     b = LP_mode_value(V, 0, 1)
+    if b is None:
+        return np.nan
     U = V * np.sqrt(1 - b)
     W = V * np.sqrt(b)
     denom = W * jn(0, U)
-    if denom == 0:
-        return np.nan
     return np.sqrt(2) * jn(1, U) / denom
 
 
@@ -600,7 +600,7 @@ def _V_d2bV_by_V_scalar(V, ell):
         V*d^2(bV)/dV^2                       [--]
     """
     b = LP_mode_value(V, ell, 1)
-    if b == 0:
+    if b is None:
         return 0
 
     U = V * np.sqrt(1 - b)
