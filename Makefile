@@ -49,6 +49,21 @@ rcheck:
 	pyroma -d .
 #	tox
 
+lite:
+	mkdir files
+	cp docs/0-Basics.ipynb files
+	cp docs/1-Refractive-Index.ipynb files
+	cp docs/2-Materials.ipynb files
+	cp docs/3-Planar-Waveguide-Modes.ipynb files
+	cp docs/4-Circular-Step-Index-Fiber.ipynb files
+	cp docs/5-Dispersion.ipynb files
+	cp docs/6-Zero-Dispersion.ipynb files
+	cp docs/7-Detectors.ipynb files
+	jupyter lite init
+	jupyter lite build
+	jupyter lite serve
+#	cp docs/8-Optical-Fiber-Amplifiers.ipynb
+
 clean:
 	rm -rf docs/api 
 	rm -rf docs/_build 
@@ -59,6 +74,8 @@ clean:
 	rm -rf .tox
 	rm -rf __pycache__
 	rm -rf build
+	rm -rf files
+	rm -rf _output
 
 
 .PHONY: clean rcheck html rstcheck lintcheck doccheck rcheck
