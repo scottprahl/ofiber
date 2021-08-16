@@ -76,6 +76,7 @@ clean:
 	rm -rf build
 	rm -rf files
 	rm -rf _output
+	rm -rf .jupyterlite.doit.db
 
 
 .PHONY: clean rcheck html rstcheck lintcheck doccheck rcheck
