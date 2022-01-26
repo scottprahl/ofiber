@@ -1,6 +1,8 @@
 ofiber
 ======
 
+by Scott Prahl
+
 .. image:: https://img.shields.io/pypi/v/ofiber.svg
    :target: https://pypi.org/project/ofiber/
 
