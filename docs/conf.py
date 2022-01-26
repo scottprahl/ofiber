@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.abspath('..'))
 # -- Project information -----------------------------------------------------
 
 project = 'ofiber'
-copyright = '2018-2021 Scott Prahl'
+copyright = '2018-2022 Scott Prahl'
 author = 'Scott Prahl'
 
 # The full version, including alpha/beta/rc tags
@@ -47,16 +47,15 @@ napoleon_use_param = False
 napoleon_use_ivar = False
 napoleon_include_private_with_doc = False
 napoleon_use_rtype = False
-napoleon_use_param = False
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+# templates_path = ['_templates']
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '.tox', '**.ipynb_checkpoints',
-                    'sources/*', 'first_version/*']
+                    'sources/*', 'first_version/*', '8-Optical-Fiber-Amplifiers.ipynb']
 
 # I execute the notebooks manually in advance. If notebooks test the code,
 # they should be run at build time.
@@ -76,7 +75,7 @@ html_theme = 'sphinx_rtd_theme'
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+# html_static_path = ['_static']
 
 html_scaled_image_link = False
 
