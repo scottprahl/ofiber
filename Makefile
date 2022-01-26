@@ -5,6 +5,7 @@ BUILDDIR      = docs/_build
 
 html:
 	$(SPHINXBUILD) -b html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS)
+	open docs/_build/index.html
 
 rstcheck:
 	-rstcheck README.rst

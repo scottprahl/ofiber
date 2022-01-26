@@ -7,72 +7,44 @@ Submodules
 ofiber.basics module
 --------------------
 
-.. automodule:: ofiber.basics
-   :members:
-   :undoc-members:
-   :show-inheritance:
+.. automodapi:: ofiber.basics
 
 ofiber.cylinder\_step module
 ----------------------------
 
-.. automodule:: ofiber.cylinder_step
-   :members:
-   :undoc-members:
-   :show-inheritance:
+.. automodapi:: ofiber.cylinder_step
 
 ofiber.dispersion module
 ------------------------
 
-.. automodule:: ofiber.dispersion
-   :members:
-   :undoc-members:
-   :show-inheritance:
+.. automodapi:: ofiber.dispersion
 
 ofiber.graded\_index module
 ---------------------------
 
-.. automodule:: ofiber.graded_index
-   :members:
-   :undoc-members:
-   :show-inheritance:
+.. automodapi:: ofiber.graded_index
 
 ofiber.noise module
 -------------------
 
-.. automodule:: ofiber.noise
-   :members:
-   :undoc-members:
-   :show-inheritance:
+.. automodapi:: ofiber.noise
 
 ofiber.planar\_parabolic module
 -------------------------------
 
-.. automodule:: ofiber.planar_parabolic
-   :members:
-   :undoc-members:
-   :show-inheritance:
+.. automodapi:: ofiber.planar_parabolic
 
 ofiber.planar\_step module
 --------------------------
 
-.. automodule:: ofiber.planar_step
-   :members:
-   :undoc-members:
-   :show-inheritance:
+.. automodapi:: ofiber.planar_step
 
 ofiber.refraction module
 ------------------------
 
-.. automodule:: ofiber.refraction
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
+.. automodapi:: ofiber.refraction
 
 Module contents
 ---------------
 
-.. automodule:: ofiber
-   :members:
-   :undoc-members:
-   :show-inheritance:
+.. automodapi:: ofiber
