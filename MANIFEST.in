@@ -7,3 +7,4 @@ exclude release.txt
 exclude requirements.txt
 exclude todo.rst
 exclude test_all_notebooks.py
+exclude .readthedocs.yaml

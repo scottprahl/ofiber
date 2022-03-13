@@ -72,12 +72,14 @@ clean:
 	rm -rf ofiber.egg-info
 	rm -rf ofiber/__pycache__
 	rm -rf ofiber/*.pyc
+	rm -rf ofiber/.ipynb_checkpoints
 	rm -rf .tox
 	rm -rf __pycache__
 	rm -rf build
 	rm -rf files
 	rm -rf _output
 	rm -rf .jupyterlite.doit.db
+	rm -rf .pytest_cache
 
 
 .PHONY: clean rcheck html rstcheck lintcheck doccheck rcheck
