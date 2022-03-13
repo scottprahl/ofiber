@@ -22,6 +22,7 @@ __all__ = ('Material_Dispersion',
            'Dispersion',
            )
 
+
 def Material_Dispersion(core, λ):
     """
     Calculate the material dispersion using Sellmeier coefficients.

@@ -540,7 +540,7 @@ def n_group(glass_coef, lambda0):
     Returns:
         group index of refraction [--]
     """
-    return n(glass_coef, lambda0) - lambda0*dn(glass_coef, lambda0)
+    return n(glass_coef, lambda0) - lambda0 * dn(glass_coef, lambda0)
 
 
 def n_air(lambda0, temperature=15):
@@ -555,12 +555,12 @@ def n_air(lambda0, temperature=15):
     Returns:
         index of refraction [--]
     """
-    nu = 1/(lambda0 * 1e6)
-    n15 = 1e-8 * (8342.1 + 2406030/(130 - nu**2) + 15996/(38.9 - nu**2))
+    nu = 1 / (lambda0 * 1e6)
+    n15 = 1e-8 * (8342.1 + 2406030 / (130 - nu**2) + 15996 / (38.9 - nu**2))
     if temperature == 15:
         return 1 + n15
 
-    return 1 + 1.0549*n15/(1+0.00366*temperature)
+    return 1 + 1.0549 * n15 / (1 + 0.00366 * temperature)
 
 # code used to generate the Sellmeier coefficients for other_glass below
 # data straight from fleming 1978

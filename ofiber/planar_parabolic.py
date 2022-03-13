@@ -32,7 +32,7 @@ import ofiber.basics
 __all__ = ('parabolic_propagation_constant',
            'parabolic_propagation_constants',
            'TE_planar_parabolic_field',
-          )
+           )
 
 
 def _herm(n, x):
@@ -46,7 +46,7 @@ def _herm(n, x):
     Returns:
         H_n(x)
     """
-    c = np.zeros(n+1, dtype="i4")
+    c = np.zeros(n + 1, dtype="i4")
     c[n] = 1
     return np.polynomial.hermite.hermval(x, c)
 
@@ -65,9 +65,9 @@ def parabolic_propagation_constant(m, lambda0, n1, a, V):
     Returns:
         beta for the mth mode
     """
-    gamma = np.sqrt(V)/a
+    gamma = np.sqrt(V) / a
     k = 2 * np.pi * n1 / lambda0
-    return np.sqrt(k*k-gamma*gamma*(2*m+1))
+    return np.sqrt(k**2 - gamma**2 * (2 * m + 1))
 
 
 def parabolic_propagation_constants(lambda0, n1, a, V):
@@ -75,12 +75,15 @@ def parabolic_propagation_constants(lambda0, n1, a, V):
     Return all the betas for a parabolic planar waveguide.
 
     Args:
-        V    : the V-parameter for the waveguide
+        lambda0: wavelength in vacuum                   [m]
+        n1: centerline index of refraction of waveguide [-]
+        a: half thickness of the waveguide              [m]
+        V: the V-parameter for the waveguide
     Returns:
         an array eigenvalues.
     """
-    Delta = np.sqrt(V/n1)/2
-    modes = np.floor(V / Delta - 1/2)
+    Delta = np.sqrt(V / n1) / 2
+    modes = np.floor(V / Delta - 1 / 2)
     betas = np.empty(modes)
 
     for mode in range(modes):
@@ -109,8 +112,8 @@ def TE_planar_parabolic_field(m, lambda0, n1, Delta, a, x):
     """
     NA = ofiber.basics.numerical_aperture_from_Delta(n1, Delta)
     V = ofiber.basics.V_parameter(a, NA, lambda0)
-    gamma = np.sqrt(V)/a
-    Nm = np.sqrt(gamma/(2**m * np.math.factorial(m) * np.sqrt(np.pi)))
+    gamma = np.sqrt(V) / a
+    Nm = np.sqrt(gamma / (2**m * np.math.factorial(m) * np.sqrt(np.pi)))
     xi = gamma * x
-    E_y = Nm * _herm(m, xi) * np.exp(-0.5*xi**2)
+    E_y = Nm * _herm(m, xi) * np.exp(-0.5 * xi**2)
     return E_y

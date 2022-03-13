@@ -50,6 +50,7 @@ def transverse_location(n1, theta1, Delta, a, z):
     A = a * np.sin(theta1) / np.sqrt(2 * Delta)
     return A * np.sin(Gamma * z)
 
+
 def velocity(n_core, q, beta_invariant, material_dispersion=None):
     """
     Find the light velocity in a power-law circular fiber.
@@ -58,12 +59,12 @@ def velocity(n_core, q, beta_invariant, material_dispersion=None):
     """
     c = scipy.constants.speed_of_light
     if material_dispersion is None:
-        A = 2/c/(2+q)
-        B = q * n_core**2/c/(2+q)
+        A = 2 / c / (2 + q)
+        B = q * n_core**2 / c / (2 + q)
     else:
         N1 = n_core + material_dispersion
-        y = 2* n_core/N1
-        A = 2 * N1/n_core  * (1+0.25*y)/c/(q+2)
-        B = q *n_core**2*A-1/4/c*N1*n_core*y
+        y = 2 * n_core / N1
+        A = 2 * N1 / n_core * (1 + 0.25 * y) / c / (q + 2)
+        B = q * n_core**2 * A - 1 / 4 / c * N1 * n_core * y
 
-    return A*beta_invariant + B/beta_invariant
+    return A * beta_invariant + B / beta_invariant

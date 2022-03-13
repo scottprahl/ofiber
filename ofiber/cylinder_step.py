@@ -366,7 +366,7 @@ def gaussian_envelope_Omega(V):
     b = LP_mode_value(V, 0, 1)
     U = V * np.sqrt(1 - b)
     W = V * np.sqrt(b)
-    Omega_over_a = jn(0, U) * V/U * kn(1, W)/kn(0, W)
+    Omega_over_a = jn(0, U) * V / U * kn(1, W) / kn(0, W)
     return Omega_over_a
 
 
@@ -386,7 +386,7 @@ def gaussian_radial_irradiance(V, r_over_a):
         normalized irradiance at points r_over_a   [-]
     """
     Omega_over_a = gaussian_envelope_Omega(V)
-    return 1/Omega_over_a**2 * np.exp(-r_over_a**2/Omega_over_a**2)
+    return 1 / Omega_over_a**2 * np.exp(-r_over_a**2 / Omega_over_a**2)
 
 
 def transverse_misalignment_loss_db(w1, w2, u):

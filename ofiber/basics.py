@@ -70,7 +70,7 @@ def acceptance_angle(NA, n_outside=1):
     Returns:
         maximum entrance/exit half-angle of the fiber [radians]
     """
-    return np.arcsin(NA/n_outside)
+    return np.arcsin(NA / n_outside)
 
 
 def critical_angle(n_core, n_clad):
@@ -182,7 +182,7 @@ def numerical_aperture_from_Delta(n_core, Delta):
     Returns:
         numerical aperture                                      [-]
     """
-    return n_core * np.sqrt(2*Delta)
+    return n_core * np.sqrt(2 * Delta)
 
 
 def numerical_aperture_graded_index(n_core, n_clad, q, r_over_a):

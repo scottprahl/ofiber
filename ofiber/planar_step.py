@@ -156,8 +156,8 @@ def TE_crossing(V, mode):
         the eigenvalue.  If no eigenvalue, 0 is returned.
     """
     abit = 1e-5
-    lo = abit + mode * np.pi/2
-    hi = min(np.pi/2 - abit + mode * np.pi/2, V/2)
+    lo = abit + mode * np.pi / 2
+    hi = min(np.pi / 2 - abit + mode * np.pi / 2, V / 2)
     if lo > V / 2:
         return 0   # mode does not exist
 
@@ -319,13 +319,13 @@ def _basic_field(V, d, x, mode, xi):
     kappa = 2 / d * xi
 
     if mode % 2 == 0:
-        A = np.cos(kappa*x)
-        B = np.cos(xi) * np.exp(gdby2-xgamma)
+        A = np.cos(kappa * x)
+        B = np.cos(xi) * np.exp(gdby2 - xgamma)
     else:
-        A = np.sin(kappa*x)
-        B = np.sin(xi) * np.sign(x) * np.exp(gdby2-xgamma)
+        A = np.sin(kappa * x)
+        B = np.sin(xi) * np.sign(x) * np.exp(gdby2 - xgamma)
 
-    return np.where(abs(x) < d/2, A, B)
+    return np.where(abs(x) < d / 2, A, B)
 
 
 def TE_field(V, d, x, mode):
