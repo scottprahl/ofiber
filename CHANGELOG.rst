@@ -1,12 +1,16 @@
 Changelog
 ==========
 
-v0.6.3 (9/15/2021)
-------------------
+v0.6.4 (unreleased)
+-------------------
 * better handling of propagation factor b
 * add import boilerplate needed for Jupyterlite
 * use seaborn-talk as default plot style
 * Makefile packaging for Jupyterlite file
+* use __version__ and other dunders
+* flake8 now passes
+* fix various docstrings
+* readthedocs fixes
 
 v0.6.2 (9/5/2021)
 -----------------
