@@ -1,7 +1,7 @@
 Changelog
 ==========
 
-v0.6.4 (unreleased)
+v0.7.0 (unreleased)
 -------------------
 * better handling of propagation factor b
 * add import boilerplate needed for Jupyterlite
