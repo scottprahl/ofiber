@@ -1,10 +1,5 @@
-SPHINXOPTS    ?=
-SPHINXBUILD   ?= sphinx-build
-SOURCEDIR     = docs
-BUILDDIR      = docs/_build
-
 html:
-	$(SPHINXBUILD) -b html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS)
+	cd docs && python -m sphinx -T -E -b html -d _build/doctrees -D language=en . _build
 	open docs/_build/index.html
 
 rstcheck:
@@ -14,7 +9,7 @@ rstcheck:
 	-rstcheck docs/changelog.rst
 	-rstcheck --ignore-directives automodule docs/ofiber.rst
 
-lintcheck:
+lint:
 	-pylint ofiber/basics.py
 	-pylint ofiber/cylinder_step.py
 	-pylint ofiber/dispersion.py
@@ -38,17 +33,16 @@ doccheck:
 
 notecheck:
 	make clean
-	pytest --verbose -n 4 test_all_notebooks.py
+	pytest --verbose tests/test_all_notebooks.py
 
 rcheck:
-	make notecheck
 	make lintcheck
 	make doccheck
 	make rstcheck
 	make html
 	check-manifest
 	pyroma -d .
-#	tox
+	make notecheck
 
 lite:
 	mkdir files
