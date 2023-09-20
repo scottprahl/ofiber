@@ -1,5 +1,6 @@
 # pylint: disable=invalid-name
 # pylint: disable=no-name-in-module
+# pylint: disable=consider-using-f-string
 """
 Useful routines for step-index cylindrical waveguides.
 

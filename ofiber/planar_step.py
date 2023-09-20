@@ -1,5 +1,6 @@
 # pylint: disable=invalid-name
 # pylint: disable=too-many-arguments
+# pylint: disable=consider-using-f-string
 """
 Useful routines for step-index planar waveguides.
 

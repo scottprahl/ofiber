@@ -1,5 +1,6 @@
 # pylint: disable=invalid-name
 # pylint: disable=line-too-long
+# pylint: disable=consider-using-f-string
 """
 Useful routines for index of refraction based on Sellmeier coefficients.
 
