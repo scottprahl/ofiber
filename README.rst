@@ -3,23 +3,41 @@ ofiber
 
 by Scott Prahl
 
-.. image:: https://img.shields.io/pypi/v/ofiber.svg
+.. image:: https://img.shields.io/pypi/v/ofiber
    :target: https://pypi.org/project/ofiber/
+   :alt: pypi
 
+.. image:: https://img.shields.io/conda/v/conda-forge/ofiber.svg
+   :target: https://anaconda.org/conda-forge/ofiber
+   :alt: conda
+
+.. image:: https://zenodo.org/badge/102148844.svg
+   :target: https://zenodo.org/badge/latestdoi/102148844
+   :alt: doi
+|
+.. image:: https://img.shields.io/github/license/scottprahl/ofiber
+   :target: https://github.com/scottprahl/ofiber/blob/master/LICENSE.txt
+   :alt: License
+
+.. image:: https://github.com/scottprahl/ofiber/actions/workflows/test.yaml/badge.svg
+   :target: https://github.com/scottprahl/ofiber/actions/workflows/test.yaml
+   :alt: Testing
+
+.. image:: https://readthedocs.org/projects/ofiber/badge
+   :target: https://ofiber.readthedocs.io
+   :alt: Docs
+
+.. image:: https://img.shields.io/pypi/dm/ofiber
+   :target: https://pypi.org/project/ofiber/
+   :alt: Downloads
+|
 .. image:: https://mybinder.org/badge_logo.svg
    :target: https://mybinder.org/v2/gh/scottprahl/ofiber/master?filepath=docs
-
+   :alt: Binder
+   
 .. image:: https://colab.research.google.com/assets/colab-badge.svg
    :target: https://colab.research.google.com/github/scottprahl/ofiber/blob/master
-
-.. image:: https://img.shields.io/badge/readthedocs-latest-blue.svg
-   :target: https://ofiber.readthedocs.io
-
-.. image:: https://img.shields.io/badge/github-code-green.svg
-   :target: https://github.com/scottprahl/ofiber
-
-.. image:: https://img.shields.io/badge/MIT-license-yellow.svg
-   :target: https://github.com/scottprahl/laserbeamsize/blob/master/LICENSE.txt
+   :alt: Colab
 
 -----
 
