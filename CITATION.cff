@@ -8,4 +8,4 @@ doi: 10.5281/zenodo.8361415
 message: If you use this software, please cite it as below.
 title: 'ofiber: a python module for light propagation in optical fibers.'
 url: https://zenodo.org/badge/latestdoi/102148844
-version: 0.7.0
+version: 0.7.1
