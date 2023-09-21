@@ -36,7 +36,7 @@ notecheck:
 	pytest --verbose tests/test_all_notebooks.py
 
 rcheck:
-	make lintcheck
+	make lint
 	make doccheck
 	make rstcheck
 	make html

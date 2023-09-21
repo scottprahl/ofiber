@@ -51,7 +51,6 @@ napoleon_use_rtype = False
 exclude_patterns = ['_build',
                     '.tox',
                     '**.ipynb_checkpoints',
-                    '8-Optical-Fiber-Amplifiers.ipynb'
                     ]
 
 # I execute the notebooks manually in advance.

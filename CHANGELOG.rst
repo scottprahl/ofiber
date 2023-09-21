@@ -5,7 +5,6 @@ v0.7.0 (unreleased)
 -------------------
 * better handling of propagation factor b
 * add import boilerplate needed for Jupyterlite
-* use seaborn-talk as default plot style
 * Makefile packaging for Jupyterlite file
 * use __version__ and other dunders
 * flake8 now passes

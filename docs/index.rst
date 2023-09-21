@@ -7,34 +7,40 @@
    :caption: Glasses and Refractive indices
    :hidden:
 
-   0-Basics.ipynb
-   1-Refractive-Index.ipynb
-   2-Materials.ipynb
+   0-Basics
+   1-Refractive-Index
+   2-Materials
 
 .. toctree::
    :caption: Planar Waveguides
    :hidden:
 
-   3-Planar-Waveguide-Modes.ipynb
+   3-Planar-Waveguide-Modes
 
 .. toctree::
    :caption: Cylindrical Waveguides
    :hidden:
 
-   4-Circular-Step-Index-Fiber.ipynb
+   4-Circular-Step-Index-Fiber
 
 .. toctree::
    :caption: Dispersion
    :hidden:
 
-   5-Dispersion.ipynb 
-   6-Zero-Dispersion.ipynb
+   5-Dispersion 
+   6-Zero-Dispersion
 
 .. toctree::
    :caption: Optical Detection
    :hidden:
 
-   7-Detectors.ipynb
+   7-Detectors
+
+.. toctree::
+   :caption: Erbium Fibers
+   :hidden:
+
+   8-Optical-Fiber-Amplifiers
 
 .. toctree::
    :caption: API

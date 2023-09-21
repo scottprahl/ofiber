@@ -1,6 +1,7 @@
 numpy
 matplotlib
 scipy
+micropip
 
 nbsphinx
 sphinx-automodapi
