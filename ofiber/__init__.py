@@ -31,7 +31,7 @@ Info about refractive index of glasses::
 
     help(ofiber.refraction)
 """
-__version__ = '0.7.0'
+__version__ = '0.7.1'
 __author__ = 'Scott Prahl'
 __email__ = 'scott.prahl@oit.edu'
 __copyright__ = '2018-23, Scott Prahl'

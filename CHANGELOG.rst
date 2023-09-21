@@ -3,6 +3,10 @@ Changelog
 
 0.7.0 (9/21/23)
 -------------------
+* fix long-description for pypi
+
+0.7.0 (9/21/23)
+-------------------
 * better handling of propagation factor b
 * add import boilerplate needed for Jupyterlite
 * Makefile packaging for Jupyterlite file

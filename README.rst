@@ -19,9 +19,7 @@ by Scott Prahl
    :target: https://zenodo.org/badge/latestdoi/102148844
    :alt: doi  
 
-.. raw:: html
-
-   <br>
+|
 
 .. image:: https://img.shields.io/github/license/scottprahl/ofiber
    :target: https://github.com/scottprahl/ofiber/blob/master/LICENSE.txt
@@ -39,9 +37,7 @@ by Scott Prahl
    :target: https://pypi.org/project/ofiber/
    :alt: Downloads
 
-.. raw:: html
-
-   <br>
+|
 
 .. image:: https://mybinder.org/badge_logo.svg
    :target: https://mybinder.org/v2/gh/scottprahl/ofiber/master?filepath=docs
@@ -56,9 +52,6 @@ by Scott Prahl
 A set of Python modules to calculate light propagation through optical fibers following
 the approach presented in `Ghatak and Thyagarajan <https://doi.org/10.1017/CBO9781139174770>`_, *An Introduction to Fiber Optics,*
 Cambridge University Press (1980).
-
-Usage
------
 
 For examples and use cases, see <https://ofiber.readthedocs.io>
 
