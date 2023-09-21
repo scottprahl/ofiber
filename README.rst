@@ -15,8 +15,8 @@ by Scott Prahl
    :target: https://anaconda.org/conda-forge/ofiber
    :alt: conda
 
-.. image:: https://zenodo.org/badge/102148844.svg
-   :target: https://zenodo.org/badge/latestdoi/102148844
+.. image:: https://zenodo.org/badge/122556263.svg
+   :target: https://zenodo.org/badge/latestdoi/122556263
    :alt: doi  
 
 |
