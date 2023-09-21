@@ -67,7 +67,7 @@ clean:
 	rm -rf ofiber/__pycache__
 	rm -rf ofiber/*.pyc
 	rm -rf ofiber/.ipynb_checkpoints
-	rm -rf .tox
+	rm -rf .ruff_cache
 	rm -rf __pycache__
 	rm -rf build
 	rm -rf files

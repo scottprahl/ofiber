@@ -1,17 +1,18 @@
 [build-system]
-requires = [
-    "setuptools >= 44",
-    "setuptools_scm >= 2.0.0, <3"
-]
+requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
-[tool.tox]
-legacy_tox_ini = """
+[tool.ruff]
+line-length = 100
+ignore = ["F403"]
+exclude =['.git', '__pycache__', 'docs']
 
-[tox]
-envlist = py39
-
-[testenv]
-
-commands =
-"""
+[tool.check-manifest]
+ignore = [
+    ".readthedocs.yaml",
+    "docs/*",
+    "Makefile",
+    "release.txt",
+    "requirements.txt",
+    "todo.rst",
+]
