@@ -65,9 +65,9 @@ For examples and use cases, see <https://ofiber.readthedocs.io>
 Installation
 ------------
 
-Just use `pip`::
+Use ``pip``::
 
-   pip install --user --upgrade ofiber
+    pip install ofiber
 
 License
 -------

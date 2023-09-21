@@ -7,7 +7,7 @@ rstcheck:
 	-rstcheck CHANGELOG.rst
 	-rstcheck docs/index.rst
 	-rstcheck docs/changelog.rst
-	-rstcheck --ignore-directives automodule docs/ofiber.rst
+	-rstcheck --ignore-directives automodapi docs/ofiber.rst
 
 lint:
 	-pylint ofiber/basics.py

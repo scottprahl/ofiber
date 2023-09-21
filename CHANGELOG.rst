@@ -1,7 +1,7 @@
 Changelog
 ==========
 
-v0.7.0 (unreleased)
+0.7.0 (9/21/23)
 -------------------
 * better handling of propagation factor b
 * add import boilerplate needed for Jupyterlite
@@ -10,6 +10,13 @@ v0.7.0 (unreleased)
 * flake8 now passes
 * fix various docstrings
 * readthedocs fixes
+* ruff support
+* add erbium fiber doc
+* clean up notebooks
+* add copyright stuff
+* add .github actions
+* update badges
+* conda support
 
 v0.6.2 (9/5/2021)
 -----------------
