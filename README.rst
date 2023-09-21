@@ -3,11 +3,15 @@ ofiber
 
 by Scott Prahl
 
-.. image:: https://img.shields.io/pypi/v/ofiber
+.. image:: https://img.shields.io/pypi/v/ofiber?logoColor=green
    :target: https://pypi.org/project/ofiber/
    :alt: pypi
 
-.. image:: https://img.shields.io/conda/v/conda-forge/ofiber.svg
+.. image:: https://img.shields.io/github/v/tag/scottprahl/ofiber?label=github&color=green
+   :target: https://github.com/scottprahl/ofiber
+   :alt: github
+
+.. image:: https://img.shields.io/conda/vn/conda-forge/ofiber?label=conda
    :target: https://anaconda.org/conda-forge/ofiber
    :alt: conda
 
