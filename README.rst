@@ -13,8 +13,12 @@ by Scott Prahl
 
 .. image:: https://zenodo.org/badge/102148844.svg
    :target: https://zenodo.org/badge/latestdoi/102148844
-   :alt: doi
-|
+   :alt: doi  
+
+.. raw:: html
+
+   <br>
+
 .. image:: https://img.shields.io/github/license/scottprahl/ofiber
    :target: https://github.com/scottprahl/ofiber/blob/master/LICENSE.txt
    :alt: License
@@ -30,7 +34,11 @@ by Scott Prahl
 .. image:: https://img.shields.io/pypi/dm/ofiber
    :target: https://pypi.org/project/ofiber/
    :alt: Downloads
-|
+
+.. raw:: html
+
+   <br>
+
 .. image:: https://mybinder.org/badge_logo.svg
    :target: https://mybinder.org/v2/gh/scottprahl/ofiber/master?filepath=docs
    :alt: Binder
