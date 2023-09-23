@@ -3,7 +3,7 @@ ofiber
 
 by Scott Prahl
 
-.. image:: https://img.shields.io/pypi/v/ofiber?logoColor=green
+.. image:: https://img.shields.io/pypi/v/ofiber?color=green
    :target: https://pypi.org/project/ofiber/
    :alt: pypi
 
@@ -11,7 +11,7 @@ by Scott Prahl
    :target: https://github.com/scottprahl/ofiber
    :alt: github
 
-.. image:: https://img.shields.io/conda/vn/conda-forge/ofiber?label=conda
+.. image:: https://img.shields.io/conda/vn/conda-forge/ofiber?label=conda&color=green
    :target: https://github.com/conda-forge/ofiber-feedstock
    :alt: conda
 
