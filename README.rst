@@ -12,7 +12,7 @@ by Scott Prahl
    :alt: github
 
 .. image:: https://img.shields.io/conda/vn/conda-forge/ofiber?label=conda
-   :target: https://anaconda.org/conda-forge/ofiber
+   :target: https://github.com/conda-forge/ofiber-feedstock
    :alt: conda
 
 .. image:: https://zenodo.org/badge/122556263.svg
@@ -37,16 +37,6 @@ by Scott Prahl
    :target: https://pypi.org/project/ofiber/
    :alt: Downloads
 
-|
-
-.. image:: https://mybinder.org/badge_logo.svg
-   :target: https://mybinder.org/v2/gh/scottprahl/ofiber/master?filepath=docs
-   :alt: Binder
-   
-.. image:: https://colab.research.google.com/assets/colab-badge.svg
-   :target: https://colab.research.google.com/github/scottprahl/ofiber/blob/master
-   :alt: Colab
-
 -----
 
 A set of Python modules to calculate light propagation through optical fibers following
@@ -62,7 +52,17 @@ Use ``pip``::
 
     pip install ofiber
 
+or ``conda``::
+
+    conda install -c conda-forge pygrin
+
+or use a Jupyter notebook immediately by clicking the Google Colaboratory button below
+
+.. image:: https://colab.research.google.com/assets/colab-badge.svg
+  :target: https://colab.research.google.com/github/scottprahl/ofiber/blob/master
+  :alt: Colab
+
 License
 -------
 
-`ofiber` is licensed under the terms of the MIT license.
+``ofiber`` is licensed under the terms of the MIT license.
