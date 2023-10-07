@@ -3,15 +3,15 @@ ofiber
 
 by Scott Prahl
 
-.. image:: https://img.shields.io/pypi/v/ofiber?color=green
+.. image:: https://img.shields.io/pypi/v/ofiber?color=68CA66
    :target: https://pypi.org/project/ofiber/
    :alt: pypi
 
-.. image:: https://img.shields.io/github/v/tag/scottprahl/ofiber?label=github&color=green
+.. image:: https://img.shields.io/github/v/tag/scottprahl/ofiber?label=github&color=68CA66
    :target: https://github.com/scottprahl/ofiber
    :alt: github
 
-.. image:: https://img.shields.io/conda/vn/conda-forge/ofiber?label=conda&color=green
+.. image:: https://img.shields.io/conda/vn/conda-forge/ofiber?label=conda&color=68CA66
    :target: https://github.com/conda-forge/ofiber-feedstock
    :alt: conda
 
@@ -21,7 +21,7 @@ by Scott Prahl
 
 |
 
-.. image:: https://img.shields.io/github/license/scottprahl/ofiber
+.. image:: https://img.shields.io/github/license/scottprahl/ofiber?color=68CA66
    :target: https://github.com/scottprahl/ofiber/blob/master/LICENSE.txt
    :alt: License
 
@@ -29,13 +29,14 @@ by Scott Prahl
    :target: https://github.com/scottprahl/ofiber/actions/workflows/test.yaml
    :alt: Testing
 
-.. image:: https://readthedocs.org/projects/ofiber/badge
+.. image:: https://readthedocs.org/projects/ofiber/badge?color=68CA66
    :target: https://ofiber.readthedocs.io
    :alt: Docs
 
-.. image:: https://img.shields.io/pypi/dm/ofiber
+.. image:: https://img.shields.io/pypi/dm/ofiber?color=68CA66
    :target: https://pypi.org/project/ofiber/
    :alt: Downloads
+
 
 -----
 
