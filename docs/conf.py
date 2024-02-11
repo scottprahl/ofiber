@@ -18,7 +18,6 @@ import os.path
 project = 'ofiber'
 master_doc = 'index'
 
-
 def get_init_property(prop):
     """Return property from __init__.py."""
     here = os.path.abspath(os.path.dirname(__file__))
@@ -28,12 +27,9 @@ def get_init_property(prop):
         result = re.search(regex, file.read())
     return result.group(1)
 
-
 release = get_init_property("__version__")
 author = get_init_property("__author__")
 copyright = get_init_property("__copyright__")
-
-# -- General configuration ---------------------------------------------------
 
 # Sphinx extension modules
 extensions = [
@@ -49,7 +45,6 @@ napoleon_use_rtype = False
 
 # List of patterns, relative to source directory, of files to ignore
 exclude_patterns = ['_build',
-                    '.tox',
                     '**.ipynb_checkpoints',
                     ]
 
