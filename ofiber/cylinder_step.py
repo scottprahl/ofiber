@@ -1,6 +1,9 @@
 # pylint: disable=invalid-name
 # pylint: disable=no-name-in-module
 # pylint: disable=consider-using-f-string
+# pylint: disable=too-many-arguments
+# pylint: disable=no-member
+
 """
 Useful routines for step-index cylindrical waveguides.
 
@@ -45,11 +48,8 @@ calculations::
 
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.optimize import brentq
-from scipy.special import jn
-from scipy.special import jn_zeros
-from scipy.special import kn
-from scipy.special import jv
+import scipy.optimize
+from scipy import special
 
 _all_ = ('LP_mode_value',
          'LP_mode_values',
@@ -91,7 +91,7 @@ def _LHS_eqn_8_40(b, V, ell):
         LHS of equation 8.40                     [-]
     """
     U = V * np.sqrt(1 - b)
-    return U * jn(ell - 1, U) / jn(ell, U)
+    return U * special.jv(ell - 1, U) / special.jv(ell, U)
 
 
 def _RHS_eqn_8_40(b, V, ell):
@@ -109,7 +109,7 @@ def _RHS_eqn_8_40(b, V, ell):
         RHS of equation 8.40                     [-]
     """
     W = V * np.sqrt(b)
-    return -W * kn(ell - 1, W) / kn(ell, W)
+    return -W * special.kn(ell - 1, W) / special.kn(ell, W)
 
 
 def _cyl_mode_eqn(b, *args):
@@ -168,7 +168,7 @@ def _LP_mode_value(V, ell, em):
     abit = 1e-5
 
     # set up bounds for this mode
-    jnz = jn_zeros(ell, em)
+    jnz = special.jn_zeros(ell, em)
     lo = max(0, 1 - (jnz[em - 1] / V)**2) + abit
 
     if em == 1:
@@ -180,7 +180,7 @@ def _LP_mode_value(V, ell, em):
         return None  # no such mode
 
     try:
-        b = brentq(_cyl_mode_eqn, lo, hi, args=(V, ell))
+        b = scipy.optimize.brentq(_cyl_mode_eqn, lo, hi, args=(V, ell))
     except ValueError:  # happens when both hi and lo values have same sign
         return None     # therefore no such mode exists
 
@@ -316,7 +316,7 @@ def LP_core_irradiance(V, b, ell):
         total core power over core area          [-]
     """
     U = V * np.sqrt(1 - b)
-    return 1 - jn(ell + 1, U) * jn(ell - 1, U) / jn(ell, U)**2
+    return 1 - special.jv(ell + 1, U) * special.jv(ell - 1, U) / special.jv(ell, U)**2
 
 
 def LP_clad_irradiance(V, b, ell):
@@ -334,7 +334,7 @@ def LP_clad_irradiance(V, b, ell):
         total cladding power over core area      [-]
     """
     W = V * np.sqrt(b)
-    return kn(ell + 1, W) * kn(ell - 1, W) / kn(ell, W)**2 - 1
+    return special.kn(ell + 1, W) * special.kn(ell - 1, W) / special.kn(ell, W)**2 - 1
 
 
 def LP_total_irradiance(V, b, ell):
@@ -353,8 +353,8 @@ def LP_total_irradiance(V, b, ell):
     """
     U = V * np.sqrt(1 - b)
     W = V * np.sqrt(b)
-    val = V**2 / U**2 * kn(ell + 1, W)
-    val *= kn(ell - 1, W) / kn(ell, W)**2
+    val = V**2 / U**2 * special.kn(ell + 1, W)
+    val *= special.kn(ell - 1, W) / special.kn(ell, W)**2
     return val
 
 
@@ -374,8 +374,8 @@ def LP_radial_field(V, b, ell, r_over_a):
     W = V * np.sqrt(b)
     r = abs(r_over_a)  # same value for negative radii
 
-    A = jn(ell, U * r) / jn(ell, U)
-    B = kn(ell, W * r) / kn(ell, W)
+    A = special.jv(ell, U * r) / special.jv(ell, U)
+    B = special.kn(ell, W * r) / special.kn(ell, W)
     values = np.where(r < 1, A, B)
     return values / np.sqrt(LP_total_irradiance(V, b, ell))
 
@@ -416,7 +416,7 @@ def gaussian_envelope_Omega(V):
     b = LP_mode_value(V, 0, 1)
     U = V * np.sqrt(1 - b)
     W = V * np.sqrt(b)
-    Omega_over_a = jn(0, U) * V / U * kn(1, W) / kn(0, W)
+    Omega_over_a = special.jv(0, U) * V / U * special.kn(1, W) / special.kn(0, W)
     return Omega_over_a
 
 
@@ -516,7 +516,7 @@ def _bending_loss_db_scalar(n1, Delta, a, Rc, lambda0):
     U = V * np.sqrt(1 - b)
     W = V * np.sqrt(b)
     val = 4.343 * np.sqrt(np.pi / 4 / a / Rc)
-    val *= (U / V / kn(1, W))**2
+    val *= (U / V / special.kn(1, W))**2
     val *= W**-1.5
     val *= np.exp(-2 * W**3 * Rc / 3 / k0**2 / a**3 / n1**2)
     return val
@@ -594,8 +594,8 @@ def _PetermannW_scalar(V):
         return np.nan
     U = V * np.sqrt(1 - b)
     W = V * np.sqrt(b)
-    denom = W * jn(0, U)
-    return np.sqrt(2) * jn(1, U) / denom
+    denom = W * special.jv(0, U)
+    return np.sqrt(2) * special.jv(1, U) / denom
 
 
 def PetermannW(V):
@@ -656,12 +656,12 @@ def _V_d2bV_by_V_scalar(V, ell):
     U = V * np.sqrt(1 - b)
     W = V * np.sqrt(b)
 
-    kappa_ell = kn(ell, W)**2 / kn(ell - 1, W)
-    kappa_ell /= kn(ell + 1, W)
+    kappa_ell = special.kn(ell, W)**2 / special.kn(ell - 1, W)
+    kappa_ell /= special.kn(ell + 1, W)
     summ = 3 * W**2 - 2 * kappa_ell * (W**2 - U**2)
     val = W * (W**2 + U**2 * kappa_ell) * (kappa_ell - 1)
-    val *= (kn(ell - 1, W) + kn(ell + 1, W))
-    val /= kn(ell, W)
+    val *= (special.kn(ell - 1, W) + special.kn(ell + 1, W))
+    val /= special.kn(ell, W)
     summ += val
     return 2 * U**2 * kappa_ell / V**2 / W**2 * summ
 
@@ -729,7 +729,8 @@ def _FF_polar_x(ell, ka, theta, V, b):
     Vb = V * np.sqrt(1 - b)
     ell1 = ell + 1
 
-    Flnumer = kasin * jn(ell1, kasin) - (jn(ell, kasin) / jn(ell, Vb)) * Vb * jn(ell1, Vb)
+    Flnumer = kasin * special.jv(ell1, kasin) - (special.jv(ell, kasin) \
+              / special.jv(ell, Vb)) * Vb * special.jv(ell1, Vb)
     Fldenom = (Vb**2 - kasin**2) * (V**2 * b + kasin**2)
 
     return Flnumer / Fldenom
@@ -738,10 +739,10 @@ def _FF_polar_x(ell, ka, theta, V, b):
 def FF_irradiance_x(r, theta, phi, ell, lambda0, a, V, b):
     """
     Normalized far-field irradiance polarized in the x-direction.
-    
+
     This calculation is based eqn 10.12 for the far-field from Chen, 
     Foundations for Guided-Wave Optics, Wiley-Interscience, 2007.  
-    
+
     The magnitude of the field is squared and normalized by the square
     of the electric field magnitude.
 
@@ -766,7 +767,7 @@ def FF_irradiance_x(r, theta, phi, ell, lambda0, a, V, b):
 def FF_polar_irradiance_x(r, theta, ell, lambda0, a, V, b):
     """
     Integral of x-polarized far-field irradiance over all azimuthal angles.
-    
+
     The magnitude of the field is squared and normalized by the square
     of the electric field magnitude. The integral of cos^2(ell*phi) over
     phi from 0 to 2𝜋 is 𝜋 and we get a slightly simpler result than
@@ -781,7 +782,7 @@ def FF_polar_irradiance_x(r, theta, ell, lambda0, a, V, b):
         V: Normalized frequency parameter of the fiber.
         b: Normalized propagation constant.
     Returns:
-        Azimuthally integrated irradiance pattern as a function of R and theta, normalized by E_mode^2.
+        Azimuthally integrated irradiance pattern.
     """
     k = 2 * np.pi / lambda0
     FF_ell = _FF_polar_x(ell, k*a, theta, V, b)
