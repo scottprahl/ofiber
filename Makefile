@@ -62,11 +62,13 @@ lite:
 clean:
 	rm -rf docs/api 
 	rm -rf docs/_build 
+	rm -rf docs/.ipynb_checkpoints
 	rm -rf dist
 	rm -rf ofiber.egg-info
 	rm -rf ofiber/__pycache__
 	rm -rf ofiber/*.pyc
 	rm -rf ofiber/.ipynb_checkpoints
+	rm -rf tests/__pycache__
 	rm -rf .ruff_cache
 	rm -rf __pycache__
 	rm -rf build
