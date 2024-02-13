@@ -16,7 +16,7 @@ by Scott Prahl
    :alt: conda
 
 .. image:: https://zenodo.org/badge/122556263.svg
-   :target: https://zenodo.org/badge/latestdoi/122556263
+   :target: https://zenodo.org/doi/10.5281/zenodo.8368598
    :alt: doi  
 
 |
