@@ -22,6 +22,7 @@
    :hidden:
 
    4-Circular-Step-Index-Fiber
+   9-Far-field-irradiance
 
 .. toctree::
    :caption: Dispersion
