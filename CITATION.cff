@@ -3,9 +3,9 @@ authors:
   given-names: Scott
   orcid: https://orcid.org/0000-0003-1468-6851
 cff-version: 1.2.0
-date-released: '2023-09-21'
+date-released: '2024-02-13'
 doi: 10.5281/zenodo.8368599
 message: If you use this software, please cite it as below.
 title: 'ofiber: a python module for light propagation in optical fibers.'
 url: https://zenodo.org/doi/10.5281/zenodo.8368598
-version: 0.7.1
+version: 0.8.0
