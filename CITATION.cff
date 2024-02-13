@@ -7,5 +7,5 @@ date-released: '2023-09-21'
 doi: 10.5281/zenodo.8368599
 message: If you use this software, please cite it as below.
 title: 'ofiber: a python module for light propagation in optical fibers.'
-url: https://zenodo.org/badge/latestdoi/102148844
+url: https://zenodo.org/doi/10.5281/zenodo.8368598
 version: 0.7.1
