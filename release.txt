@@ -6,19 +6,21 @@
 # update the version in ofiber/__init__.py
   git commit -m 'update version' ofiber/__init__.py
 
-# update CHANGELOG.txt  `git shortlog v0.5.0..HEAD`
+# update CHANGELOG.txt  `git shortlog v0.8.0..HEAD`
   git commit -m 'update recent changes' CHANGELOG.txt
   git push
 
 # create release tag on github
-  git tag v0.6.1
-  git push origin v0.6.1
+  git tag v0.8.0
+  git push origin v0.8.0
 
-# upload source to pypi
-  python3 -m build
-  python3 -m twine upload dist/*
-
-# update/check releases
+# manually publish release at
   open https://github.com/scottprahl/ofiber
+  
+# verify github action success
+  open https://zenodo.org/badge/latestdoi/102148844
   open https://pypi.org/project/ofiber/
   open https://ofiber.readthedocs.io
+  
+# wait for feedstock update
+  open https://github.com/conda-forge/ofiber-feedstock
