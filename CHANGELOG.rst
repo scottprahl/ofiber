@@ -1,7 +1,14 @@
 Changelog
 ==========
 
-0.7.0 (9/21/23)
+0.8.0 (2/13/24)
+-------------------
+* add functions for far-field irradiance (thanks @matt8s)
+* improve calc of b for cylindrical step fibers for large V
+* add new notebook for far-field irradiance
+* enable use of arrays in `cylinder_step.LP_mode_value()`
+
+0.7.1 (9/21/23)
 -------------------
 * fix long-description for pypi
 
