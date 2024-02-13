@@ -51,30 +51,29 @@ from scipy.special import jn_zeros
 from scipy.special import kn
 from scipy.special import jv
 
-__all__ = ('LP_mode_value',
-           'LP_mode_values',
-           'plot_LP_modes',
-           'LP_core_irradiance',
-           'LP_clad_irradiance',
-           'LP_total_irradiance',
-           'LP_radial_field',
-           'LP_radial_irradiance',
-           'gaussian_envelope_Omega',
-           'gaussian_radial_irradiance',
-           'transverse_misalignment_loss_db',
-           'angular_misalignment_loss_db',
-           'longitudinal_misalignment_loss_db',
-           'bending_loss_db',
-           'MFR',
-           'MFD',
-           'PetermannW',
-           'PetermannW_Approx',
-           'V_d2bV_by_V',
-           'V_d2bV_by_V_Approx',
-           'FFazim',
-           'IrradFFxazint',
-           'IrradFFx',
-            )
+_all_ = ('LP_mode_value',
+         'LP_mode_values',
+         'plot_LP_modes',
+         'LP_core_irradiance',
+         'LP_clad_irradiance',
+         'LP_total_irradiance',
+         'LP_radial_field',
+         'LP_radial_irradiance',
+         'gaussian_envelope_Omega',
+         'gaussian_radial_irradiance',
+         'transverse_misalignment_loss_db',
+         'angular_misalignment_loss_db',
+         'longitudinal_misalignment_loss_db',
+         'bending_loss_db',
+         'MFR',
+         'MFD',
+         'PetermannW',
+         'PetermannW_Approx',
+         'V_d2bV_by_V',
+         'V_d2bV_by_V_Approx',
+         'FF_polar_irradiance_x',
+         'FF_irradiance_x',
+          )
 
 
 def _LHS_eqn_8_40(b, V, ell):
@@ -134,7 +133,7 @@ def _cyl_mode_eqn(b, *args):
     return g1 - g2
 
 
-def LP_mode_value(V, ell, em):
+def _LP_mode_value(V, ell, em):
     """
     Calculate guided b for mode (ell,em) in a circular step-index fiber.
 
@@ -166,7 +165,7 @@ def LP_mode_value(V, ell, em):
     if V <= 0:
         return None    # V must be positive
 
-    abit = 1e-3
+    abit = 1e-5
 
     # set up bounds for this mode
     jnz = jn_zeros(ell, em)
@@ -186,6 +185,51 @@ def LP_mode_value(V, ell, em):
         return None     # therefore no such mode exists
 
     return b
+
+
+def LP_mode_value(V, ell, em):
+    """
+    Calculate guided b for mode (ell,em) in a circular step-index fiber.
+
+    b is the normalized propagation constant.  Each guided mode in an optical
+    fiber has a specific value of b that depends on the fiber parameter V
+    and the mode numbers ell and em.
+    
+    This is a wrapper function that handles V, ell, or em being possible
+    arrays.  See `LP_mode_value` for details.
+
+    Args:
+        V:   V-parameter for optical fiber    [-]
+        ell: primary fiber mode   (integer)   [-]
+        em:  secondary fiber mode (integer>0) [-]
+    Returns:
+        guided normalized propagation constant for mode (ell,em)  [-]
+    """
+    if em < 1:
+        raise ValueError("The mode number 'em' must be one or greater.")
+
+    if np.isscalar(V) + np.isscalar(ell) + np.isscalar(em) < 2:
+        raise ValueError("only one of V, ell, and em can be an array")
+
+    if not np.isscalar(V):
+        b = np.zeros_like(V)
+        for i, VV in enumerate(V):
+            b[i] = LP_mode_value(VV, ell, em)
+        return b
+
+    if not np.isscalar(ell):
+        b = np.zeros_like(ell)
+        for i, ll in enumerate(ell):
+            b[i] = LP_mode_value(V, ll, em)
+        return b
+
+    if not np.isscalar(em):
+        b = np.zeros_like(em)
+        for i, mm in enumerate(em):
+            b[i] = LP_mode_value(V, ell, mm)
+        return b
+
+    return _LP_mode_value(V, ell, em)
 
 
 def LP_mode_values(V, ell):
@@ -660,51 +704,85 @@ def V_d2bV_by_V_Approx(V):
     return 0.080 + 0.549 * (2.834 - V)**2
 
 
-def FFazim(l,lmbd,a,Theta,V,b):
-    '''
-    Calculate $F_{l}(\Theta)$ from Chen Eq. (10.13)
-    l: azimuthal mode number $l$
-    Theta: polar angle $\Theta$ in radians'''
-    k = 2*np.pi/lmbd
-    # V = ofiber.basics.V_parameter(a, NA, lmbd)
-    ka = np.multiply(k,a)
-    kasin = np.multiply(ka,np.sin(Theta))
-    Vsqrt1mb = V*np.sqrt(1-b)
-    Jl = jv(l, kasin)
-    Jlp1 = jv(l+1,kasin)
-    kassq = np.square(kasin)
-    Flden1 = np.subtract(np.square(Vsqrt1mb),kassq)
-    Flden2 = np.add(V**2*b, kassq)
-    Flden = np.multiply(Flden1,Flden2)
-    Flnum1 = np.multiply(kasin,Jlp1)
-    VsqrtJlp1 = np.multiply(Vsqrt1mb,jv(l+1,Vsqrt1mb))
-    JlkovJl = np.divide(Jl, jv(l, Vsqrt1mb))
-    Flnum2 = np.multiply(JlkovJl,VsqrtJlp1)
-    Flnum = np.subtract(Flnum1,Flnum2)
-    return np.divide(Flnum,Flden)
+def _FF_polar_x(ell, ka, theta, V, b):
+    """
+    Polar component of the far-field irradiance polarized in the x-direction.
+    
+    This implements equation 10.13 from Chen, Foundations for Guided-Wave Optics,
+    Wiley-Interscience, 2007.  Use FF_irradiance_x() below to get the far-field
+    irradiance.
+    
+    The polar angle is measured from the optical axis of the fiber.
+    
+    The product ka is dimensionless and is the product k * a = 2𝜋a/λ
+
+    Args:
+        ell: azimuthal mode number.
+        ka: wavenumber * fiber radius
+        theta: polar angle to calculate the field (radians).
+        V: normalized frequency parameter of the fiber.
+        b: normalized propagation constant.
+    Returns:
+        The calculated azimuthal field distribution
+    """
+    kasin = ka * np.sin(theta)
+    Vb = V * np.sqrt(1 - b)
+    ell1 = ell + 1
+
+    Flnumer = kasin * jn(ell1, kasin) - (jn(ell, kasin) / jn(ell, Vb)) * Vb * jn(ell1, Vb)
+    Fldenom = (Vb**2 - kasin**2) * (V**2 * b + kasin**2)
+
+    return Flnumer / Fldenom
 
 
-def IrradFFx(R,Theta,Phi,l,lmbd,a,V,b):
-    '''
-    Chen Eq. (10.12), absolute value squared.
-    We divide by $E_{l}^2$.
-    FFl : output of FFazim
-    '''
-    FFl = np.square(FFazim(l,lmbd,a,Theta,V,b))
-    k = 2*np.pi/lmbd
-    kaVcub = np.power(np.multiply(k*a,V),4)
-    cossq = np.square(np.cos(np.multiply(l,Phi)))
-    return np.divide(np.multiply(FFl,np.multiply(kaVcub,cossq)),np.square(k*R))
+def FF_irradiance_x(r, theta, phi, ell, lambda0, a, V, b):
+    """
+    Normalized far-field irradiance polarized in the x-direction.
+    
+    This calculation is based eqn 10.12 for the far-field from Chen, 
+    Foundations for Guided-Wave Optics, Wiley-Interscience, 2007.  
+    
+    The magnitude of the field is squared and normalized by the square
+    of the electric field magnitude.
+
+    Args:
+        r: radial distance from the fiber axis (microns).
+        theta: polar angle in radians.
+        phi: azimuthal angle in radians.
+        ell: azimuthal mode number.
+        lambda0: wavelength of light in the medium (microns).
+        a: Radius of the fiber core (microns).
+        V: normalized frequency parameter of the fiber.
+        b: normalized propagation constant.
+    Returns:
+        The irradiance pattern as a function of r, theta, and phi.
+    """
+    k = 2 * np.pi / lambda0
+    FF_ell = _FF_polar_x(ell, k*a, theta, V, b)
+    FF = FF_ell * (k * a * V)**2 * np.cos(ell * phi) / (k * r)
+    return FF**2
 
 
-def IrradFFxazint(R,Theta,l,lmbd,a,V,b):
-    '''
-    Chen Eq. (10.12), absolute value squared.
-    We divide by $E_{l}^2$.
-    FFl : output of FFazim
-    The integral from 0 to $2\pi$ of $\cos^2 l\Phi$ is simply $\pi$.
-    '''
-    FFl = np.square(FFazim(l,lmbd,a,Theta,V,b))
-    k = 2*np.pi/lmbd
-    kaVcub = np.power(np.multiply(k*a,V),4)
-    return np.divide(np.multiply(FFl,np.multiply(kaVcub,np.pi)),np.square(k*R))
+def FF_polar_irradiance_x(r, theta, ell, lambda0, a, V, b):
+    """
+    Integral of x-polarized far-field irradiance over all azimuthal angles.
+    
+    The magnitude of the field is squared and normalized by the square
+    of the electric field magnitude. The integral of cos^2(ell*phi) over
+    phi from 0 to 2𝜋 is 𝜋 and we get a slightly simpler result than
+    the function above.
+
+    Args:
+        r: radial distance from the fiber axis (microns).
+        theta: polar angle in radians.
+        ell: azimuthal mode number.
+        lambda0: Wavelength of light in the medium (microns).
+        a: Radius of the fiber core (microns).
+        V: Normalized frequency parameter of the fiber.
+        b: Normalized propagation constant.
+    Returns:
+        Azimuthally integrated irradiance pattern as a function of R and theta, normalized by E_mode^2.
+    """
+    k = 2 * np.pi / lambda0
+    FF_ell = _FF_polar_x(ell, k*a, theta, V, b)
+    return np.pi * (FF_ell * (k * a * V)**2 / (k * r))**2
