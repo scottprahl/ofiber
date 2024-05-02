@@ -704,7 +704,7 @@ def V_d2bV_by_V_Approx(V):
     return 0.080 + 0.549 * (2.834 - V)**2
 
 
-def _FF_polar_x(ell, ka, theta, V, b):
+def _FF_polar_x(kasin, V, ell, b):
     """
     Polar component of the far-field irradiance polarized in the x-direction.
     
@@ -718,14 +718,13 @@ def _FF_polar_x(ell, ka, theta, V, b):
 
     Args:
         ell: azimuthal mode number.
-        ka: wavenumber * fiber radius
-        theta: polar angle to calculate the field (radians).
+        kasin: wavenumber * fiber radius * sin(theta), where
+              theta: polar angle to calculate the field (radians).
         V: normalized frequency parameter of the fiber.
         b: normalized propagation constant.
     Returns:
-        The calculated azimuthal field distribution
+        The calculated polar field distribution
     """
-    kasin = ka * np.sin(theta)
     Vb = V * np.sqrt(1 - b)
     ell1 = ell + 1
 
@@ -759,7 +758,8 @@ def FF_irradiance_x(r, theta, phi, ell, lambda0, a, V, b):
         The irradiance pattern as a function of r, theta, and phi.
     """
     k = 2 * np.pi / lambda0
-    FF_ell = _FF_polar_x(ell, k*a, theta, V, b)
+    kasin = k*a * np.sin(theta)
+    FF_ell = _FF_polar_x(kasin, V, ell, b)
     FF = FF_ell * (k * a * V)**2 * np.cos(ell * phi) / (k * r)
     return FF**2
 
@@ -785,5 +785,152 @@ def FF_polar_irradiance_x(r, theta, ell, lambda0, a, V, b):
         Azimuthally integrated irradiance pattern.
     """
     k = 2 * np.pi / lambda0
-    FF_ell = _FF_polar_x(ell, k*a, theta, V, b)
+    kasin = k*a * np.sin(theta)
+    FF_ell = _FF_polar_x(kasin, V, ell, b)
     return np.pi * (FF_ell * (k * a * V)**2 / (k * r))**2
+
+
+def _FF_node_polar_angle(V, ell, em):
+    """
+    Calculate the smallest nonzero polar angle Θ_N for which the far-field
+    field pattern has a node (zero), for LP mode (ell,em) in a circular 
+    step-index fiber.
+    The polar angle-dependent factor in the far-field pattern is given by
+    eq. (10.13) in Chen, and here by the function _FF_polar_x.
+    This angle is a standard metric of the angular spread of an optical 
+    fiber's output radiation.
+
+    This private function only works for scalar values of V, ell, and em.
+    The use of the public function FF_node_polar_angle is demonstrated in
+    9-Far-field-irradiance.ipynb.
+
+    b is the normalized propagation constant. Each guided mode in an optical
+    fiber has a specific value of b that depends on the fiber parameter V
+    and the mode numbers ell and em.
+
+    If no mode exists, a value of np.nan is returned.
+
+    The LP_lm is specified by (ell,em) to avoid confusion between the
+    number 1 and the letter l.
+
+    For cylindrical fibers, em is a positive integer: thus there are modes
+    LP_01, LP_02, but not LP_10. If em <= 0 or V <= 0, None is returned.
+
+    Implementation details:
+    Bracketing is used to find the zero angle. The initial angle is taken
+    to be just above 0, as fiber modes with ℓ≠0 have nodes at 0
+    itself. The first zero is searched using a bracket upper bound which is a
+    multiple of inc = 1E-2, up to ntry=3000 attempts. These search parameters
+    were found to work well for a realistic fiber, but may be altered to
+    improve efficiency or alternatively to avoid missing a node.
+
+    Args:
+        V:   generalized frequency V for optical fiber (real number)    [-]
+        ell: azimuthal mode number ℓ     (nonnegative integer)          [-]
+        em:  radial mode number m        (positive integer)             [-]
+    Returns:
+        polar angle Θ_N of first far-field zero for mode (ℓ,m)          [-]
+    """
+    if ell < 0:
+        ell *= -1   # negative ells are same as positive ones
+
+    if em <= 0:
+        return None    # modes start with 1, e.g., LP_01
+
+    if V <= 0:
+        return None    # V must be positive
+
+    b = LP_mode_value(V, ell, em)
+    if (b==None): return np.nan 
+    # This occurs when the fiber does not support the (l,m) mode for the given V
+
+    # set up bounds for the zero search 
+    lo = 1E-5 
+    # kasin = 0 is the lower bound on the function domain.
+    # For ℓ≠0, the function is 0 at 0.
+    # So we start the search for the first nontrivial zero
+    # just above kasin = 0.
+    
+    inc = 1E-2 
+    hi = inc
+    # we use this as a cautious initial guess. Very few fibers would have
+    # their zero in this initial range. But more importantly, it seems likely no fibers
+    # would have multiple zeros in this range, which would lead to an error condition.
+
+    ntry=3000
+    f1 = _FF_polar_x(lo,V,ell,b)
+    f2 = _FF_polar_x(hi,V,ell,b)
+
+    for j in range(ntry):
+        if (f1*f2 < 0.0): break
+        hi = (j+1)*inc
+        f2=_FF_polar_x(hi, V,ell,b)
+    else:
+        raise StopIteration(r'No sign change in %d iterations' % ntry)
+
+    return scipy.optimize.brentq(_FF_polar_x, lo, hi, args=(V, ell, b)) # kasinThetaN
+    # We do not suppress any errors from this subroutine, as we want to know if it's working
+
+
+def FF_node_polar_angle(V, ell, em):
+    """
+    Calculate the smallest nonzero polar angle Θ_N for which the far-field
+    field pattern has a node (zero), for LP mode (ell,em) in a circular
+    step-index fiber.
+    The polar angle-dependent factor in the far-field pattern is given by
+    eq. (10.13) in Chen, and here by the function _FF_polar_x.
+    This angle is a standard metric of the angular spread of an optical 
+    fiber's output radiation. Note however that the higher the radial
+    mode number m, the smaller the fraction of the irradiance is contained
+    within the first node.
+    The use of this function is demonstrated in 
+    9-Far-field-irradiance.ipynb.
+
+    b is the normalized propagation constant. Each guided mode in an optical
+    fiber has a specific value of b that depends on the fiber parameter V
+    and the mode numbers ell and em.
+
+    If no mode exists, a value of np.nan is returned.
+
+    The LP_lm is specified by (ell,em) to avoid confusion between the
+    number 1 and the letter l.
+
+    For cylindrical fibers, em is a positive integer: thus there are modes
+    LP_01, LP_02, but not LP_10. If em <= 0 or V <= 0, None is returned.
+    
+    This is a wrapper function that handles V, ell, or em being possible
+    arrays. The private function `_FF_node_polar_angle` contains the
+    details of the calculation itself.
+
+    Args:
+        V:   generalized frequency V for optical fiber (real number)    [-]
+        ell: azimuthal mode number ℓ     (nonnegative integer)          [-]
+        em:  radial mode number m        (positive integer)             [-]
+    Returns:
+        polar angle Θ_N of first far-field zero for mode (ℓ,m)          [-]
+    """
+    if em < 1:
+        raise ValueError("The mode number 'em' must be one or greater.")
+
+    if np.isscalar(V) + np.isscalar(ell) + np.isscalar(em) < 2:
+        raise ValueError("only one of V, ell, and em can be an array")
+
+    if not np.isscalar(V):
+        kasin = np.zeros_like(V)
+        for i, VV in enumerate(V):
+            kasin[i] = FF_node_polar_angle(VV, ell, em)
+        return kasin
+
+    if not np.isscalar(ell):
+        kasin = np.zeros_like(ell)
+        for i, ll in enumerate(ell):
+            kasin[i] = FF_node_polar_angle(V, ll, em)
+        return kasin
+
+    if not np.isscalar(em):
+        kasin = np.zeros_like(em)
+        for i, mm in enumerate(em):
+            kasin[i] = FF_node_polar_angle(V, ell, mm)
+        return kasin
+
+    return _FF_node_polar_angle(V, ell, em)
