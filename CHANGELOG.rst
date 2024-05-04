@@ -1,6 +1,13 @@
 Changelog
 ==========
 
+0.8.1 (5/4/2024)
+-------------------
+* Implemented FF_node_polar_angle (@matt8s)
+* Added FF_node_polar_angle() example to 9-Far-field-irradiance.ipynb (@matt8s)
+* Modified _FF_polar_x to take argument kasin (@matt8s)
+* Improved configuration for ruff linting tool
+
 0.8.0 (2/13/24)
 -------------------
 * add functions for far-field irradiance (thanks @matt8s)
