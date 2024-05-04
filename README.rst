@@ -35,10 +35,8 @@ by Scott Prahl
 |license-badge| |test-badge| |readthedocs-badge| |downloads-badge|
 
 Python code to calculate light propagation through optical fibers following
-the approach presented in `Ghatak and Thyagarajan <https://doi.org/10.1017/CBO9781139174770>`_, *An Introduction to Fiber Optics,*
-Cambridge University Press (1980).  Far-field fiber calculations are based on `Chen, Foundations for 
+the approach presented in `Ghatak and Thyagarajan *An Introduction to Fiber Optics,* <https://doi.org/10.1017/CBO9781139174770>`_.  Far-field fiber calculations are based on `Chen, Foundations for 
 Guided-Wave Optics <https://doi.org/10.1002/0470042222>`_.
-
 
 For examples and use cases, see <https://ofiber.readthedocs.io>
 
