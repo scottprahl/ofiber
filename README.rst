@@ -6,7 +6,6 @@ by Scott Prahl
 .. image:: https://img.shields.io/pypi/v/ofiber?color=68CA66
    :target: https://pypi.org/project/ofiber/
    :alt: pypi
-
 .. image:: https://img.shields.io/github/v/tag/scottprahl/ofiber?label=github&color=68CA66
    :target: https://github.com/scottprahl/ofiber
    :alt: github
@@ -55,7 +54,7 @@ Use ``pip``::
 
 or ``conda``::
 
-    conda install -c conda-forge pygrin
+    conda install -c conda-forge ofiber
 
 or use a Jupyter notebook immediately by clicking the Google Colaboratory button below
 
