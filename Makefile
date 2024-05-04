@@ -20,16 +20,8 @@ lint:
 	-pylint ofiber/refraction.py
 	-pylint ofiber/__init__.py
 
-doccheck:
-	-pydocstyle ofiber/basics.py
-	-pydocstyle ofiber/cylinder_step.py
-	-pydocstyle ofiber/dispersion.py
-	-pydocstyle ofiber/graded_index.py
-	-pydocstyle ofiber/noise.py
-	-pydocstyle ofiber/planar_parabolic.py
-	-pydocstyle ofiber/planar_step.py
-	-pydocstyle ofiber/refraction.py
-	-pydocstyle ofiber/__init__.py
+ruff:
+	ruff check
 
 notecheck:
 	make clean
@@ -37,7 +29,7 @@ notecheck:
 
 rcheck:
 	make lint
-	make doccheck
+	make ruff
 	make rstcheck
 	make html
 	check-manifest
