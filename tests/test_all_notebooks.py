@@ -4,7 +4,7 @@ This file is intended to be the target of a pytest run.
 
 It recursively finds all `.ipynb` files in the docs directory, ignoring
 directories that start with '.' and any files matching patterns found in the file
-`.testignore`
+`.testignore`.
 
 Sample invocations of pytest which make the output nicely readable::
 
@@ -48,7 +48,8 @@ ids = [str(n) for n in notebooks]
 
 @pytest.mark.parametrize("notebook", notebooks, ids=ids)
 def test_run_notebook(notebook):
-    """Read and execute notebook
+    """
+    Read and execute notebook.
 
     The method here is directly from the nbconvert docs
 

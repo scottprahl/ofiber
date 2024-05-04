@@ -59,8 +59,8 @@ def parabolic_propagation_constant(m, lambda0, n1, a, V):
         m: mode number                                  [-]
         lambda0: wavelength in vacuum                   [m]
         n1: centerline index of refraction of waveguide [-]
-        Delta: relative refractive index                [-]
         a: half thickness of the waveguide              [m]
+        V: the V-parameter for the waveguide
 
     Returns:
         beta for the mth mode

@@ -74,7 +74,7 @@ _all_ = ('LP_mode_value',
          'FF_polar_irradiance_x',
          'FF_irradiance_x',
          'FF_node_polar_angle',
-          )
+         )
 
 
 def _LHS_eqn_8_40(b, V, ell):
@@ -88,6 +88,7 @@ def _LHS_eqn_8_40(b, V, ell):
         b:      normalized propagation constant  [-]
         V:      V-parameter for fiber            [-]
         ell:    desired fiber mode               [-]
+
     Returns:
         LHS of equation 8.40                     [-]
     """
@@ -106,6 +107,7 @@ def _RHS_eqn_8_40(b, V, ell):
         b:      normalized propagation constant  [-]
         V:      V-parameter for fiber            [-]
         ell:    desired fiber mode               [-]
+
     Returns:
         RHS of equation 8.40                     [-]
     """
@@ -122,8 +124,8 @@ def _cyl_mode_eqn(b, *args):
 
     Args:
         b:      normalized propagation constant  [-]
-        arg[0]: V-parameter for optical fiber    [-]
-        arg[1]: desired fiber mode               [-]
+        *args: two term array with arg[0] = V-parameter and arg[1]=desired fiber mode
+
     Returns:
         LHS-RHS of equation 8.40                 [-]
     """
@@ -154,6 +156,7 @@ def _LP_mode_value(V, ell, em):
         V:   V-parameter for optical fiber    [-]
         ell: primary fiber mode   (integer)   [-]
         em:  secondary fiber mode (integer>0) [-]
+
     Returns:
         guided normalized propagation constant for mode (ell,em)  [-]
     """
@@ -203,6 +206,7 @@ def LP_mode_value(V, ell, em):
         V:   V-parameter for optical fiber    [-]
         ell: primary fiber mode   (integer)   [-]
         em:  secondary fiber mode (integer>0) [-]
+
     Returns:
         guided normalized propagation constant for mode (ell,em)  [-]
     """
@@ -244,6 +248,7 @@ def LP_mode_values(V, ell):
     Args:
         V:   V-parameter for optical fiber    [-]
         ell: primary fiber mode   (integer)   [-]
+
     Returns:
         array of normalized propagation constant for mode ell  [-]
     """
@@ -267,6 +272,7 @@ def plot_LP_modes(V, ell):
     Args:
         V:   V-parameter for optical fiber    [-]
         ell: primary fiber mode   (integer)   [-]
+
     Returns:
         graph for mode ell   [matplotlib.pyplot object]
     """
@@ -313,6 +319,7 @@ def LP_core_irradiance(V, b, ell):
         V:      V-parameter for fiber            [-]
         b:      normalized propagation constant  [-]
         ell:    desired fiber mode               [-]
+
     Returns:
         total core power over core area          [-]
     """
@@ -331,6 +338,7 @@ def LP_clad_irradiance(V, b, ell):
         V:      V-parameter for fiber            [-]
         b:      normalized propagation constant  [-]
         ell:    desired fiber mode               [-]
+
     Returns:
         total cladding power over core area      [-]
     """
@@ -349,6 +357,7 @@ def LP_total_irradiance(V, b, ell):
         V:      V-parameter for fiber            [-]
         b:      normalized propagation constant  [-]
         ell:    desired fiber mode               [-]
+
     Returns:
         total power over core area               [-]
     """
@@ -368,6 +377,7 @@ def LP_radial_field(V, b, ell, r_over_a):
         b:        normalized propagation constant  [-]
         ell:      desired fiber mode               [-]
         r_over_a: (radial position)/(core radius)  [-]
+
     Returns:
         normalized field at point r_over_a         [-]
     """
@@ -395,6 +405,7 @@ def LP_radial_irradiance(V, b, ell, r_over_a):
         b:        normalized propagation constant  [-]
         ell:      desired fiber mode               [-]
         r_over_a: (radial position)/(core radius)  [-]
+
     Returns:
         normalized irradiance at points r_over_a   [-]
     """
@@ -411,6 +422,7 @@ def gaussian_envelope_Omega(V):
 
     Args:
         V:        V-parameter for fiber            [-]
+
     Returns:
         Omega_over_core_radius                     [-]
     """
@@ -433,6 +445,7 @@ def gaussian_radial_irradiance(V, r_over_a):
     Args:
         V:        V-parameter for fiber            [-]
         r_over_a: (radial position)/(core radius)  [-]
+
     Returns:
         normalized irradiance at points r_over_a   [-]
     """
@@ -450,6 +463,7 @@ def transverse_misalignment_loss_db(w1, w2, u):
         w1:      mode field radius of first fiber  [m]
         w2:      mode field radius of second fiber [m]
         u:       transverse misalignment           [m]
+
     Returns:
         transverse misalignment loss in dB         [-]
     """
@@ -465,31 +479,33 @@ def angular_misalignment_loss_db(n, w, theta, lambda0):
     See Ghatak eqn 8.75
 
     Args:
-        n:        index between fiber ends [-]
-        w:        mode field radius        [m]
-        theta:    angular misalignment     [radians]
-        lambda0:  wavelength in vacuum     [m]
+        n:        index of medium between fiber ends [-]
+        w:        mode field radius                  [m]
+        theta:    angular misalignment               [radians]
+        lambda0:  wavelength in vacuum               [m]
+
     Returns:
         angular misalignment loss in dB    [-]
     """
     return 4.34 * (np.pi * w * theta * n / lambda0)**2
 
 
-def longitudinal_misalignment_loss_db(n1, w, D, lambda0):
+def longitudinal_misalignment_loss_db(n, w, D, lambda0):
     """
     Calculate the loss due to longitudinal fiber misalignment.
 
     See Ghatak eqn 8.81
 
     Args:
-        n:        index between fiber ends      [-]
-        w:        mode field radius             [m]
-        D:        longitudinal fiber separation [m]
-        lambda0:  wavelength in vacuum          [m]
+        n:        index of medium between fiber ends [-]
+        w:        mode field radius                  [m]
+        D:        longitudinal fiber separation      [m]
+        lambda0:  wavelength in vacuum               [m]
+
     Returns:
         longitudinal misalignment loss dB       [-]
     """
-    dhat = D * lambda0 / (2 * np.pi * n1 * w**2)
+    dhat = D * lambda0 / (2 * np.pi * n * w**2)
     return 10 * np.log10(1 + dhat**2)
 
 
@@ -506,6 +522,7 @@ def _bending_loss_db_scalar(n1, Delta, a, Rc, lambda0):
         Delta:    refractive index difference [-]
         Rc:       radius of curvature in      [m]
         lambda0:  wavelength in vacuum in     [m]
+
     Returns:
         bending loss in dB/m                  [1/m]
     """
@@ -535,6 +552,7 @@ def bending_loss_db(n1, Delta, a, Rc, lambda0):
         Delta:    refractive index difference [-]
         Rc:       radius of curvature in      [m]
         lambda0:  wavelength in vacuum in     [m]
+
     Returns:
         bending loss in dB/m                  [1/m]
     """
@@ -559,6 +577,7 @@ def MFR(V):
 
     Args:
         V:      V-parameter of the fiber                            [--]
+
     Returns:
         approximate mode field radius normalized by the core radius [--]
     """
@@ -573,6 +592,7 @@ def MFD(V):
 
     Args:
         V:      V-parameter of the fiber                              [--]
+
     Returns:
         approximate mode field diameter normalized by the core radius [--]
     """
@@ -587,6 +607,7 @@ def _PetermannW_scalar(V):
 
     Args:
         V:      V-parameter of the fiber                          [--]
+
     Returns:
         approximate Petermann-2 radius normalized by core radius  [--]
     """
@@ -607,6 +628,7 @@ def PetermannW(V):
 
     Args:
         V:      V-parameter of the fiber                          [--]
+
     Returns:
         approximate Petermann-2 radius normalized by core radius  [--]
     """
@@ -632,6 +654,7 @@ def PetermannW_Approx(V):
 
     Args:
         V:      V-parameter of the fiber                          [--]
+
     Returns:
         approximate Petermann-2 radius normalized by core radius  [--]
     """
@@ -646,7 +669,9 @@ def _V_d2bV_by_V_scalar(V, ell):
     finds V*d^2(bV)/dV^2 for mode ell of a step-index fiber using eqn 10.14
 
     Args:
-        V:      V-parameter of the fiber     [--]
+        V:   V-parameter of the fiber     [--]
+        ell: azimuthal mode number.
+
     Returns:
         V*d^2(bV)/dV^2                       [--]
     """
@@ -676,6 +701,8 @@ def V_d2bV_by_V(V, ell):
 
     Args:
         V:      V-parameter of the fiber     [--]
+        ell: azimuthal mode number.
+
     Returns:
         V*d^2(bV)/dV^2                       [--]
     """
@@ -699,6 +726,7 @@ def V_d2bV_by_V_Approx(V):
 
     Args:
         V:      V-parameter of the fiber     [--]
+
     Returns:
         V*d^2(bV)/dV^2                       [--]
     """
@@ -723,14 +751,15 @@ def _FF_polar_x(kasin, V, ell, b):
               theta: polar angle to calculate the field (radians).
         V: normalized frequency parameter of the fiber.
         b: normalized propagation constant.
+
     Returns:
         The calculated polar field distribution
     """
     Vb = V * np.sqrt(1 - b)
     ell1 = ell + 1
 
-    Flnumer = kasin * special.jv(ell1, kasin) - (special.jv(ell, kasin) \
-              / special.jv(ell, Vb)) * Vb * special.jv(ell1, Vb)
+    Flnumer = kasin * special.jv(ell1, kasin) - Vb * special.jv(ell1, Vb) * \
+        (special.jv(ell, kasin) / special.jv(ell, Vb))
     Fldenom = (Vb**2 - kasin**2) * (V**2 * b + kasin**2)
 
     return Flnumer / Fldenom
@@ -755,6 +784,7 @@ def FF_irradiance_x(r, theta, phi, ell, lambda0, a, V, b):
         a: Radius of the fiber core (microns).
         V: normalized frequency parameter of the fiber.
         b: normalized propagation constant.
+
     Returns:
         The irradiance pattern as a function of r, theta, and phi.
     """
@@ -782,6 +812,7 @@ def FF_polar_irradiance_x(r, theta, ell, lambda0, a, V, b):
         a: Radius of the fiber core (microns).
         V: Normalized frequency parameter of the fiber.
         b: Normalized propagation constant.
+
     Returns:
         Azimuthally integrated irradiance pattern.
     """
@@ -793,9 +824,12 @@ def FF_polar_irradiance_x(r, theta, ell, lambda0, a, V, b):
 
 def _FF_node_polar_angle(V, ell, em):
     """
+    Calculate the smallest nonzero polar angle for scalar V, ell, and em.
+
     Calculate the smallest nonzero polar angle Θ_N for which the far-field
     field pattern has a node (zero), for LP mode (ell,em) in a circular
     step-index fiber.
+
     The polar angle-dependent factor in the far-field pattern is given by
     eq. (10.13) in Chen, and here by the function _FF_polar_x.
     This angle is a standard metric of the angular spread of an optical
@@ -829,6 +863,7 @@ def _FF_node_polar_angle(V, ell, em):
         V:   generalized frequency V for optical fiber (real number)    [-]
         ell: azimuthal mode number ℓ     (nonnegative integer)          [-]
         em:  radial mode number m        (positive integer)             [-]
+
     Returns:
         polar angle Θ_N of first far-field zero for mode (ℓ,m)          [-]
     """
@@ -859,24 +894,26 @@ def _FF_node_polar_angle(V, ell, em):
     # their zero in this initial range. But more importantly, it seems likely no fibers
     # would have multiple zeros in this range, which would lead to an error condition.
 
-    ntry=3000
-    f1 = _FF_polar_x(lo,V,ell,b)
-    f2 = _FF_polar_x(hi,V,ell,b)
+    ntry = 3000
+    f1 = _FF_polar_x(lo, V, ell, b)
+    f2 = _FF_polar_x(hi, V, ell, b)
 
     for j in range(ntry):
         if f1*f2 < 0.0:
             break
         hi = (j+1)*inc
-        f2=_FF_polar_x(hi, V,ell,b)
+        f2 = _FF_polar_x(hi, V, ell, b)
     else:
         raise StopIteration(r'No sign change in %d iterations' % ntry)
 
-    return scipy.optimize.brentq(_FF_polar_x, lo, hi, args=(V, ell, b)) # kasinThetaN
+    return scipy.optimize.brentq(_FF_polar_x, lo, hi, args=(V, ell, b))  # kasinThetaN
     # We do not suppress any errors from this subroutine, as we want to know if it's working
 
 
 def FF_node_polar_angle(V, ell, em):
     """
+    Calculate the smallest nonzero polar angle for V, ell, and em.
+
     Calculate the smallest nonzero polar angle Θ_N for which the far-field
     field pattern has a node (zero), for LP mode (ell,em) in a circular
     step-index fiber.
@@ -909,6 +946,7 @@ def FF_node_polar_angle(V, ell, em):
         V:   generalized frequency V for optical fiber (real number)    [-]
         ell: azimuthal mode number ℓ     (nonnegative integer)          [-]
         em:  radial mode number m        (positive integer)             [-]
+
     Returns:
         polar angle Θ_N of first far-field zero for mode (ℓ,m)          [-]
     """

@@ -125,8 +125,7 @@ def _TE_mode(xi, *args):
 
     Args:
         xi    : non-dimensional propagation value in waveguide
-        arg[0]: the V-parameter for the waveguide
-        arg[1]: the desired mode (even values are symmetric)
+        *args : array with arg[0]=V-parameter and arg[1]=desired mode
 
     Returns:
         the distance from a solution
@@ -227,12 +226,15 @@ def _TM_mode(xi, *args):
 
     The planar waveguide characteristics are passed as a 4-element array.
 
-    Args:
-        xi    : non-dimensional propagation value in waveguide
+    The *args is an array with
         arg[0]: the V-parameter for the waveguide
         arg[1]: index of the planar waveguide
         arg[2]: index of the cladding
         arg[3]: the desired mode (even values are symmetric)
+
+    Args:
+        xi    : non-dimensional propagation value in waveguide
+        *args : array described above
 
     Returns:
         the distance from a solution
@@ -394,6 +396,8 @@ def TM_propagation_constant(V, n1, n2, mode):
 
     Args:
         V    : the V-parameter for the waveguide
+        n1   : index of waveguide
+        n2   : index of material next to waveguide
         mode : specific mode
 
     Returns:

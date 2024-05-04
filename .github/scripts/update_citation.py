@@ -1,3 +1,4 @@
+"""Update the CITATION.cff file for latest version."""
 import json
 import requests
 import yaml

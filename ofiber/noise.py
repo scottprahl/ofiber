@@ -30,8 +30,10 @@ def shot_noise(I0, Idark, bandwidth, M=1, x=0):
     Args:
         I0:    current         (A)
         Idark:  dark current    (A)
+        bandwidth:  bandwidth   (Hz)
         M:      APD Gain factor (--)
         x:      excess noise (0.3 for Si, 0.7 for InGaAs, 1.0 for Ge APDs)
+
     Returns:
         shot_noise       (A)
     """
@@ -46,7 +48,8 @@ def thermal_noise(T, Rload, bandwidth):
     Args:
         T:      temperature (Kelvin)
         Rload:  resistance  (Ohms)
-        BW:     bandwidth   (Hz)
+        bandwidth:     bandwidth   (Hz)
+
     Returns:
         thermal_noise       (A)
     """
@@ -59,10 +62,11 @@ def NEP(Responsivity, Rload, Idark, T):
     Return noise equivalent power.
 
     Args:
-        responsivity: photodetector response (A/W)
+        Responsivity: photodetector response (A/W)
         Rload:        resistance             (Ohms)
         Idark:        dark current           (A)
         T:            temperature            (Kelvin)
+
     Returns:
         power       (W/sqrt(Hz))
     """
@@ -95,6 +99,7 @@ def BER_at_SNR(snr):
 
     Args:
         snr: signal to noise ratio (--)
+
     Returns:
         bit error rate              (--)
     """
@@ -107,6 +112,7 @@ def SNR_at_BER(ber):
 
     Args:
         ber: bit error rate (--)
+
     Returns:
         signal to noise ratio (--)
     """
@@ -125,6 +131,7 @@ def thermal_min_power(bitrate, responsivity, capacitance, T, snr):
         capacitance:   photodetector capacitance (Farads)
         T:             temperature               (Kelvin)
         snr:           signal to noise ratio     (--)
+
     Returns:
         optical power                            (W)
     """
@@ -141,6 +148,7 @@ def quantum_min_power(bitrate, ber, lambda0):
         bitrate:   bits per second      (Hz)
         ber:       bit error rate       (--)
         lambda0:   wavelength in vacuum (m)
+
     Returns:
         optical power                   (W)
     """
