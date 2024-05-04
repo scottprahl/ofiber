@@ -18,6 +18,7 @@ import os.path
 project = 'ofiber'
 master_doc = 'index'
 
+
 def get_init_property(prop):
     """Return property from __init__.py."""
     here = os.path.abspath(os.path.dirname(__file__))
@@ -26,6 +27,7 @@ def get_init_property(prop):
     with open(file_name, 'r', encoding='utf-8') as file:
         result = re.search(regex, file.read())
     return result.group(1)
+
 
 release = get_init_property("__version__")
 author = get_init_property("__author__")

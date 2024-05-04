@@ -1,3 +1,4 @@
+"""Configure the ofiber module."""
 import re
 import os.path
 from setuptools import setup

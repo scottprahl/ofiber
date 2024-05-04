@@ -79,7 +79,7 @@ def critical_angle(n_core, n_clad):
 
     Args:
         n_core : the index of refraction of the fiber core  [--]
-        n_core : the index of refraction of the fiber cladding  [--]
+        n_clad : the index of refraction of the fiber cladding  [--]
 
     Returns:
         angle of total internal reflection [radians]
@@ -119,7 +119,8 @@ def esi_Delta(Delta, q):
     Calculate equivalent step index (esi) Delta for a graded-index fiber.
 
     Args:
-        Delta :  relative refractive index     [-]
+        Delta :  relative refractive index         [-]
+        q :      parameter for graded index fiber  [-]
 
     Returns:
         equivalent relative refractive index   [-]

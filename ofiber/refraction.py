@@ -386,6 +386,7 @@ def doped_glass(x):
 
     Args:
         x: fraction of GeO_2 (0<=x<=1)
+
     Returns:
         Sellmeier coefficients for doped glass (array of six values)
     """
@@ -425,6 +426,7 @@ def _sellmeier(b, c, lambda0):
         b: array of three Sellmeier Coefficients  [--]
         c: array of three Sellmeier Coefficients  [microns**2]
         lambda0 : wavelength in vacuum             [m]
+
     Returns:
         returns the index of refraction at lambda0 [-]
     """
@@ -446,6 +448,7 @@ def _d_sellmeier(b, c, lambda0):
         b : array of three Sellmeier Coefficients  [--]
         c : array of three Sellmeier Coefficients  [microns**2]
         lambda0 : wavelength in vacuum             [m]
+
     Returns:
         returns the first derivative of the index of refraction at lambda0 [1/m]
     """
@@ -473,6 +476,7 @@ def _d2_sellmeier(b, c, lambda0):
         b : array of three Sellmeier Coefficients  [--]
         c : array of three Sellmeier Coefficients  [microns**2]
         lambda0 : wavelength in vacuum             [m]
+
     Returns:
         returns the second derivative of the refractive index at lambda0 [1/m]
     """
@@ -499,6 +503,7 @@ def n(glass_coef, lambda0):
     Args:
         glass_coef: array of Sellmeier coefficients obtained from glass(i)
         lambda0: wavelength in vacuum [m]
+
     Returns:
         index of refraction [--]
     """
@@ -512,6 +517,7 @@ def dn(glass_coef, lambda0):
     Args:
         glass_coef: array of Sellmeier coefficients obtained from glass(i)
         lambda0: wavelength in vacuum [m]
+
     Returns:
         the first derivative of index of refraction [1/m]
     """
@@ -525,6 +531,7 @@ def d2n(glass_coef, lambda0):
     Args:
         glass_coef: array of Sellmeier coefficients obtained from glass(i)
         lambda0: wavelength in vacuum [m]
+
     Returns:
         the second derivative of index of refraction [1/m**2]
     """
@@ -536,8 +543,9 @@ def n_group(glass_coef, lambda0):
     Calculate group index of refraction at a wavelength.
 
     Args:
-        glass: array of Sellmeier coefficients obtained from glass(i)
+        glass_coef: array of Sellmeier coefficients obtained from glass(i)
         lambda0: wavelength in vacuum [m]
+
     Returns:
         group index of refraction [--]
     """
