@@ -73,6 +73,7 @@ _all_ = ('LP_mode_value',
          'V_d2bV_by_V_Approx',
          'FF_polar_irradiance_x',
          'FF_irradiance_x',
+         'FF_node_polar_angle',
           )
 
 
@@ -194,7 +195,7 @@ def LP_mode_value(V, ell, em):
     b is the normalized propagation constant.  Each guided mode in an optical
     fiber has a specific value of b that depends on the fiber parameter V
     and the mode numbers ell and em.
-    
+
     This is a wrapper function that handles V, ell, or em being possible
     arrays.  See `LP_mode_value` for details.
 
@@ -707,13 +708,13 @@ def V_d2bV_by_V_Approx(V):
 def _FF_polar_x(kasin, V, ell, b):
     """
     Polar component of the far-field irradiance polarized in the x-direction.
-    
+
     This implements equation 10.13 from Chen, Foundations for Guided-Wave Optics,
     Wiley-Interscience, 2007.  Use FF_irradiance_x() below to get the far-field
     irradiance.
-    
+
     The polar angle is measured from the optical axis of the fiber.
-    
+
     The product ka is dimensionless and is the product k * a = 2𝜋a/λ
 
     Args:
@@ -739,8 +740,8 @@ def FF_irradiance_x(r, theta, phi, ell, lambda0, a, V, b):
     """
     Normalized far-field irradiance polarized in the x-direction.
 
-    This calculation is based eqn 10.12 for the far-field from Chen, 
-    Foundations for Guided-Wave Optics, Wiley-Interscience, 2007.  
+    This calculation is based eqn 10.12 for the far-field from Chen,
+    Foundations for Guided-Wave Optics, Wiley-Interscience, 2007.
 
     The magnitude of the field is squared and normalized by the square
     of the electric field magnitude.
@@ -793,11 +794,11 @@ def FF_polar_irradiance_x(r, theta, ell, lambda0, a, V, b):
 def _FF_node_polar_angle(V, ell, em):
     """
     Calculate the smallest nonzero polar angle Θ_N for which the far-field
-    field pattern has a node (zero), for LP mode (ell,em) in a circular 
+    field pattern has a node (zero), for LP mode (ell,em) in a circular
     step-index fiber.
     The polar angle-dependent factor in the far-field pattern is given by
     eq. (10.13) in Chen, and here by the function _FF_polar_x.
-    This angle is a standard metric of the angular spread of an optical 
+    This angle is a standard metric of the angular spread of an optical
     fiber's output radiation.
 
     This private function only works for scalar values of V, ell, and em.
@@ -841,17 +842,18 @@ def _FF_node_polar_angle(V, ell, em):
         return None    # V must be positive
 
     b = LP_mode_value(V, ell, em)
-    if (b==None): return np.nan 
+    if b is None:
+        return np.nan
     # This occurs when the fiber does not support the (l,m) mode for the given V
 
-    # set up bounds for the zero search 
-    lo = 1E-5 
+    # set up bounds for the zero search
+    lo = 1E-5
     # kasin = 0 is the lower bound on the function domain.
     # For ℓ≠0, the function is 0 at 0.
     # So we start the search for the first nontrivial zero
     # just above kasin = 0.
-    
-    inc = 1E-2 
+
+    inc = 1E-2
     hi = inc
     # we use this as a cautious initial guess. Very few fibers would have
     # their zero in this initial range. But more importantly, it seems likely no fibers
@@ -862,7 +864,8 @@ def _FF_node_polar_angle(V, ell, em):
     f2 = _FF_polar_x(hi,V,ell,b)
 
     for j in range(ntry):
-        if (f1*f2 < 0.0): break
+        if f1*f2 < 0.0:
+            break
         hi = (j+1)*inc
         f2=_FF_polar_x(hi, V,ell,b)
     else:
@@ -879,11 +882,11 @@ def FF_node_polar_angle(V, ell, em):
     step-index fiber.
     The polar angle-dependent factor in the far-field pattern is given by
     eq. (10.13) in Chen, and here by the function _FF_polar_x.
-    This angle is a standard metric of the angular spread of an optical 
+    This angle is a standard metric of the angular spread of an optical
     fiber's output radiation. Note however that the higher the radial
     mode number m, the smaller the fraction of the irradiance is contained
     within the first node.
-    The use of this function is demonstrated in 
+    The use of this function is demonstrated in
     9-Far-field-irradiance.ipynb.
 
     b is the normalized propagation constant. Each guided mode in an optical
@@ -897,7 +900,7 @@ def FF_node_polar_angle(V, ell, em):
 
     For cylindrical fibers, em is a positive integer: thus there are modes
     LP_01, LP_02, but not LP_10. If em <= 0 or V <= 0, None is returned.
-    
+
     This is a wrapper function that handles V, ell, or em being possible
     arrays. The private function `_FF_node_polar_angle` contains the
     details of the calculation itself.
