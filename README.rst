@@ -1,9 +1,3 @@
-ofiber
-======
-
-by Scott Prahl
-
-
 .. |pypi-badge| image:: https://img.shields.io/pypi/v/ofiber?color=68CA66
    :target: https://pypi.org/project/ofiber/
    :alt: pypi
@@ -31,6 +25,14 @@ by Scott Prahl
    :target: https://pypi.org/project/ofiber/
    :alt: Downloads
 
+ofiber
+======
+
+by Scott Prahl
+
+|pypi-badge| |github-badge| |conda-badge| |doi-badge|
+
+|license-badge| |test-badge| |readthedocs-badge| |downloads-badge|
 
 -----
 
