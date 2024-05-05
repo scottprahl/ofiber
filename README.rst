@@ -24,35 +24,6 @@
    :target: https://pypi.org/project/ofiber/
    :alt: Downloads
 
-.. |dispersion| image:: https://raw.githubusercontent.com/scottprahl/ofiber/master/docs/dispersion.svg
-   :target: https://ofiber.readthedocs.io
-   :alt: Dispersion
-
-.. |design| image:: https://raw.githubusercontent.com/scottprahl/ofiber/master/docs/fiberdesign.svg
-   :target: https://ofiber.readthedocs.io
-   :alt: Fiber Design
-
-.. |modeirradiance| image:: https://raw.githubusercontent.com/scottprahl/ofiber/master/docs/modeirradiance.svg
-   :target: https://ofiber.readthedocs.io
-   :alt: Mode Irradiance
-
-.. |stepindexmodes| image:: https://raw.githubusercontent.com/scottprahl/ofiber/master/docs/stepindexmodes.svg
-   :target: https://ofiber.readthedocs.io
-   :alt: Modes in Step Index Fiber
-
-.. |farfieldirradiance| image:: https://raw.githubusercontent.com/scottprahl/ofiber/master/docs/farfieldirradiance.svg
-   :target: https://ofiber.readthedocs.io
-   :alt: Far-field Irradiance
-
-.. |internalmodes| image:: https://raw.githubusercontent.com/scottprahl/ofiber/master/docs/internalmodes.svg
-   :target: https://ofiber.readthedocs.io/en/latest/3-Planar-Waveguide-Modes.html
-   :alt: Internal Modes
-
-.. |planarwaveguide| image:: https://raw.githubusercontent.com/scottprahl/ofiber/master/docs/planarwaveguide.svg
-   :target: https://ofiber.readthedocs.io
-   :alt: Planar Waveguide
-
-
 ofiber
 ======
 
@@ -78,30 +49,62 @@ or ``conda``::
 
     conda install -c conda-forge ofiber
 
-or use a Jupyter notebook immediately by clicking the Google Colaboratory button below
+Usage
+-----
+
+A few examples are shown below.  For all examples, see <https://ofiber.readthedocs.io>
+
+Symmetric planar waveguides
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. image:: https://raw.githubusercontent.com/scottprahl/ofiber/master/docs/planarwaveguide.svg
+   :target: https://ofiber.readthedocs.io/en/latest/3-Planar-Waveguide-Modes.html
+   :align: center
+   :alt: Planar Waveguide
+
+Cylindrical fibers with step index profiles
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. image:: https://raw.githubusercontent.com/scottprahl/ofiber/master/docs/stepindexmodes.svg
+   :target: https://ofiber.readthedocs.io/en/latest/4-Circular-Step-Index-Fiber.html
+   :align: center
+   :alt: Modes in Step Index Fiber
+
+.. image:: https://raw.githubusercontent.com/scottprahl/ofiber/master/docs/modeirradiance.svg
+   :target: https://ofiber.readthedocs.io/en/latest/4-Circular-Step-Index-Fiber.html
+   :align: center
+   :alt: Mode Irradiance
+
+Far-field emission for step index fibers
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. image:: https://raw.githubusercontent.com/scottprahl/ofiber/master/docs/farfieldirradiance.svg
+   :target: https://ofiber.readthedocs.io/en/latest/9-Far-field-irradiance.html
+   :align: center
+   :alt: Far-field Irradiance
+
+Fiber design
+^^^^^^^^^^^^
+
+.. image:: https://raw.githubusercontent.com/scottprahl/ofiber/master/docs/fiberdesign.svg
+   :target: https://ofiber.readthedocs.io/en/latest/6-Zero-Dispersion.html
+   :align: center
+   :alt: Fiber Design
+
+.. image:: https://raw.githubusercontent.com/scottprahl/ofiber/master/docs/dispersion.svg
+   :target: https://ofiber.readthedocs.io/en/latest/6-Zero-Dispersion.html
+   :align: center
+   :alt: Dispersion
+
+Google Colaboratory
+^^^^^^^^^^^^^^^^^^^
+
+Use a Jupyter notebook immediately by clicking the Google Colaboratory button below
 
 .. image:: https://colab.research.google.com/assets/colab-badge.svg
   :target: https://colab.research.google.com/github/scottprahl/ofiber/blob/master
   :alt: Colab
 
-Usage
------
-
-|internalmodes|
-
-|dispersion|
-
-|design|
-
-|modeirradiance|
-
-|stepindexmodes|
-
-|farfieldirradiance|
-
-|planarwaveguide|
-
-For examples and use cases, see <https://ofiber.readthedocs.io>
 
 License
 -------
