@@ -44,9 +44,6 @@
    :target https://ofiber.readthedocs.io
    :alt: Far-field Irradiance
 
-.. |internalmodes| image:: https://raw.githubusercontent.com/scottprahl/miepython/master/docs/internalmodes.svg
-   :target https://ofiber.readthedocs.io/en/latest/3-Planar-Waveguide-Modes.html
-   :alt: Internal Modes
 
 .. |planarwaveguide| image:: https://raw.githubusercontent.com/scottprahl/miepython/master/docs/planarwaveguide.svg
    :target https://ofiber.readthedocs.io
@@ -87,7 +84,9 @@ or use a Jupyter notebook immediately by clicking the Google Colaboratory button
 Usage
 -----
 
-|internalmodes|
+.. image:: https://raw.githubusercontent.com/scottprahl/miepython/master/docs/internalmodes.svg
+   :target https://ofiber.readthedocs.io/en/latest/3-Planar-Waveguide-Modes.html
+   :alt: Internal Modes
 
 |dispersion|
 
