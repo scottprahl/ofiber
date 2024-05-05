@@ -75,6 +75,11 @@ Cylindrical fibers with step index profiles
    :align: center
    :alt: Mode Irradiance
 
+.. image:: https://raw.githubusercontent.com/scottprahl/ofiber/master/docs/internalmodes.svg
+   :target: https://ofiber.readthedocs.io/en/latest/4-Circular-Step-Index-Fiber.html
+   :align: center
+   :alt: Internal Modes
+
 Far-field emission for step index fibers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
