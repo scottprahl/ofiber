@@ -88,6 +88,11 @@ Far-field emission for step index fibers
    :align: center
    :alt: Far-field Irradiance
 
+.. image:: https://raw.githubusercontent.com/scottprahl/ofiber/master/docs/theta01.svg
+   :target: https://ofiber.readthedocs.io/en/latest/9-Far-field-irradiance.html
+   :align: center
+   :alt: polar angle of the minimum of the central irradiance lobe
+
 Fiber design
 ^^^^^^^^^^^^^
 
