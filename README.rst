@@ -24,28 +24,31 @@
    :target: https://pypi.org/project/ofiber/
    :alt: Downloads
 
-.. |dispersion| image:: https://raw.githubusercontent.com/scottprahl/miepython/master/docs/dispersion.svg
+.. |dispersion| image:: https://raw.githubusercontent.com/scottprahl/ofiber/master/docs/dispersion.svg
    :target https://ofiber.readthedocs.io
    :alt: Dispersion
 
-.. |design| image:: https://raw.githubusercontent.com/scottprahl/miepython/master/docs/fiberdesign.svg
+.. |design| image:: https://raw.githubusercontent.com/scottprahl/ofiber/master/docs/fiberdesign.svg
    :target https://ofiber.readthedocs.io
    :alt: Fiber Design
 
-.. |modeirradiance| image:: https://raw.githubusercontent.com/scottprahl/miepython/master/docs/modeirradiance.svg
+.. |modeirradiance| image:: https://raw.githubusercontent.com/scottprahl/ofiber/master/docs/modeirradiance.svg
    :target https://ofiber.readthedocs.io
    :alt: Mode Irradiance
 
-.. |stepindexmodes| image:: https://raw.githubusercontent.com/scottprahl/miepython/master/docs/stepindexmodes.svg
+.. |stepindexmodes| image:: https://raw.githubusercontent.com/scottprahl/ofiber/master/docs/stepindexmodes.svg
    :target https://ofiber.readthedocs.io
    :alt: Modes in Step Index Fiber
 
-.. |farfieldirradiance| image:: https://raw.githubusercontent.com/scottprahl/miepython/master/docs/farfieldirradiance.svg
+.. |farfieldirradiance| image:: https://raw.githubusercontent.com/scottprahl/ofiber/master/docs/farfieldirradiance.svg
    :target https://ofiber.readthedocs.io
    :alt: Far-field Irradiance
 
+.. |internalmodes| image:: https://raw.githubusercontent.com/scottprahl/ofiber/master/docs/internalmodes.svg
+   :target https://ofiber.readthedocs.io/en/latest/3-Planar-Waveguide-Modes.html
+   :alt: Internal Modes
 
-.. |planarwaveguide| image:: https://raw.githubusercontent.com/scottprahl/miepython/master/docs/planarwaveguide.svg
+.. |planarwaveguide| image:: https://raw.githubusercontent.com/scottprahl/ofiber/master/docs/planarwaveguide.svg
    :target https://ofiber.readthedocs.io
    :alt: Planar Waveguide
 
@@ -84,10 +87,7 @@ or use a Jupyter notebook immediately by clicking the Google Colaboratory button
 Usage
 -----
 
-
-.. image:: https://github.com/scottprahl/ofiber/blob/master/docs/internalmodes.svg
-   :target https://ofiber.readthedocs.io/en/latest/3-Planar-Waveguide-Modes.html
-   :alt: Internal Modes
+|internalmodes|
 
 |dispersion|
 
