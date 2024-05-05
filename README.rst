@@ -84,7 +84,8 @@ or use a Jupyter notebook immediately by clicking the Google Colaboratory button
 Usage
 -----
 
-.. image:: https://raw.githubusercontent.com/scottprahl/miepython/master/docs/internalmodes.svg
+
+.. image:: https://github.com/scottprahl/ofiber/blob/master/docs/internalmodes.svg
    :target https://ofiber.readthedocs.io/en/latest/3-Planar-Waveguide-Modes.html
    :alt: Internal Modes
 
