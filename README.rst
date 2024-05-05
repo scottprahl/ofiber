@@ -11,7 +11,6 @@
    :target: https://zenodo.org/doi/10.5281/zenodo.8368598
    :alt: doi  
 
-
 .. |license-badge| image:: https://img.shields.io/github/license/scottprahl/ofiber?color=68CA66
    :target: https://github.com/scottprahl/ofiber/blob/master/LICENSE.txt
    :alt: License
@@ -25,6 +24,35 @@
    :target: https://pypi.org/project/ofiber/
    :alt: Downloads
 
+.. |dispersion| image:: https://raw.githubusercontent.com/scottprahl/miepython/master/docs/dispersion.svg
+   :target https://ofiber.readthedocs.io
+   :alt: Dispersion
+
+.. |design| image:: https://raw.githubusercontent.com/scottprahl/miepython/master/docs/fiberdesign.svg
+   :target https://ofiber.readthedocs.io
+   :alt: Fiber Design
+
+.. |modeirradiance| image:: https://raw.githubusercontent.com/scottprahl/miepython/master/docs/modeirradiance.svg
+   :target https://ofiber.readthedocs.io
+   :alt: Mode Irradiance
+
+.. |stepindexmodes| image:: https://raw.githubusercontent.com/scottprahl/miepython/master/docs/stepindexmodes.svg
+   :target https://ofiber.readthedocs.io
+   :alt: Modes in Step Index Fiber
+
+.. |farfieldirradiance| image:: https://raw.githubusercontent.com/scottprahl/miepython/master/docs/farfieldirradiance.svg
+   :target https://ofiber.readthedocs.io
+   :alt: Far-field Irradiance
+
+.. |internalmodes| image:: https://raw.githubusercontent.com/scottprahl/miepython/master/docs/internalmodes.svg
+   :target https://ofiber.readthedocs.io/en/latest/3-Planar-Waveguide-Modes.html
+   :alt: Internal Modes
+
+.. |planarwaveguide| image:: https://raw.githubusercontent.com/scottprahl/miepython/master/docs/planarwaveguide.svg
+   :target https://ofiber.readthedocs.io
+   :alt: Planar Waveguide
+
+
 ofiber
 ======
 
@@ -35,10 +63,9 @@ by Scott Prahl
 |license-badge| |test-badge| |readthedocs-badge| |downloads-badge|
 
 Python code to calculate light propagation through optical fibers following
-the approach presented in `Ghatak and Thyagarajan *An Introduction to Fiber Optics,* <https://doi.org/10.1017/CBO9781139174770>`_.  Far-field fiber calculations are based on `Chen, Foundations for 
+the approach presented in `Ghatak and Thyagarajan, An Introduction to Fiber Optics <https://doi.org/10.1017/CBO9781139174770>`_.  Far-field fiber calculations are based on `Chen, Foundations for 
 Guided-Wave Optics <https://doi.org/10.1002/0470042222>`_.
 
-For examples and use cases, see <https://ofiber.readthedocs.io>
 
 Installation
 ------------
@@ -56,6 +83,25 @@ or use a Jupyter notebook immediately by clicking the Google Colaboratory button
 .. image:: https://colab.research.google.com/assets/colab-badge.svg
   :target: https://colab.research.google.com/github/scottprahl/ofiber/blob/master
   :alt: Colab
+
+Usage
+-----
+
+|internalmodes|
+
+|dispersion|
+
+|design|
+
+|modeirradiance|
+
+|stepindexmodes|
+
+|farfieldirradiance|
+
+|planarwaveguide|
+
+For examples and use cases, see <https://ofiber.readthedocs.io>
 
 License
 -------
