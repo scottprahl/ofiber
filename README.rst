@@ -25,7 +25,7 @@
    :alt: Downloads
 
 ofiber
-======
+=======
 
 by Scott Prahl
 
@@ -39,7 +39,7 @@ Guided-Wave Optics <https://doi.org/10.1002/0470042222>`_.
 
 
 Installation
-------------
+-------------
 
 Use ``pip``::
 
@@ -52,18 +52,18 @@ or ``conda``::
 Usage
 -----
 
-A few examples are shown below.  For all examples, see <https://ofiber.readthedocs.io>
+A few examples are shown below. For all examples, see `ofiber documentation <https://ofiber.readthedocs.io>`_
 
 Symmetric planar waveguides
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. image:: https://raw.githubusercontent.com/scottprahl/ofiber/master/docs/planarwaveguide.svg
    :target: https://ofiber.readthedocs.io/en/latest/3-Planar-Waveguide-Modes.html
    :align: center
    :alt: Planar Waveguide
-
+   
 Cylindrical fibers with step index profiles
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. image:: https://raw.githubusercontent.com/scottprahl/ofiber/master/docs/stepindexmodes.svg
    :target: https://ofiber.readthedocs.io/en/latest/4-Circular-Step-Index-Fiber.html
@@ -76,7 +76,7 @@ Cylindrical fibers with step index profiles
    :alt: Mode Irradiance
 
 Far-field emission for step index fibers
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. image:: https://raw.githubusercontent.com/scottprahl/ofiber/master/docs/farfieldirradiance.svg
    :target: https://ofiber.readthedocs.io/en/latest/9-Far-field-irradiance.html
@@ -84,7 +84,7 @@ Far-field emission for step index fibers
    :alt: Far-field Irradiance
 
 Fiber design
-^^^^^^^^^^^^
+^^^^^^^^^^^^^
 
 .. image:: https://raw.githubusercontent.com/scottprahl/ofiber/master/docs/fiberdesign.svg
    :target: https://ofiber.readthedocs.io/en/latest/6-Zero-Dispersion.html
@@ -97,7 +97,7 @@ Fiber design
    :alt: Dispersion
 
 Google Colaboratory
-^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
 
 Use a Jupyter notebook immediately by clicking the Google Colaboratory button below
 
