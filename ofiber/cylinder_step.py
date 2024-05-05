@@ -10,7 +10,8 @@ Useful routines for step-index cylindrical waveguides.
 See <https://ofiber.readthedocs.io> for usage examples.
 
 Based on chapter 8 of A. Ghatak, K. Thyagarajan, An Introduction to Fiber
-Optics, Cambridge University Press, 1998
+Optics, Cambridge University Press, 1998 as well as Chen, Foundations for
+Guided-Wave Optics, Wiley-Interscience, 2007.
 
 Functions to calculate and plot modes for step index fibers.  Specifically::
 
