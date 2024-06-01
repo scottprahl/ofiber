@@ -18,7 +18,7 @@
   open https://github.com/scottprahl/ofiber
   
 # verify github action success
-  open https://zenodo.org/badge/latestdoi/102148844
+  open https://zenodo.org/badge/latestdoi/11117101
   open https://pypi.org/project/ofiber/
   open https://ofiber.readthedocs.io
   

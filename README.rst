@@ -12,7 +12,7 @@
    :alt: doi  
 
 .. |license-badge| image:: https://img.shields.io/github/license/scottprahl/ofiber?color=68CA66
-   :target: https://github.com/scottprahl/ofiber/blob/master/LICENSE.txt
+   :target: https://github.com/scottprahl/ofiber/blob/main/LICENSE.txt
    :alt: License
 .. |test-badge| image:: https://github.com/scottprahl/ofiber/actions/workflows/test.yaml/badge.svg
    :target: https://github.com/scottprahl/ofiber/actions/workflows/test.yaml
@@ -57,7 +57,7 @@ A few examples are shown below. For all examples, see `ofiber documentation <htt
 Symmetric planar waveguides
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. image:: https://raw.githubusercontent.com/scottprahl/ofiber/master/docs/planarwaveguide.svg
+.. image:: https://raw.githubusercontent.com/scottprahl/ofiber/main/docs/planarwaveguide.svg
    :target: https://ofiber.readthedocs.io/en/latest/3-Planar-Waveguide-Modes.html
    :align: center
    :alt: Planar Waveguide
@@ -65,17 +65,17 @@ Symmetric planar waveguides
 Cylindrical fibers with step index profiles
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. image:: https://raw.githubusercontent.com/scottprahl/ofiber/master/docs/stepindexmodes.svg
+.. image:: https://raw.githubusercontent.com/scottprahl/ofiber/main/docs/stepindexmodes.svg
    :target: https://ofiber.readthedocs.io/en/latest/4-Circular-Step-Index-Fiber.html
    :align: center
    :alt: Modes in Step Index Fiber
 
-.. image:: https://raw.githubusercontent.com/scottprahl/ofiber/master/docs/modeirradiance.svg
+.. image:: https://raw.githubusercontent.com/scottprahl/ofiber/main/docs/modeirradiance.svg
    :target: https://ofiber.readthedocs.io/en/latest/4-Circular-Step-Index-Fiber.html
    :align: center
    :alt: Mode Irradiance
 
-.. image:: https://raw.githubusercontent.com/scottprahl/ofiber/master/docs/internalmodes.svg
+.. image:: https://raw.githubusercontent.com/scottprahl/ofiber/main/docs/internalmodes.svg
    :target: https://ofiber.readthedocs.io/en/latest/4-Circular-Step-Index-Fiber.html
    :align: center
    :alt: Internal Modes
@@ -83,12 +83,12 @@ Cylindrical fibers with step index profiles
 Far-field emission for step index fibers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. image:: https://raw.githubusercontent.com/scottprahl/ofiber/master/docs/farfieldirradiance.svg
+.. image:: https://raw.githubusercontent.com/scottprahl/ofiber/main/docs/farfieldirradiance.svg
    :target: https://ofiber.readthedocs.io/en/latest/9-Far-field-irradiance.html
    :align: center
    :alt: Far-field Irradiance
 
-.. image:: https://raw.githubusercontent.com/scottprahl/ofiber/master/docs/theta01.svg
+.. image:: https://raw.githubusercontent.com/scottprahl/ofiber/main/docs/theta01.svg
    :target: https://ofiber.readthedocs.io/en/latest/9-Far-field-irradiance.html
    :align: center
    :alt: polar angle of the minimum of the central irradiance lobe
@@ -96,12 +96,12 @@ Far-field emission for step index fibers
 Fiber design
 ^^^^^^^^^^^^^
 
-.. image:: https://raw.githubusercontent.com/scottprahl/ofiber/master/docs/fiberdesign.svg
+.. image:: https://raw.githubusercontent.com/scottprahl/ofiber/main/docs/fiberdesign.svg
    :target: https://ofiber.readthedocs.io/en/latest/6-Zero-Dispersion.html
    :align: center
    :alt: Fiber Design
 
-.. image:: https://raw.githubusercontent.com/scottprahl/ofiber/master/docs/dispersion.svg
+.. image:: https://raw.githubusercontent.com/scottprahl/ofiber/main/docs/dispersion.svg
    :target: https://ofiber.readthedocs.io/en/latest/6-Zero-Dispersion.html
    :align: center
    :alt: Dispersion
@@ -112,7 +112,7 @@ Google Colaboratory
 Use a Jupyter notebook immediately by clicking the Google Colaboratory button below
 
 .. image:: https://colab.research.google.com/assets/colab-badge.svg
-  :target: https://colab.research.google.com/github/scottprahl/ofiber/blob/master
+  :target: https://colab.research.google.com/github/scottprahl/ofiber/blob/main
   :alt: Colab
 
 
