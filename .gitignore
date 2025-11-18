@@ -1,6 +1,10 @@
 .DS_Store
 *.pyc
 .cache/
+.jupyterlite.doit.db
+.lite_src/
+.venv/
+_site/
 dist/*
 ofiber.egg-info/*
 docs/.ipynb_checkpoints/
