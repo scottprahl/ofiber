@@ -3,8 +3,8 @@ message: If you use this software, please cite it as below.
 title: 'ofiber: A Python module for light propagation in optical fibers'
 version: 0.9.0
 date-released: '2025-11-18'
-doi: 10.5281/zenodo.11117101
-url: https://doi.org/10.5281/zenodo.11117101
+doi: 10.5281/zenodo.8368598
+url: https://doi.org/10.5281/zenodo.8368598
 repository-code: https://github.com/scottprahl/ofiber
 license: MIT
 type: software
@@ -12,18 +12,19 @@ authors:
 - family-names: Prahl
   given-names: Scott
   orcid: https://orcid.org/0000-0003-1468-6851
+
 abstract: 'ofiber is a Python library for modeling light propagation in optical fibers
   and related dielectric waveguides. It provides tools for mode analysis, dispersion
   engineering, and far-field radiation calculations, following the formulations of
-  Ghatak & Thyagarajan and Chen.
+  Ghatak & Thyagarajan and Chen.'
 
-  '
 keywords:
 - optical fibers
 - guided-wave optics
 - waveguide dispersion
 - far-field irradiance
 - numerical modeling
+
 preferred-citation:
   type: software
   authors:
@@ -33,5 +34,5 @@ preferred-citation:
   title: 'ofiber: A Python module for light propagation in optical fibers'
   year: 2025
   version: 0.9.0
-  doi: 10.5281/zenodo.11117101
-  url: https://doi.org/10.5281/zenodo.11117101
+  doi: 10.5281/zenodo.8368598
+  url: https://doi.org/10.5281/zenodo.8368598
