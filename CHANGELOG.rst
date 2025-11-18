@@ -1,6 +1,13 @@
 Changelog
 ==========
 
+0.9.0 (11/18/2025)
+-------------------
+* support for jupyterlite
+* use pyproject.toml and requirements-dev.txt
+* better citation
+* normalizing code formatting with black
+
 0.8.1 (5/4/2024)
 -------------------
 * Implemented FF_node_polar_angle (@matt8s)
