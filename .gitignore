@@ -1,9 +1,11 @@
 .DS_Store
 *.pyc
+.cache/
 dist/*
 ofiber.egg-info/*
 docs/.ipynb_checkpoints/
 docs/_build/
 docs/api/
+docs/.jupyter/
 ofiber/.ipynb_checkpoints/
 ofiber/__pycache__/*
