@@ -46,16 +46,18 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import brentq
 
-__all__ = ('TE_crossing',
-           'TE_crossings',
-           'TE_field',
-           'TE_mode_plot',
-           'TE_propagation_constant',
-           'TM_crossing',
-           'TM_crossings',
-           'TM_field',
-           'TM_mode_plot',
-           'TM_propagation_constant')
+__all__ = (
+    "TE_crossing",
+    "TE_crossings",
+    "TE_field",
+    "TE_mode_plot",
+    "TE_propagation_constant",
+    "TM_crossing",
+    "TM_crossings",
+    "TM_field",
+    "TM_mode_plot",
+    "TM_propagation_constant",
+)
 
 
 def _base_mode_plot(V):
@@ -71,19 +73,19 @@ def _base_mode_plot(V):
     abit = 1e-5
 
     _, ax = plt.subplots(figsize=(8, 8))
-    ax.set_aspect('equal')
+    ax.set_aspect("equal")
 
     xi = np.linspace(abit, np.pi / 2 - abit, 50)
     while xi[0] < V / 2:
-        plt.plot(xi, xi * np.tan(xi), color='red')
+        plt.plot(xi, xi * np.tan(xi), color="red")
         xi += np.pi / 2
 
     xi = np.linspace(np.pi / 2, np.pi - abit, 50)
     while xi[0] < V / 2:
-        plt.plot(xi, -xi / np.tan(xi), '--b')
+        plt.plot(xi, -xi / np.tan(xi), "--b")
         xi += np.pi
 
-    plt.xlabel(r'$\xi=(d/2)\sqrt{k_0^2n_1^2-\beta^2}=(d/2)\kappa$')
+    plt.xlabel(r"$\xi=(d/2)\sqrt{k_0^2n_1^2-\beta^2}=(d/2)\kappa$")
 
     return plt
 
@@ -100,13 +102,13 @@ def TE_mode_plot(V):
     """
     abit = 1e-5
     xi = np.linspace(0, V / 2 - abit, 100)
-    circle = np.sqrt((V / 2)**2 - xi**2)
+    circle = np.sqrt((V / 2) ** 2 - xi**2)
 
     aplt = _base_mode_plot(V)
-    aplt.plot(xi, circle, ':k')
-    ystr = r'$\xi\,\tan\xi$   or   $-\xi\,\cot\xi$   or   $\sqrt{V^2/4-\xi^2}$'
+    aplt.plot(xi, circle, ":k")
+    ystr = r"$\xi\,\tan\xi$   or   $-\xi\,\cot\xi$   or   $\sqrt{V^2/4-\xi^2}$"
     aplt.ylabel(ystr)
-    aplt.title('TE Modes in Planar Film Waveguide (V=%.2f)' % V)
+    aplt.title("TE Modes in Planar Film Waveguide (V=%.2f)" % V)
     aplt.ylim(0, V / 2 + 1)
     aplt.xlim(0, V / 2 + 1)
 
@@ -159,12 +161,12 @@ def TE_crossing(V, mode):
     lo = abit + mode * np.pi / 2
     hi = min(np.pi / 2 - abit + mode * np.pi / 2, V / 2)
     if lo > V / 2:
-        return 0   # mode does not exist
+        return 0  # mode does not exist
 
     try:
         b = brentq(_TE_mode, lo, hi, args=(V, mode))
     except ValueError:  # happens when both hi and lo values have same sign
-        return 0        # therefore no such mode exists
+        return 0  # therefore no such mode exists
 
     return b
 
@@ -201,15 +203,15 @@ def TM_mode_plot(V, n1, n2):
     """
     abit = 1e-5
     xi = np.linspace(0, V / 2 - abit, 100)
-    ellipse = (n1 / n2)**2 * np.sqrt((V / 2)**2 - xi**2)
+    ellipse = (n1 / n2) ** 2 * np.sqrt((V / 2) ** 2 - xi**2)
 
     aplt = _base_mode_plot(V)
-    aplt.plot(xi, ellipse, ':k')
-    ystr = r'$\xi\,\tan\xi$   or   $-\xi\,\cot\xi$   or'
-    ystr = ystr + r'$(n_1/n_2)^2\sqrt{V^2/4-\xi^2}$'
+    aplt.plot(xi, ellipse, ":k")
+    ystr = r"$\xi\,\tan\xi$   or   $-\xi\,\cot\xi$   or"
+    ystr = ystr + r"$(n_1/n_2)^2\sqrt{V^2/4-\xi^2}$"
     aplt.ylabel(ystr)
-    aplt.title('TM Modes in Planar Film Waveguide (V=%.2f)' % V)
-    ymax = (n1 / n2)**2 * V / 2
+    aplt.title("TM Modes in Planar Film Waveguide (V=%.2f)" % V)
+    ymax = (n1 / n2) ** 2 * V / 2
     aplt.ylim(0, ymax + 1)
     aplt.xlim(0, ymax + 1)
 
@@ -244,9 +246,9 @@ def _TM_mode(xi, *args):
     n2 = args[2]
     mode = args[3]
     if mode % 2 == 0:
-        return xi * np.tan(xi) - (n1 / n2)**2 * np.sqrt(V**2 / 4 - xi**2)
+        return xi * np.tan(xi) - (n1 / n2) ** 2 * np.sqrt(V**2 / 4 - xi**2)
 
-    return xi / np.tan(xi) + (n1 / n2)**2 * np.sqrt(V**2 / 4 - xi**2)
+    return xi / np.tan(xi) + (n1 / n2) ** 2 * np.sqrt(V**2 / 4 - xi**2)
 
 
 def TM_crossing(V, n1, n2, mode):
@@ -277,7 +279,7 @@ def TM_crossing(V, n1, n2, mode):
     try:
         b = brentq(_TM_mode, lo, hi, args=(V, n1, n2, mode))
     except ValueError:  # happens when both hi and lo values have same sign
-        return 0        # therefore no such mode exists
+        return 0  # therefore no such mode exists
 
     return b
 
@@ -317,8 +319,8 @@ def _basic_field(V, d, x, mode, xi):
     Returns:
         the field at each position x
     """
-    gdby2 = np.sqrt((V / 2)**2 - xi**2)   # gamma*d/2
-    xgamma = 2 / d * gdby2 * abs(x)       # gamma*x
+    gdby2 = np.sqrt((V / 2) ** 2 - xi**2)  # gamma*d/2
+    xgamma = 2 / d * gdby2 * abs(x)  # gamma*x
     kappa = 2 / d * xi
 
     if mode % 2 == 0:
@@ -386,7 +388,7 @@ def TE_propagation_constant(V, mode):
         if xi == 0:
             b[i] = 0
         else:
-            b[i] = 1 - (2 * xi / VV)**2
+            b[i] = 1 - (2 * xi / VV) ** 2
     return b
 
 
@@ -409,5 +411,5 @@ def TM_propagation_constant(V, n1, n2, mode):
         if xi == 0:
             b[i] = 0
         else:
-            b[i] = 1 - (2 * xi / VV)**2
+            b[i] = 1 - (2 * xi / VV) ** 2
     return b

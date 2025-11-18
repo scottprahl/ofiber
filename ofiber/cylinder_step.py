@@ -52,30 +52,31 @@ import matplotlib.pyplot as plt
 import scipy.optimize
 from scipy import special
 
-_all_ = ('LP_mode_value',
-         'LP_mode_values',
-         'plot_LP_modes',
-         'LP_core_irradiance',
-         'LP_clad_irradiance',
-         'LP_total_irradiance',
-         'LP_radial_field',
-         'LP_radial_irradiance',
-         'gaussian_envelope_Omega',
-         'gaussian_radial_irradiance',
-         'transverse_misalignment_loss_db',
-         'angular_misalignment_loss_db',
-         'longitudinal_misalignment_loss_db',
-         'bending_loss_db',
-         'MFR',
-         'MFD',
-         'PetermannW',
-         'PetermannW_Approx',
-         'V_d2bV_by_V',
-         'V_d2bV_by_V_Approx',
-         'FF_polar_irradiance_x',
-         'FF_irradiance_x',
-         'FF_node_polar_angle',
-         )
+_all_ = (
+    "LP_mode_value",
+    "LP_mode_values",
+    "plot_LP_modes",
+    "LP_core_irradiance",
+    "LP_clad_irradiance",
+    "LP_total_irradiance",
+    "LP_radial_field",
+    "LP_radial_irradiance",
+    "gaussian_envelope_Omega",
+    "gaussian_radial_irradiance",
+    "transverse_misalignment_loss_db",
+    "angular_misalignment_loss_db",
+    "longitudinal_misalignment_loss_db",
+    "bending_loss_db",
+    "MFR",
+    "MFD",
+    "PetermannW",
+    "PetermannW_Approx",
+    "V_d2bV_by_V",
+    "V_d2bV_by_V_Approx",
+    "FF_polar_irradiance_x",
+    "FF_irradiance_x",
+    "FF_node_polar_angle",
+)
 
 
 def _LHS_eqn_8_40(b, V, ell):
@@ -162,24 +163,24 @@ def _LP_mode_value(V, ell, em):
         guided normalized propagation constant for mode (ell,em)  [-]
     """
     if ell < 0:
-        ell *= -1   # negative ells are same as positive ones
+        ell *= -1  # negative ells are same as positive ones
 
     if em <= 0:
-        return None    # modes start with 1, e.g., LP_01
+        return None  # modes start with 1, e.g., LP_01
 
     if V <= 0:
-        return None    # V must be positive
+        return None  # V must be positive
 
     abit = 1e-5
 
     # set up bounds for this mode
     jnz = special.jn_zeros(ell, em)
-    lo = max(0, 1 - (jnz[em - 1] / V)**2) + abit
+    lo = max(0, 1 - (jnz[em - 1] / V) ** 2) + abit
 
     if em == 1:
         hi = 1 - abit
     else:
-        hi = 1 - (jnz[em - 2] / V)**2 - abit
+        hi = 1 - (jnz[em - 2] / V) ** 2 - abit
 
     if hi < lo:
         return None  # no such mode
@@ -187,7 +188,7 @@ def _LP_mode_value(V, ell, em):
     try:
         b = scipy.optimize.brentq(_cyl_mode_eqn, lo, hi, args=(V, ell))
     except ValueError:  # happens when both hi and lo values have same sign
-        return None     # therefore no such mode exists
+        return None  # therefore no such mode exists
 
     return b
 
@@ -290,7 +291,7 @@ def plot_LP_modes(V, ell):
     np.place(g1, g1 < pltmin, np.nan)
     np.place(g2, g2 < pltmin, np.nan)
 
-    plt.plot([0, 1], [0, 0], ':k')
+    plt.plot([0, 1], [0, 0], ":k")
     plt.plot(b, g1)
     plt.plot(b, g2)
 
@@ -299,10 +300,10 @@ def plot_LP_modes(V, ell):
     for i, bb in enumerate(all_b):
         y = _LHS_eqn_8_40(bb, V, ell)
         plt.scatter([bb], [y], s=30)
-        plt.annotate(r'   LP$_{%d%d}$' % (ell, i + 1), xy=(bb, y), va='top')
+        plt.annotate(r"   LP$_{%d%d}$" % (ell, i + 1), xy=(bb, y), va="top")
 
-    plt.title(r'Modes for $\ell$=%d when V=%.3f' % (ell, V))
-    plt.xlabel('b')
+    plt.title(r"Modes for $\ell$=%d when V=%.3f" % (ell, V))
+    plt.xlabel("b")
     plt.ylim(pltmin, pltmax)
     plt.xlim(0, 1)
 
@@ -325,7 +326,7 @@ def LP_core_irradiance(V, b, ell):
         total core power over core area          [-]
     """
     U = V * np.sqrt(1 - b)
-    return 1 - special.jv(ell + 1, U) * special.jv(ell - 1, U) / special.jv(ell, U)**2
+    return 1 - special.jv(ell + 1, U) * special.jv(ell - 1, U) / special.jv(ell, U) ** 2
 
 
 def LP_clad_irradiance(V, b, ell):
@@ -344,7 +345,7 @@ def LP_clad_irradiance(V, b, ell):
         total cladding power over core area      [-]
     """
     W = V * np.sqrt(b)
-    return special.kn(ell + 1, W) * special.kn(ell - 1, W) / special.kn(ell, W)**2 - 1
+    return special.kn(ell + 1, W) * special.kn(ell - 1, W) / special.kn(ell, W) ** 2 - 1
 
 
 def LP_total_irradiance(V, b, ell):
@@ -365,7 +366,7 @@ def LP_total_irradiance(V, b, ell):
     U = V * np.sqrt(1 - b)
     W = V * np.sqrt(b)
     val = V**2 / U**2 * special.kn(ell + 1, W)
-    val *= special.kn(ell - 1, W) / special.kn(ell, W)**2
+    val *= special.kn(ell - 1, W) / special.kn(ell, W) ** 2
     return val
 
 
@@ -451,7 +452,7 @@ def gaussian_radial_irradiance(V, r_over_a):
         normalized irradiance at points r_over_a   [-]
     """
     Omega_over_a = gaussian_envelope_Omega(V)
-    return 1 / Omega_over_a**2 * np.exp(-r_over_a**2 / Omega_over_a**2)
+    return 1 / Omega_over_a**2 * np.exp(-(r_over_a**2) / Omega_over_a**2)
 
 
 def transverse_misalignment_loss_db(w1, w2, u):
@@ -469,7 +470,7 @@ def transverse_misalignment_loss_db(w1, w2, u):
         transverse misalignment loss in dB         [-]
     """
     sq = w1**2 + w2**2
-    loss = (2 * w1 * w2 / sq)**2 * np.exp(-2 * u**2 / sq)
+    loss = (2 * w1 * w2 / sq) ** 2 * np.exp(-2 * u**2 / sq)
     return -10 * np.log10(loss)
 
 
@@ -488,7 +489,7 @@ def angular_misalignment_loss_db(n, w, theta, lambda0):
     Returns:
         angular misalignment loss in dB    [-]
     """
-    return 4.34 * (np.pi * w * theta * n / lambda0)**2
+    return 4.34 * (np.pi * w * theta * n / lambda0) ** 2
 
 
 def longitudinal_misalignment_loss_db(n, w, D, lambda0):
@@ -535,7 +536,7 @@ def _bending_loss_db_scalar(n1, Delta, a, Rc, lambda0):
     U = V * np.sqrt(1 - b)
     W = V * np.sqrt(b)
     val = 4.343 * np.sqrt(np.pi / 4 / a / Rc)
-    val *= (U / V / special.kn(1, W))**2
+    val *= (U / V / special.kn(1, W)) ** 2
     val *= W**-1.5
     val *= np.exp(-2 * W**3 * Rc / 3 / k0**2 / a**3 / n1**2)
     return val
@@ -683,11 +684,11 @@ def _V_d2bV_by_V_scalar(V, ell):
     U = V * np.sqrt(1 - b)
     W = V * np.sqrt(b)
 
-    kappa_ell = special.kn(ell, W)**2 / special.kn(ell - 1, W)
+    kappa_ell = special.kn(ell, W) ** 2 / special.kn(ell - 1, W)
     kappa_ell /= special.kn(ell + 1, W)
     summ = 3 * W**2 - 2 * kappa_ell * (W**2 - U**2)
     val = W * (W**2 + U**2 * kappa_ell) * (kappa_ell - 1)
-    val *= (special.kn(ell - 1, W) + special.kn(ell + 1, W))
+    val *= special.kn(ell - 1, W) + special.kn(ell + 1, W)
     val /= special.kn(ell, W)
     summ += val
     return 2 * U**2 * kappa_ell / V**2 / W**2 * summ
@@ -731,7 +732,7 @@ def V_d2bV_by_V_Approx(V):
     Returns:
         V*d^2(bV)/dV^2                       [--]
     """
-    return 0.080 + 0.549 * (2.834 - V)**2
+    return 0.080 + 0.549 * (2.834 - V) ** 2
 
 
 def _FF_polar_x(kasin, V, ell, b):
@@ -759,8 +760,9 @@ def _FF_polar_x(kasin, V, ell, b):
     Vb = V * np.sqrt(1 - b)
     ell1 = ell + 1
 
-    Flnumer = kasin * special.jv(ell1, kasin) - Vb * special.jv(ell1, Vb) * \
-        (special.jv(ell, kasin) / special.jv(ell, Vb))
+    Flnumer = kasin * special.jv(ell1, kasin) - Vb * special.jv(ell1, Vb) * (
+        special.jv(ell, kasin) / special.jv(ell, Vb)
+    )
     Fldenom = (Vb**2 - kasin**2) * (V**2 * b + kasin**2)
 
     return Flnumer / Fldenom
@@ -790,9 +792,9 @@ def FF_irradiance_x(r, theta, phi, ell, lambda0, a, V, b):
         The irradiance pattern as a function of r, theta, and phi.
     """
     k = 2 * np.pi / lambda0
-    kasin = k*a * np.sin(theta)
+    kasin = k * a * np.sin(theta)
     FF_ell = _FF_polar_x(kasin, V, ell, b)
-    FF = FF_ell * (k * a * V)**2 * np.cos(ell * phi) / (k * r)
+    FF = FF_ell * (k * a * V) ** 2 * np.cos(ell * phi) / (k * r)
     return FF**2
 
 
@@ -818,9 +820,9 @@ def FF_polar_irradiance_x(r, theta, ell, lambda0, a, V, b):
         Azimuthally integrated irradiance pattern.
     """
     k = 2 * np.pi / lambda0
-    kasin = k*a * np.sin(theta)
+    kasin = k * a * np.sin(theta)
     FF_ell = _FF_polar_x(kasin, V, ell, b)
-    return np.pi * (FF_ell * (k * a * V)**2 / (k * r))**2
+    return np.pi * (FF_ell * (k * a * V) ** 2 / (k * r)) ** 2
 
 
 def _FF_node_polar_angle(V, ell, em):
@@ -869,13 +871,13 @@ def _FF_node_polar_angle(V, ell, em):
         polar angle Θ_N of first far-field zero for mode (ℓ,m)          [-]
     """
     if ell < 0:
-        ell *= -1   # negative ells are same as positive ones
+        ell *= -1  # negative ells are same as positive ones
 
     if em <= 0:
-        return None    # modes start with 1, e.g., LP_01
+        return None  # modes start with 1, e.g., LP_01
 
     if V <= 0:
-        return None    # V must be positive
+        return None  # V must be positive
 
     b = LP_mode_value(V, ell, em)
     if b is None:
@@ -883,13 +885,13 @@ def _FF_node_polar_angle(V, ell, em):
     # This occurs when the fiber does not support the (l,m) mode for the given V
 
     # set up bounds for the zero search
-    lo = 1E-5
+    lo = 1e-5
     # kasin = 0 is the lower bound on the function domain.
     # For ℓ≠0, the function is 0 at 0.
     # So we start the search for the first nontrivial zero
     # just above kasin = 0.
 
-    inc = 1E-2
+    inc = 1e-2
     hi = inc
     # we use this as a cautious initial guess. Very few fibers would have
     # their zero in this initial range. But more importantly, it seems likely no fibers
@@ -900,12 +902,12 @@ def _FF_node_polar_angle(V, ell, em):
     f2 = _FF_polar_x(hi, V, ell, b)
 
     for j in range(ntry):
-        if f1*f2 < 0.0:
+        if f1 * f2 < 0.0:
             break
-        hi = (j+1)*inc
+        hi = (j + 1) * inc
         f2 = _FF_polar_x(hi, V, ell, b)
     else:
-        raise StopIteration(r'No sign change in %d iterations' % ntry)
+        raise StopIteration(r"No sign change in %d iterations" % ntry)
 
     return scipy.optimize.brentq(_FF_polar_x, lo, hi, args=(V, ell, b))  # kasinThetaN
     # We do not suppress any errors from this subroutine, as we want to know if it's working

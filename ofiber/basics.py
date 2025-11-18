@@ -37,20 +37,22 @@ import numpy as np
 from scipy.special import jn_zeros
 
 
-__all__ = ('acceptance_angle',
-           'critical_angle',
-           'cutoff_wavelength',
-           'esi_Delta',
-           'esi_radius',
-           'esi_V_parameter',
-           'numerical_aperture',
-           'numerical_aperture_graded_index',
-           'relative_refractive_index',
-           'numerical_aperture_from_Delta',
-           'R_par',
-           'R_per',
-           'R_unpolarized',
-           'V_parameter')
+__all__ = (
+    "acceptance_angle",
+    "critical_angle",
+    "cutoff_wavelength",
+    "esi_Delta",
+    "esi_radius",
+    "esi_V_parameter",
+    "numerical_aperture",
+    "numerical_aperture_graded_index",
+    "relative_refractive_index",
+    "numerical_aperture_from_Delta",
+    "R_par",
+    "R_per",
+    "R_unpolarized",
+    "V_parameter",
+)
 
 
 def acceptance_angle(NA, n_outside=1):
@@ -108,8 +110,8 @@ def cutoff_wavelength(a, NA, ell=0, q=np.inf):
     Returns:
         shortest wavelength for operation in the specified mode [m]
     """
-    Vc, = jn_zeros(int(ell), 1)
-    if np.isfinite(q):       # graded index fiber
+    (Vc,) = jn_zeros(int(ell), 1)
+    if np.isfinite(q):  # graded index fiber
         Vc *= np.sqrt(1 + 2 / q)
     return 2 * np.pi * a * NA / Vc
 
@@ -125,7 +127,7 @@ def esi_Delta(Delta, q):
     Returns:
         equivalent relative refractive index   [-]
     """
-    return q * (2 + q) / (1 + q)**2 * Delta
+    return q * (2 + q) / (1 + q) ** 2 * Delta
 
 
 def esi_radius(a, q):
@@ -237,7 +239,7 @@ def R_par(m, theta):
     c = np.cos(theta)
     s = np.sin(theta)
     d = np.sqrt(m2 - s * s)
-    return abs((m2 * c - d) / (m2 * c + d))**2
+    return abs((m2 * c - d) / (m2 * c + d)) ** 2
 
 
 def R_per(m, theta):
@@ -258,7 +260,7 @@ def R_per(m, theta):
     c = np.cos(theta)
     s = np.sin(theta)
     d = np.sqrt(m2 - s * s)
-    return abs((c - d) / (c + d))**2
+    return abs((c - d) / (c + d)) ** 2
 
 
 def R_unpolarized(m, theta):

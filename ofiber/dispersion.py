@@ -17,10 +17,11 @@ import ofiber.cylinder_step as ofc
 import ofiber.basics as ofb
 
 
-__all__ = ('Material_Dispersion',
-           'Waveguide_Dispersion',
-           'Dispersion',
-           )
+__all__ = (
+    "Material_Dispersion",
+    "Waveguide_Dispersion",
+    "Dispersion",
+)
 
 
 def Material_Dispersion(core, λ):

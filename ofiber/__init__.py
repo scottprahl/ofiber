@@ -31,12 +31,13 @@ Info about refractive index of glasses::
 
     help(ofiber.refraction)
 """
-__version__ = '0.8.1'
-__author__ = 'Scott Prahl'
-__email__ = 'scott.prahl@oit.edu'
-__copyright__ = '2018-24, Scott Prahl'
-__license__ = 'MIT'
-__url__ = 'https://github.com/scottprahl/ofiber'
+
+__version__ = "0.9.0"
+__author__ = "Scott Prahl"
+__email__ = "scott.prahl@oit.edu"
+__copyright__ = "2018-25, Scott Prahl"
+__license__ = "MIT"
+__url__ = "https://github.com/scottprahl/ofiber"
 
 from .basics import *
 from .cylinder_step import *

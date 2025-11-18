@@ -12,16 +12,13 @@ import scipy.constants
 import numpy as np
 
 
-__all__ = ('power_law_profile',
-           'first_derivative',
-           'curvature',
-           'transverse_location')
+__all__ = ("power_law_profile", "first_derivative", "curvature", "transverse_location")
 
 
 def power_law_profile(n_core, nclad, q, a, x):
     """Calculate the index of refraction at a particular radius."""
     delta = (n_core**2 - nclad**2) / 2 / n_core**2
-    nsqr = n_core**2 * (1 - 2 * delta * (np.abs(x) / a)**q)
+    nsqr = n_core**2 * (1 - 2 * delta * (np.abs(x) / a) ** q)
     if not np.isscalar(x):
         np.place(nsqr, abs(x) >= a, nclad**2)
     return np.sqrt(nsqr)
@@ -38,7 +35,7 @@ def first_derivative(x, f):
 def curvature(n_core, nclad, q, a, x, theta):
     """Return the curvature at a position x on the fiber profile."""
     beta = n_core * np.cos(theta)
-    nsqr = power_law_profile(n_core, nclad, q, a, x)**2
+    nsqr = power_law_profile(n_core, nclad, q, a, x) ** 2
     curve = first_derivative(x, nsqr) / 2 / beta**2
     return curve
 

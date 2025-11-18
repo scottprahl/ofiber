@@ -29,10 +29,11 @@ Fiber Optics*, Cambridge University Press, 1998.
 import numpy as np
 import ofiber.basics
 
-__all__ = ('parabolic_propagation_constant',
-           'parabolic_propagation_constants',
-           'TE_planar_parabolic_field',
-           )
+__all__ = (
+    "parabolic_propagation_constant",
+    "parabolic_propagation_constants",
+    "TE_planar_parabolic_field",
+)
 
 
 def _herm(n, x):

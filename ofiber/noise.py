@@ -13,14 +13,16 @@ Fiber Optics, Cambridge University Press, 1998
 import scipy.special
 import numpy as np
 
-__all__ = ('shot_noise',
-           'thermal_noise',
-           'NEP',
-           'best_APD_gain',
-           'BER_at_SNR',
-           'SNR_at_BER',
-           'thermal_min_power',
-           'quantum_min_power')
+__all__ = (
+    "shot_noise",
+    "thermal_noise",
+    "NEP",
+    "best_APD_gain",
+    "BER_at_SNR",
+    "SNR_at_BER",
+    "thermal_min_power",
+    "quantum_min_power",
+)
 
 
 def shot_noise(I0, Idark, bandwidth, M=1, x=0):
@@ -38,7 +40,7 @@ def shot_noise(I0, Idark, bandwidth, M=1, x=0):
         shot_noise       (A)
     """
     q = 1.602e-19  # Coulomb
-    return np.sqrt(2 * q * (I0 / M + Idark) * bandwidth * M**(2 + x))
+    return np.sqrt(2 * q * (I0 / M + Idark) * bandwidth * M ** (2 + x))
 
 
 def thermal_noise(T, Rload, bandwidth):
@@ -71,7 +73,7 @@ def NEP(Responsivity, Rload, Idark, T):
         power       (W/sqrt(Hz))
     """
     q = 1.602e-19  # Coulomb
-    k = 1.38e-23   # J/K
+    k = 1.38e-23  # J/K
     return 1 / Responsivity * np.sqrt(4 * k * T / Rload + 2 * q * Idark)
 
 
@@ -89,8 +91,8 @@ def best_APD_gain(I0, Rload, Idark, x, T):
         optimal gain (--)
     """
     q = 1.602e-19  # Coulomb
-    k = 1.38e-23   # J/K
-    return (4 * k * T / (x * q * Rload * (I0 + Idark)))**(1 / (x + 2))
+    k = 1.38e-23  # J/K
+    return (4 * k * T / (x * q * Rload * (I0 + Idark))) ** (1 / (x + 2))
 
 
 def BER_at_SNR(snr):
@@ -116,7 +118,7 @@ def SNR_at_BER(ber):
     Returns:
         signal to noise ratio (--)
     """
-    return 8 * scipy.special.erfcinv(2 * ber)**2
+    return 8 * scipy.special.erfcinv(2 * ber) ** 2
 
 
 def thermal_min_power(bitrate, responsivity, capacitance, T, snr):
@@ -152,8 +154,8 @@ def quantum_min_power(bitrate, ber, lambda0):
     Returns:
         optical power                   (W)
     """
-    h = 6.626e-34     # J*s
-    c = 2.998e8       # m/s
+    h = 6.626e-34  # J*s
+    c = 2.998e8  # m/s
     nu = c / lambda0  # Hz
     Np = -np.log(2 * ber)
     return h * nu * Np * bitrate
