@@ -10,8 +10,8 @@
    :target: https://github.com/conda-forge/ofiber-feedstock
    :alt: Conda
 
-.. |doi-badge| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.17642409.svg
-   :target: https://doi.org/10.5281/zenodo.17642409
+.. |doi-badge| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.8368598.svg
+   :target: https://doi.org/10.5281/zenodo.8368598
    :alt: DOI
 
 .. |license-badge| image:: https://img.shields.io/github/license/scottprahl/ofiber?color=68CA66
