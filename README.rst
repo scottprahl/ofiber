@@ -54,8 +54,6 @@ The theoretical framework closely follows well-established treatments in:
 
 The accompanying examples and notebooks are intended to support instruction, research reproducibility, and optical design workflows.
 
----
-
 Installation
 ------------
 
@@ -67,7 +65,6 @@ Or with ``conda`` from conda-forge::
 
     conda install -c conda-forge ofiber
 
----
 
 Documentation and Examples
 ---------------------------
@@ -80,10 +77,8 @@ or use immediately in your browser via the JupyterLite button below
 
     |lite|
 
----
-
-Representative Capabilities
-----------------------------
+Examples
+--------
 
 Symmetric planar waveguides
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -126,7 +121,7 @@ If you use ``ofiber`` in academic, instructional, or applied technical work, ple
 Prahl, S. (2025). *ofiber: A Python module for modeling guided-wave light propagation in optical fibers* (Version 0.9.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.8368598
 
 BibTeX
-~~~~~~
+^^^^^^
 
 .. code-block:: bibtex
 
