@@ -29,7 +29,9 @@ jobs:
       - name: Build
         run: |
           pip install setuptools wheel twine build
-          pip install -r requirements.txt
+          pip install numpy
+          pip install scipy
+          pip install matplotlib
           python -m build
 
       - name: Publish package to PyPI

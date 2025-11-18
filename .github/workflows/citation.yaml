@@ -32,7 +32,7 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git diff --exit-code || (
-            git add CITATION.cff &&
+            git add CITATION.cff README.rst &&
             git commit -m "Update CITATION.cff with latest release date" &&
             git push
           )
