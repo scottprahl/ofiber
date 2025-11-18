@@ -5,19 +5,19 @@
         {
           "comment_text": "",
           "digests": {
-            "md5": "146b091feb36e3d2d8ee0dbe1a18e5cf",
-            "sha256": "1b65d6c6859cafa7a45b6258beef0305e409ad3f09b6c217ac08a694b2152a52"
+            "md5": "549c14e7633edd72e7542bb9175f41fa",
+            "sha256": "44d222585f00176f0cf771d5436297733469c7b98d5fc4195509726b46d7c4b5"
           },
           "downloads": -1,
           "filename": "ofiber-0.9.0-py3-none-any.whl",
           "has_sig": false,
-          "md5_digest": "146b091feb36e3d2d8ee0dbe1a18e5cf",
+          "md5_digest": "549c14e7633edd72e7542bb9175f41fa",
           "packagetype": "bdist_wheel",
           "python_version": "py3",
           "requires_python": ">=3.9",
           "size": 31374,
-          "upload_time": "2025-11-18T05:50:14.341936Z",
-          "upload_time_iso_8601": "2025-11-18T05:50:14.341936Z",
+          "upload_time": "2025-11-18T06:14:48.991789Z",
+          "upload_time_iso_8601": "2025-11-18T06:14:48.991789Z",
           "url": "./ofiber-0.9.0-py3-none-any.whl",
           "yanked": false,
           "yanked_reason": null
