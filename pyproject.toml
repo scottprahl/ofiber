@@ -87,6 +87,7 @@ ignore = [
   "docs/*",
   "docs/**/*",
   "release.txt",
+  "todo.rst",
 ]
 
 
