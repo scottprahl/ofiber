@@ -6,7 +6,7 @@
     "piplite_urls": ["./dist/"]
   },
   "jupyter-config-data": {
-    "appName": "pygrin",
+    "appName": "ofiber",
     "appUrl": "./lab",
     "baseUrl": "./",
     "defaultKernelName": "python"
