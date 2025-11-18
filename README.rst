@@ -41,6 +41,8 @@ ofiber
 
 |license-badge| |test-badge| |readthedocs-badge| |downloads-badge|
 
+|lite|
+
 ``ofiber`` is a Python library for analyzing guided-wave propagation in optical fibers and related dielectric waveguiding structures.
 It provides analytical and numerical tools for mode analysis, dispersion engineering, and far-field radiation modeling.
 
