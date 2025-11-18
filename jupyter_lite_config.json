@@ -1,0 +1,14 @@
+{
+  "LiteBuildConfig": {
+    "apps": ["lab"]
+  },
+  "PipliteAddon": {
+    "piplite_urls": ["./dist/"]
+  },
+  "jupyter-config-data": {
+    "appName": "pygrin",
+    "appUrl": "./lab",
+    "baseUrl": "./",
+    "defaultKernelName": "python"
+  }
+}
