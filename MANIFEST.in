@@ -1,2 +1,7 @@
+# Core package files
+include LICENSE.txt
+include README.rst
 include CHANGELOG.rst
 include CITATION.cff
+
+recursive-include tests *.py
