@@ -4,6 +4,7 @@ Changelog
 0.9.1 (1/14/2026)
 -----
 * remove requirements*.txt, all deps in pyproject.toml
+* use np.trapezoid()
 * version info only in __init__.py
 * update readthedocs configuration
 * update docs/conf.py

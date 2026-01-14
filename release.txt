@@ -6,7 +6,7 @@
 # update the version in ofiber/__init__.py AND pyproject.toml
   git commit -m 'update version' ofiber/__init__.py pyproject.toml
 
-# update CHANGELOG.txt  `git shortlog v0.8.0..HEAD`
+# update CHANGELOG.txt  `git shortlog 0.9.0..HEAD`
   git commit -m 'update recent changes' CHANGELOG.txt
   git push
 

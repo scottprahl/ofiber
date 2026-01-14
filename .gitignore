@@ -1,15 +1,29 @@
+# macOS
 .DS_Store
-*.pyc
-.cache/
-.jupyterlite.doit.db
-.lite_src/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
 .venv/
+.cache/
+.pytest_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# JupyterLite
 _site/
-dist/*
-ofiber.egg-info/*
-docs/.ipynb_checkpoints/
+.lite_src/
+.jupyterlite.doit.db
+
+# Documentation
 docs/_build/
 docs/api/
-docs/.jupyter/
-ofiber/.ipynb_checkpoints/
-ofiber/__pycache__/*
+tests/charts/
+todo.txt
+
+# GitHub Pages
+.gh-pages/
