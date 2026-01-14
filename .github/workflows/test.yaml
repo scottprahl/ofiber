@@ -1,7 +1,8 @@
+# yamllint disable rule:truthy
 ---
 name: test
 
-on:    # yamllint disable-line rule:truthy
+on:
   push:
     branches: [main]
   pull_request:
@@ -28,10 +29,8 @@ jobs:
 
       - name: Install package and dependencies
         run: |
-          pip install numpy
-          pip install scipy
-          pip install matplotlib
-          pip install -e .  # Install the current package in editable mode
+          pip install pytest
+          pip install -e .  # current package in editable mode
 
       - name: Tests
         run: |
