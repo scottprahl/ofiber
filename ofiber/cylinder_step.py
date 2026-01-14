@@ -400,7 +400,7 @@ def LP_radial_irradiance(V, b, ell, r_over_a):
     The normalization is done such that
     integral_over_space/(area of core) = 1
     or
-    2*np.trapz(LP(r_over_a)*r_over_a, r_over_a) =1
+    2*np.trapezoid(LP(r_over_a)*r_over_a, r_over_a) =1
 
     Args:
         V:        V-parameter for fiber            [-]
@@ -442,7 +442,7 @@ def gaussian_radial_irradiance(V, r_over_a):
     The normalization is done assuming
     the Gaussian envelope approximation for the LP_01 mode. The result
     is normalized such that
-    np.trapz(Gaussian(r_over_a)*r_over_a, r_over_a) = 1/2
+    np.trapezoid(Gaussian(r_over_a)*r_over_a, r_over_a) = 1/2
 
     Args:
         V:        V-parameter for fiber            [-]
