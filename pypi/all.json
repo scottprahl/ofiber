@@ -1,24 +1,24 @@
 {
   "ofiber": {
     "releases": {
-      "0.9.0": [
+      "0.9.1": [
         {
           "comment_text": "",
           "digests": {
-            "md5": "549c14e7633edd72e7542bb9175f41fa",
-            "sha256": "44d222585f00176f0cf771d5436297733469c7b98d5fc4195509726b46d7c4b5"
+            "md5": "b505d62b832925b8b139bb3ba2ce0146",
+            "sha256": "b8263308202c2f03a5d6089103bb8a3ba31f45811238263b9116901dd0641fae"
           },
           "downloads": -1,
-          "filename": "ofiber-0.9.0-py3-none-any.whl",
+          "filename": "ofiber-0.9.1-py3-none-any.whl",
           "has_sig": false,
-          "md5_digest": "549c14e7633edd72e7542bb9175f41fa",
+          "md5_digest": "b505d62b832925b8b139bb3ba2ce0146",
           "packagetype": "bdist_wheel",
           "python_version": "py3",
           "requires_python": ">=3.9",
-          "size": 31374,
-          "upload_time": "2025-11-18T06:14:48.991789Z",
-          "upload_time_iso_8601": "2025-11-18T06:14:48.991789Z",
-          "url": "./ofiber-0.9.0-py3-none-any.whl",
+          "size": 31912,
+          "upload_time": "2026-01-14T20:48:55.570790Z",
+          "upload_time_iso_8601": "2026-01-14T20:48:55.570790Z",
+          "url": "./ofiber-0.9.1-py3-none-any.whl",
           "yanked": false,
           "yanked_reason": null
         }
