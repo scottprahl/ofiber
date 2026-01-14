@@ -167,6 +167,7 @@ rcheck:
 	@$(MAKE) ruff-check
 	@$(MAKE) pylint-check
 	@$(MAKE) rst-check
+	@$(MAKE) yaml-check
 	@$(MAKE) manifest-check
 	@$(MAKE) pyroma-check
 	@$(MAKE) html
