@@ -1,6 +1,17 @@
 Changelog
 ==========
 
+0.9.1 (1/14/2026)
+-----
+* remove requirements*.txt, all deps in pyproject.toml
+* version info only in __init__.py
+* update readthedocs configuration
+* update docs/conf.py
+* update github action to publish to pypi
+* fix pylint warnings in update_citation.py
+* move jupyter_lite_config.json to ofiber folder
+* update zenodo url
+
 0.9.0 (11/18/2025)
 -------------------
 * support for jupyterlite
