@@ -1,8 +1,16 @@
 Changelog
 ==========
 
-0.9.1 (1/14/2026)
------
+Unreleased ()
+-------------
+* migrate Makefile to a uv-first workflow with shared RUN wrappers and no .venv/.ready bootstrap prerequisite
+* add RM/RMR cleanup variables and replace hardcoded rm cleanup commands
+* raise package Python support metadata to 3.10 through 3.14 and update docs/lite dependency ranges
+* update CI/runtime Python defaults to 3.14 and the test matrix to 3.10 and 3.14
+* add release dates to each changelog heading using release or tag dates
+
+0.9.1 (2026-01-14)
+------------------
 * remove requirements*.txt, all deps in pyproject.toml
 * use np.trapezoid()
 * version info only in __init__.py
@@ -13,14 +21,14 @@ Changelog
 * move jupyter_lite_config.json to ofiber folder
 * update zenodo url
 
-0.9.0 (11/18/2025)
+0.9.0 (2025-11-18)
 -------------------
 * support for jupyterlite
 * use pyproject.toml and requirements-dev.txt
 * better citation
 * normalizing code formatting with black
 
-0.8.1 (5/4/2024)
+0.8.1 (2024-05-05)
 -------------------
 * Implemented FF_node_polar_angle (@matt8s)
 * Added FF_node_polar_angle() example to 9-Far-field-irradiance.ipynb (@matt8s)
@@ -29,18 +37,18 @@ Changelog
 * Edited Jupyter notebooks
 * Added images and improved README
 
-0.8.0 (2/13/24)
+0.8.0 (2024-02-13)
 -------------------
 * add functions for far-field irradiance (thanks @matt8s)
 * improve calc of b for cylindrical step fibers for large V
 * add new notebook for far-field irradiance
 * enable use of arrays in `cylinder_step.LP_mode_value()`
 
-0.7.1 (9/21/23)
+0.7.1 (2023-09-21)
 -------------------
 * fix long-description for pypi
 
-0.7.0 (9/21/23)
+0.7.0 (2023-09-21)
 -------------------
 * better handling of propagation factor b
 * add import boilerplate needed for Jupyterlite
@@ -57,53 +65,53 @@ Changelog
 * update badges
 * conda support
 
-v0.6.2 (9/5/2021)
------------------
+v0.6.2 (2021-08-06)
+-------------------
 * create pure python packages
 * include wheel file
 * package as python3 only
 
-v0.6.1 (3/26/2021)
-------------------
+v0.6.1 (2021-03-26)
+-------------------
 * add colab and binder badges
 * improve docs
 * rename dispersion api
 * start using more descriptive names in notebooks
 
-v0.6.0 (1/5/2021)
-------------------
+v0.6.0 (2021-01-05)
+-------------------
 * improve help()
 * improve sphinx docs
 * new names
 
-v0.5.0 (5/25/2020)
-------------------
+v0.5.0 (2020-05-25)
+-------------------
 * sphinx docs
 * reorganize and improve docs
 * add lint target to Makefile
 * add rcheck target to Makefile
 
-v0.4.0 (01/20/2020)
--------------------
+v0.4.0 (2020-01-22)
+--------------------
 * improve packaging
 * add some documentation
 * more glasses
 * more functions
 
-v0.3.0 (03/12/2018)
+v0.3.0 (2018-03-12)
 -------------------
 * add basics.py
 * add documentation for functions
 
-v0.2.1 (03/04/2018)
+v0.2.1 (2018-03-05)
 -------------------
 * fix typo
 
-v0.2.0 (03/04/2018)
+v0.2.0 (2018-03-05)
 -------------------
 * Add noise.py
 * Improve packaging
 
-v0.1.0 (02/26/2018)
+v0.1.0 (2018-02-26)
 -------------------
 * Initial release
