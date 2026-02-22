@@ -32,9 +32,7 @@ PORT            := 8000
 PYTEST_OPTS     := 
 SPHINX_OPTS     := -T -E -b html -d $(DOCS_DIR)/_build/doctrees -D language=en
 
-PYTEST_TARGETS  := tests
-NOTEBOOK_TESTS  := tests/test_all_notebooks.py
-PYLINT_TARGETS  := ofiber/*.py tests/*.py .github/scripts/update_citation.py
+PYLINT_TARGETS  := $(PACKAGE)/*.py tests/*.py .github/scripts/update_citation.py
 YAML_TARGETS    := .github/workflows/citation.yaml .github/workflows/pypi.yaml .github/workflows/test.yaml .readthedocs.yaml
 RST_TARGETS     := README.rst CHANGELOG.rst $(DOCS_DIR)/index.rst $(DOCS_DIR)/changelog.rst
 RST_AUTOMODAPI  := $(DOCS_DIR)/$(PACKAGE).rst
@@ -44,8 +42,9 @@ help:
 	@echo "Build Targets:"
 	@echo "  dist           - Build sdist+wheel locally"
 	@echo "  html           - Build Sphinx HTML documentation"
-	@echo "  venv           - Sync project dependencies with uv extras"
 	@echo "  lab            - Start jupyterlab"
+	@echo "  readme         - Start jupyterlab"
+	@echo "  venv           - Install project dependencies with uv extras"
 	@echo ""
 	@echo "Test Targets:"
 	@echo "  test           - Run pytest on python files"
@@ -80,12 +79,11 @@ dist:
 
 .PHONY: test
 test:
-	$(RUN) pytest $(PYTEST_OPTS) $(PYTEST_TARGETS)
+	$(RUN) pytest $(PYTEST_OPTS) tests --ignore=tests/test_all_notebooks.py
 
 .PHONY: note-test
 note-test:
-	$(RUN) pytest --verbose $(NOTEBOOK_TESTS)
-	@echo "✅ Notebook check complete"
+	$(RUN) pytest --verbose tests/test_all_notebooks.py
 
 .PHONY: html
 html:
@@ -98,16 +96,16 @@ lint: pylint-check
 
 .PHONY: pylint-check
 pylint-check:
-	-@$(RUN) pylint $(PYLINT_TARGETS)
+	$(RUN) pylint $(PYLINT_TARGETS)
 
 .PHONY: yaml-check
 yaml-check:
-	-@$(RUN) yamllint $(YAML_TARGETS)
+	$(RUN) yamllint $(YAML_TARGETS)
 
 .PHONY: rst-check
 rst-check:
-	-@$(RUN) rstcheck $(RST_TARGETS)
-	-@$(RUN) rstcheck --ignore-directives automodapi $(RST_AUTOMODAPI)
+	$(RUN) rstcheck $(RST_TARGETS)
+	$(RUN) rstcheck --ignore-directives automodapi $(RST_AUTOMODAPI)
 
 .PHONY: ruff-check
 ruff-check:
@@ -157,8 +155,6 @@ lite: $(LITE_CONFIG)
 	@echo "==> Cleaning previous builds"
 	@$(RMR) "$(OUT_ROOT)"
 	@$(RMR) "$(DOIT_DB)"
-	@$(RMR) ".doit.db"
-	@$(RMR) ".jupyterlite.doit.db.db"
 	@echo "    ✓ Cleaned"
 
 	@echo "==> Staging notebooks from docs -> $(STAGE_DIR)"
@@ -238,26 +234,27 @@ clean:
 	@find . -name '.DS_Store' -type f -exec $(RM) {} +
 	@find . -name '.ipynb_checkpoints' -type d -prune -exec $(RMR) {} +
 	@find . -name '.pytest_cache' -type d -prune -exec $(RMR) {} +
-	@$(RMR) .cache
-	@$(RMR) .ruff_cache
-	@$(RMR) $(PACKAGE).egg-info
-	@$(RMR) docs/api
-	@$(RMR) docs/_build
-	@$(RMR) tests/charts
-	@$(RMR) dist
+	$(RMR) .ruff_cache
+	$(RMR) $(PACKAGE).egg-info
+	$(RMR) docs/api
+	$(RMR) docs/_build
+	$(RMR) dist
 
 .PHONY: lite-clean
 lite-clean:
 	@echo "==> Cleaning JupyterLite build artifacts"
-	@$(RMR) "$(STAGE_DIR)"
-	@$(RMR) "$(OUT_ROOT)"
-	@$(RMR) ".lite_root"
-	@$(RMR) "$(DOIT_DB)"
-	@$(RMR) "_output"
+	$(RMR) "$(STAGE_DIR)"
+	$(RMR) "$(OUT_ROOT)"
+	$(RMR) "$(DOIT_DB)"
+	$(RMR) .cache
+	$(RMR) dist
+	$(RMR) $(PACKAGE).egg-info
+	$(RMR) dist
 
 .PHONY: realclean
 realclean: lite-clean clean
 	@echo "==> Deep cleaning: removing venv and deployment worktree"
 	@git worktree remove "$(WORKTREE)" --force 2>/dev/null || true
-	@$(RMR) "$(WORKTREE)"
-	@$(RMR) "$(VENV)"
+	$(RMR) "$(WORKTREE)"
+	$(RMR) "$(VENV)"
+	$(RM) uv.lock
