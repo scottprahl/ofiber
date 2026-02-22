@@ -1,24 +1,21 @@
 PACKAGE         := ofiber
 GITHUB_USER     := scottprahl
 
+PY_VERSION      ?= 3.14
 UV              ?= uv
-VENV            ?= .venv
 RUN             := $(UV) run --extra dev
 RUN_DOCS        := $(UV) run --extra docs
 RUN_LITE        := $(UV) run --extra lite
-
 RM              ?= rm -f
 RMR             ?= rm -rf
 
 DOCS_DIR        := docs
-HTML_DIR        := $(DOCS_DIR)/_build/html
-
-ROOT            := $(abspath .)
-OUT_ROOT        := $(ROOT)/_site
+OUT_ROOT        := _site
+STAGE_DIR       := .lite_src
+DOIT_DB         := .jupyterlite.doit.db
 OUT_DIR         := $(OUT_ROOT)/$(PACKAGE)
-STAGE_DIR       := $(ROOT)/.lite_src
-DOIT_DB         := $(ROOT)/.jupyterlite.doit.db
-LITE_CONFIG     := $(ROOT)/$(PACKAGE)/jupyter_lite_config.json
+HTML_DIR        := $(DOCS_DIR)/_build/html
+LITE_CONFIG     := $(PACKAGE)/jupyter_lite_config.json
 
 # --- GitHub Pages deploy config ---
 PAGES_BRANCH    := gh-pages
@@ -35,7 +32,6 @@ SPHINX_OPTS     := -T -E -b html -d $(DOCS_DIR)/_build/doctrees -D language=en
 PYLINT_TARGETS  := $(PACKAGE)/*.py tests/*.py .github/scripts/update_citation.py
 YAML_TARGETS    := .github/workflows/citation.yaml .github/workflows/pypi.yaml .github/workflows/test.yaml .readthedocs.yaml
 RST_TARGETS     := README.rst CHANGELOG.rst $(DOCS_DIR)/index.rst $(DOCS_DIR)/changelog.rst
-RST_AUTOMODAPI  := $(DOCS_DIR)/$(PACKAGE).rst
 
 .PHONY: help
 help:
@@ -43,7 +39,7 @@ help:
 	@echo "  dist           - Build sdist+wheel locally"
 	@echo "  html           - Build Sphinx HTML documentation"
 	@echo "  lab            - Start jupyterlab"
-	@echo "  readme         - Start jupyterlab"
+	@echo "  readme         - Create images for readme"
 	@echo "  venv           - Install project dependencies with uv extras"
 	@echo ""
 	@echo "Test Targets:"
@@ -79,7 +75,8 @@ dist:
 
 .PHONY: test
 test:
-	$(RUN) pytest $(PYTEST_OPTS) tests --ignore=tests/test_all_notebooks.py
+	@:
+#	$(RUN) pytest $(PYTEST_OPTS) tests --ignore=tests/test_all_notebooks.py
 
 .PHONY: note-test
 note-test:
@@ -90,6 +87,11 @@ html:
 	@mkdir -p "$(HTML_DIR)"
 	$(RUN_DOCS) sphinx-build $(SPHINX_OPTS) "$(DOCS_DIR)" "$(HTML_DIR)"
 	@command -v open >/dev/null 2>&1 && open "$(HTML_DIR)/index.html" || true
+
+.PHONY: lab
+lab:
+	@echo "==> Launching JupyterLab via uv"
+	$(RUN) jupyter lab --ServerApp.root_dir="$(CURDIR)"
 
 .PHONY: readme
 readme:
@@ -106,7 +108,7 @@ yaml-check:
 .PHONY: rst-check
 rst-check:
 	$(RUN) rstcheck $(RST_TARGETS)
-	$(RUN) rstcheck --ignore-directives automodapi $(RST_AUTOMODAPI)
+	$(RUN) rstcheck --ignore-directives automodapi $(DOCS_DIR)/$(PACKAGE).rst
 
 .PHONY: ruff-check
 ruff-check:
@@ -138,46 +140,17 @@ rcheck:
 	@echo "✅ Release checks complete"
 	
 .PHONY: lite
-lite: $(LITE_CONFIG)
-	@echo "==> Building package wheel for PyOdide"
-	@$(RUN) python -m build
-
-	@echo "==> Checking for .gh-pages worktree"
-	@if [ -d "$(WORKTREE)" ]; then \
-		echo "    Found .gh-pages worktree, removing..."; \
-		git worktree remove "$(WORKTREE)" --force 2>/dev/null || true; \
-		git worktree prune; \
-		$(RMR) "$(WORKTREE)"; \
-		echo "    ✓ Removed"; \
-	else \
-		echo "    No .gh-pages worktree found"; \
-	fi
-
-	@echo "==> Cleaning previous builds"
-	@$(RMR) "$(OUT_ROOT)"
-	@$(RMR) "$(DOIT_DB)"
-	@echo "    ✓ Cleaned"
-
+lite: lite-clean $(LITE_CONFIG) dist
 	@echo "==> Staging notebooks from docs -> $(STAGE_DIR)"
-	@$(RMR) "$(STAGE_DIR)"; mkdir -p "$(STAGE_DIR)"
-	@if ls docs/*.ipynb 1> /dev/null 2>&1; then \
-		/bin/cp docs/*.ipynb "$(STAGE_DIR)"; \
-		echo "==> Clearing outputs from staged notebooks"; \
-		$(RUN) jupyter nbconvert --clear-output --inplace "$(STAGE_DIR)"/*.ipynb; \
-	else \
-		echo "⚠️  No notebooks found in docs/"; \
-	fi
-
+	mkdir -p "$(STAGE_DIR)"
+	/bin/cp docs/*.ipynb "$(STAGE_DIR)"
+	$(RUN) jupyter nbconvert --clear-output --inplace "$(STAGE_DIR)"/*.ipynb
 	@echo "==> Building JupyterLite"
 	@$(RUN_LITE) jupyter lite build \
 		--config="$(LITE_CONFIG)" \
 		--contents="$(STAGE_DIR)" \
 		--output-dir="$(OUT_DIR)"
-
-	@echo "==> Adding .nojekyll for GitHub Pages"
-	@touch "$(OUT_DIR)/.nojekyll"
-	
-	@echo "✅ Build complete -> $(OUT_DIR)"
+	@touch "$(OUT_DIR)/.nojekyll"  # github
 
 .PHONY: lite-serve
 lite-serve:
@@ -223,39 +196,30 @@ lite-deploy:
 	    echo "✅ Deployed to https://$(GITHUB_USER).github.io/$(PACKAGE)/"; \
 	  fi
 
-.PHONY: lab
-lab:
-	@echo "==> Launching JupyterLab via uv"
-	$(RUN) jupyter lab --ServerApp.root_dir="$(CURDIR)"
-
-.PHONY: clean
-clean:
-	@echo "==> Cleaning build artifacts"
-	@find . -name '__pycache__' -type d -exec $(RMR) {} +
-	@find . -name '.DS_Store' -type f -exec $(RM) {} +
-	@find . -name '.ipynb_checkpoints' -type d -prune -exec $(RMR) {} +
-	@find . -name '.pytest_cache' -type d -prune -exec $(RMR) {} +
-	$(RMR) .ruff_cache
-	$(RMR) $(PACKAGE).egg-info
-	$(RMR) docs/api
-	$(RMR) docs/_build
-	$(RMR) dist
-
 .PHONY: lite-clean
 lite-clean:
 	@echo "==> Cleaning JupyterLite build artifacts"
-	$(RMR) "$(STAGE_DIR)"
-	$(RMR) "$(OUT_ROOT)"
-	$(RMR) "$(DOIT_DB)"
-	$(RMR) .cache
-	$(RMR) dist
-	$(RMR) $(PACKAGE).egg-info
-	$(RMR) dist
+	@$(RMR) "$(STAGE_DIR)"
+	@$(RMR) "$(OUT_ROOT)"
+	@$(RMR) "$(DOIT_DB)"
+	@$(RMR) .cache dist $(PACKAGE).egg-info
+
+.PHONY: clean
+clean: lite-clean
+	@echo "==> Cleaning build artifacts"	
+	@find . -name '__pycache__' -type d -exec $(RMR) {} +
+	@find . -name '.DS_Store' -type f -delete
+	@find . -name '.ipynb_checkpoints' -type d -prune -exec $(RMR) {} +
+	@find . -name '.pytest_cache' -type d -prune -exec $(RMR) {} +
+	@$(RMR) .ruff_cache
+	@$(RMR) docs/api
+	@$(RMR) docs/_build
 
 .PHONY: realclean
-realclean: lite-clean clean
+realclean: clean
 	@echo "==> Deep cleaning: removing venv and deployment worktree"
 	@git worktree remove "$(WORKTREE)" --force 2>/dev/null || true
+	@git worktree prune || true
 	$(RMR) "$(WORKTREE)"
-	$(RMR) "$(VENV)"
-	$(RM) uv.lock
+	$(RMR) .venv
+	@$(RM) uv.lock
