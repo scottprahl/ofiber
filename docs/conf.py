@@ -38,3 +38,6 @@ nbsphinx_allow_errors = False
 html_theme = "sphinx_rtd_theme"
 html_scaled_image_link = False
 html_sourcelink_suffix = ""
+
+html_static_path = ["_static"]
+html_css_files = ["custom.css"]
