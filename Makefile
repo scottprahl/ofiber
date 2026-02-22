@@ -91,8 +91,9 @@ html:
 	$(RUN_DOCS) sphinx-build $(SPHINX_OPTS) "$(DOCS_DIR)" "$(HTML_DIR)"
 	@command -v open >/dev/null 2>&1 && open "$(HTML_DIR)/index.html" || true
 
-.PHONY: lint
-lint: pylint-check
+.PHONY: readme
+readme:
+	@cd docs/images && $(RUN) python make_readme_images.py
 
 .PHONY: pylint-check
 pylint-check:

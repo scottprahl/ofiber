@@ -85,32 +85,32 @@ Examples
 Symmetric planar waveguides
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. image:: https://raw.githubusercontent.com/scottprahl/ofiber/main/docs/planarwaveguide.svg
+.. image:: https://raw.githubusercontent.com/scottprahl/ofiber/main/docs/images/planarwaveguide.svg
    :target: https://ofiber.readthedocs.io/en/latest/3-Planar-Waveguide-Modes.html
    :align: center
 
 Cylindrical step-index fibers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. image:: https://raw.githubusercontent.com/scottprahl/ofiber/main/docs/stepindexmodes.svg
+.. image:: https://raw.githubusercontent.com/scottprahl/ofiber/main/docs/images/stepindexmodes.svg
    :target: https://ofiber.readthedocs.io/en/latest/4-Circular-Step-Index-Fiber.html
    :align: center
 
-.. image:: https://raw.githubusercontent.com/scottprahl/ofiber/main/docs/modeirradiance.svg
+.. image:: https://raw.githubusercontent.com/scottprahl/ofiber/main/docs/images/modeirradiance.svg
    :target: https://ofiber.readthedocs.io/en/latest/4-Circular-Step-Index-Fiber.html
    :align: center
 
 Far-field radiation patterns
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. image:: https://raw.githubusercontent.com/scottprahl/ofiber/main/docs/farfieldirradiance.svg
+.. image:: https://raw.githubusercontent.com/scottprahl/ofiber/main/docs/images/farfieldirradiance.svg
    :target: https://ofiber.readthedocs.io/en/latest/9-Far-field-irradiance.html
    :align: center
 
 Fiber design and dispersion control
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. image:: https://raw.githubusercontent.com/scottprahl/ofiber/main/docs/fiberdesign.svg
+.. image:: https://raw.githubusercontent.com/scottprahl/ofiber/main/docs/images/fiberdesign.svg
    :target: https://ofiber.readthedocs.io/en/latest/6-Zero-Dispersion.html
    :align: center
 
