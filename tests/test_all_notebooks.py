@@ -14,17 +14,28 @@ If you install `pytest-xdist` you can run tests in parallel with::
 
     pytest --verbose --durations=5 -n 4 test_all_notebooks.py
 
+The per-cell timeout comes from the NB_TIMEOUT environment variable, which
+`make note-test` sets from the Makefile variable of the same name.  That is
+the same value `make update-notebooks` uses, so a notebook that is slow enough
+to trip the limit fails in both places rather than just one::
+
+    NB_TIMEOUT=1200 pytest --verbose test_all_notebooks.py
+
 Original version is licensed under GPL 3.0 so this modified one is as well.
 
 The original is at::
 
     https://github.com/alchemyst/Dynamics-and-Control/blob/master/test_all_notebooks.py
 """
+import os
 import os.path
 import pathlib
 import pytest
 import nbformat
 import nbconvert.preprocessors
+
+# Seconds a single cell may run, kept in step with NB_TIMEOUT in the Makefile
+CELL_TIMEOUT = int(os.environ.get("NB_TIMEOUT", "600"))
 
 # Default search path is the current directory
 searchpath = pathlib.Path(".")
@@ -60,5 +71,5 @@ def test_run_notebook(notebook):
     """
     with open(notebook, encoding="utf-8") as f:
         nb = nbformat.read(f, as_version=4)
-    ep = nbconvert.preprocessors.ExecutePreprocessor(timeout=600)
+    ep = nbconvert.preprocessors.ExecutePreprocessor(timeout=CELL_TIMEOUT)
     ep.preprocess(nb, {"metadata": {"path": notebook.parent}})

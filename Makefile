@@ -27,6 +27,12 @@ REMOTE          := origin
 HOST            := 127.0.0.1
 PORT            := 8000
 
+# --- notebook execution (override NOTEBOOKS on CLI to refresh just one) ---
+# NB_TIMEOUT is the per-cell limit shared by note-test and update-notebooks, so
+# a slow notebook trips both rather than passing one and failing the other.
+NOTEBOOKS       := $(DOCS_DIR)/*.ipynb
+NB_TIMEOUT      := 600
+
 PYTEST_OPTS     :=
 UNIT_TESTS      := tests --ignore=tests/test_all_notebooks.py
 COV_OPTS        := --cov=$(PACKAGE) --cov-report=term-missing --cov-report=html:$(COV_DIR)
@@ -43,6 +49,7 @@ help:
 	@echo "  html           - Build Sphinx HTML documentation"
 	@echo "  lab            - Start jupyterlab"
 	@echo "  readme         - Create images for readme"
+	@echo "  update-notebooks - Re-execute docs notebooks, saving outputs in place"
 	@echo "  venv           - Install project dependencies with uv extras"
 	@echo ""
 	@echo "Test Targets:"
@@ -94,7 +101,7 @@ coverage:
 
 .PHONY: note-test
 note-test:
-	$(RUN) pytest --verbose tests/test_all_notebooks.py
+	NB_TIMEOUT=$(NB_TIMEOUT) $(RUN) pytest --verbose tests/test_all_notebooks.py
 
 .PHONY: html
 html:
@@ -110,6 +117,23 @@ lab:
 .PHONY: readme
 readme:
 	@cd docs/images && $(RUN) python make_readme_images.py
+
+# Sphinx renders the notebooks with nbsphinx_execute = "never", so the outputs
+# committed in the .ipynb files are what readthedocs publishes.  Run this after
+# any change that alters a printed value or a plot, then commit the result.
+#
+# record_timing=False keeps nbclient from stamping every cell with
+# metadata.execution wall-clock times.  Those are the only thing that differs
+# between two runs of unchanged notebooks, and they alone add ~70 changed lines
+# per notebook.  Cell metadata is left otherwise intact, since some cells carry
+# tags that nbsphinx acts on.
+.PHONY: update-notebooks
+update-notebooks:
+	@echo "==> Executing $(NOTEBOOKS) in place"
+	$(RUN) jupyter nbconvert --to notebook --execute --inplace \
+	    --ExecutePreprocessor.timeout=$(NB_TIMEOUT) \
+	    --ExecutePreprocessor.record_timing=False $(NOTEBOOKS)
+	@echo "✅ Outputs refreshed -- review with 'git diff --stat $(DOCS_DIR)'"
 
 .PHONY: pylint-check
 pylint-check:
