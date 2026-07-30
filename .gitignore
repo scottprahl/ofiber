@@ -10,6 +10,9 @@ build/
 .venv/
 .cache/
 .pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
 
 # Jupyter
 .ipynb_checkpoints/
@@ -27,3 +30,6 @@ todo.txt
 
 # GitHub Pages
 .gh-pages/
+
+CLAUDE.md
+uv.lock

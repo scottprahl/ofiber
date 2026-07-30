@@ -16,6 +16,7 @@ DOIT_DB         := .jupyterlite.doit.db
 OUT_DIR         := $(OUT_ROOT)/$(PACKAGE)
 HTML_DIR        := $(DOCS_DIR)/_build/html
 LITE_CONFIG     := $(PACKAGE)/jupyter_lite_config.json
+COV_DIR         := htmlcov
 
 # --- GitHub Pages deploy config ---
 PAGES_BRANCH    := gh-pages
@@ -26,7 +27,8 @@ REMOTE          := origin
 HOST            := 127.0.0.1
 PORT            := 8000
 
-PYTEST_OPTS     := 
+PYTEST_OPTS     :=
+COV_OPTS        := --cov=$(PACKAGE) --cov-report=term-missing --cov-report=html:$(COV_DIR)
 SPHINX_OPTS     := -T -E -b html -d $(DOCS_DIR)/_build/doctrees -D language=en
 
 PYLINT_TARGETS  := $(PACKAGE)/*.py tests/*.py .github/scripts/update_citation.py
@@ -44,6 +46,7 @@ help:
 	@echo ""
 	@echo "Test Targets:"
 	@echo "  test           - Run pytest on python files"
+	@echo "  coverage       - Run unit tests and report $(PACKAGE) coverage"
 	@echo "  note-test      - Test all notebooks for errors"
 	@echo ""
 	@echo "Packaging Targets:"
@@ -77,6 +80,20 @@ dist:
 test:
 	@:
 #	$(RUN) pytest $(PYTEST_OPTS) tests --ignore=tests/test_all_notebooks.py
+
+# Notebooks are excluded here on purpose: ExecutePreprocessor runs each one in a
+# separate Jupyter kernel process, which coverage.py cannot observe, so including
+# them would report a misleadingly low number rather than a real measurement.
+.PHONY: coverage
+coverage:
+	@$(RM) .coverage
+	@$(RMR) "$(COV_DIR)"
+	@$(RUN) pytest $(PYTEST_OPTS) $(COV_OPTS) tests --ignore=tests/test_all_notebooks.py; \
+	  status=$$?; \
+	  if [ $$status -eq 5 ]; then echo "⚠️  no unit tests collected -- coverage is 0%"; \
+	  elif [ $$status -ne 0 ]; then exit $$status; fi
+	@test -f "$(COV_DIR)/index.html" && echo "==> HTML report at $(COV_DIR)/index.html" || true
+	@command -v open >/dev/null 2>&1 && test -f "$(COV_DIR)/index.html" && open "$(COV_DIR)/index.html" || true
 
 .PHONY: note-test
 note-test:
@@ -161,10 +178,7 @@ lite-serve:
 	$(RUN_LITE) python -m http.server -d "$(OUT_ROOT)" --bind $(HOST) $(PORT)
 
 .PHONY: lite-deploy
-lite-deploy: 
-	@echo "==> Sanity check"
-	@test -d "$(OUT_DIR)" || { echo "❌ Run 'make lite' first"; exit 1; }
-
+lite-deploy: lite
 	@echo "==> Ensure $(PAGES_BRANCH) branch exists"
 	@if ! git show-ref --verify --quiet refs/heads/$(PAGES_BRANCH); then \
 	  CURRENT=$$(git branch --show-current); \
@@ -212,6 +226,8 @@ clean: lite-clean
 	@find . -name '.ipynb_checkpoints' -type d -prune -exec $(RMR) {} +
 	@find . -name '.pytest_cache' -type d -prune -exec $(RMR) {} +
 	@$(RMR) .ruff_cache
+	@$(RMR) "$(COV_DIR)"
+	@$(RM) .coverage
 	@$(RMR) docs/api
 	@$(RMR) docs/_build
 
