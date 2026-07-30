@@ -27,6 +27,9 @@ Unreleased ()
 * fix integer arrays of V, ell or em returning zeros from LP_mode_value(), PetermannW(), V_d2bV_by_V(), bending_loss_db() and FF_node_polar_angle()
 * fix the em check in LP_mode_value() and FF_node_polar_angle() raising on an array, which made the em branch unreachable
 * correct the accuracy range in the V_d2bV_by_V_Approx() docstring, 1% holds for 1.35<V<2.08 rather than 1.4<V<2.4
+* fix TE_planar_parabolic_field() calling np.math.factorial, removed in numpy 2.0
+* fix parabolic_propagation_constants() counting modes with an unrelated formula and passing a float to np.empty
+* add unit tests for planar_parabolic.py
 
 0.9.1 (2026-01-14)
 ------------------

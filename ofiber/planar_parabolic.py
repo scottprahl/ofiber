@@ -26,6 +26,7 @@ Based on section 7.9 of Ghatak and Thyagarajan, *An Introduction to
 Fiber Optics*, Cambridge University Press, 1998.
 """
 
+import math
 import numpy as np
 import ofiber.basics
 
@@ -75,18 +76,28 @@ def parabolic_propagation_constants(lambda0, n1, a, V):
     """
     Return all the betas for a parabolic planar waveguide.
 
+    A mode is guided while beta stays real, so with gamma = sqrt(V)/a and
+    k = 2*pi*n1/lambda0 the mode number must satisfy 2*m+1 < (k*a)**2/V.  That
+    is the same condition that keeps the square root in
+    `parabolic_propagation_constant` positive.
+
     Args:
         lambda0: wavelength in vacuum                   [m]
         n1: centerline index of refraction of waveguide [-]
         a: half thickness of the waveguide              [m]
         V: the V-parameter for the waveguide
-    Returns:
-        an array eigenvalues.
-    """
-    Delta = np.sqrt(V / n1) / 2
-    modes = np.floor(V / Delta - 1 / 2)
-    betas = np.empty(modes)
 
+    Returns:
+        an array of propagation constants, one per guided mode
+    """
+    k = 2 * np.pi * n1 / lambda0
+    gamma = np.sqrt(V) / a
+    modes = int(np.floor(((k / gamma) ** 2 - 1) / 2)) + 1
+
+    if modes < 1:
+        return np.array([])
+
+    betas = np.empty(modes)
     for mode in range(modes):
         betas[mode] = parabolic_propagation_constant(mode, lambda0, n1, a, V)
 
@@ -114,7 +125,7 @@ def TE_planar_parabolic_field(m, lambda0, n1, Delta, a, x):
     NA = ofiber.basics.numerical_aperture_from_Delta(n1, Delta)
     V = ofiber.basics.V_parameter(a, NA, lambda0)
     gamma = np.sqrt(V) / a
-    Nm = np.sqrt(gamma / (2**m * np.math.factorial(m) * np.sqrt(np.pi)))
+    Nm = np.sqrt(gamma / (2**m * math.factorial(m) * np.sqrt(np.pi)))
     xi = gamma * x
     E_y = Nm * _herm(m, xi) * np.exp(-0.5 * xi**2)
     return E_y
