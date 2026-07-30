@@ -51,6 +51,13 @@ Unreleased ()
 * correct the thermal_min_power() summary, it reaches the requested signal-to-noise ratio rather than one
 * list the noise functions in the module docstring and explain Np in quantum_min_power()
 * use scipy.constants in noise.py instead of four-digit values for q, k, h and c, matching the rest of the package
+* replace the 4.34 and 4.343 dB conversions in cylinder_step.py with an exact 10/ln(10), they disagreed with each other
+* use scipy.constants.speed_of_light rather than 3e8 in 1-Refractive-Index.ipynb
+* explain in Waveguide_Dispersion() why q defaults to 1e20 rather than np.inf, which makes esi_Delta nan
+* correct the accuracy claim for approx=True in Waveguide_Dispersion(), the error peaks near 6% at V=2.44
+* list the functions in the dispersion module docstring and note where the silica material zero falls
+* add unit tests for dispersion.py, completing 100% statement and branch coverage of the package
+* build Delta and V in Waveguide_Dispersion() from the basics routines instead of repeating their formulas
 * add unit tests for noise.py
 
 0.9.1 (2026-01-14)
