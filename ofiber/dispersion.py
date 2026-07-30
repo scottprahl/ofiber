@@ -6,12 +6,24 @@ Useful routines for dispersion in cylindrical waveguides.
 
 See <https://ofiber.readthedocs.io> for usage examples.
 
+The three routines are::
+
+    Material_Dispersion(core, λ)
+    Waveguide_Dispersion(n_core, n_clad, r_core, λ, q=1e20, approx=False)
+    Dispersion(core, n_clad, r_core, λ, q=1e20, approx=False)
+
+All return [s/m**2]; multiply by 1e6 for the more familiar [ps/(km*nm)].
+The total dispersion is the sum of the material and waveguide terms, and
+`Dispersion` returns the two separately so they can be plotted apart.
+
+A step-index fiber is signalled by a huge q rather than by np.inf, because
+`ofiber.esi_Delta` evaluates to nan at infinity.
+
 Based on chapter 10 of A. Ghatak, K. Thyagarajan, An Introduction to Fiber
 Optics, Cambridge University Press, 1998
 """
 
 import scipy.constants
-import numpy as np
 import ofiber.refraction as ofr
 import ofiber.cylinder_step as ofc
 import ofiber.basics as ofb
@@ -28,8 +40,12 @@ def Material_Dispersion(core, λ):
     """
     Calculate the material dispersion using Sellmeier coefficients.
 
+    This is -λ/c times the second derivative of the index, so it vanishes
+    where the group index is stationary.  For pure silica that is near
+    1272 nm, and adding GeO2 moves it to longer wavelengths.
+
     Args:
-        core: array of Sellmeier coefficients for core
+        core: Sellmeier coefficients, from `ofiber.glass` or `ofiber.doped_glass`
         λ:    wavelength [m]
 
     Returns:
@@ -43,12 +59,22 @@ def Waveguide_Dispersion(n_core, n_clad, r_core, λ, q=1e20, approx=False):
     """
     Calculate the waveguide dispersion of a fiber.
 
-    The default value of q represents a step index fiber.  Other values
+    The default value of q represents a step index fiber; np.inf would seem
+    the natural choice but `ofiber.esi_Delta` is nan there.  Other values
     allow parabolic (q=2) or triangular (q=1) profiles.
 
-    The waveguide dispersion is for the fundamental mode of the fiber.
+    The waveguide dispersion is for the fundamental mode of the fiber, and is
+    negative for an ordinary fiber, so it pulls the zero of the total
+    dispersion to a longer wavelength than the material term alone.
 
-    The approximation is reasonably good for values from 1.6<V<2.6
+    Setting approx=True swaps the exact V*d2(bV)/dV2 for Marcuse's quadratic.
+    That is within about 1% for 1.35<V<2.08 but drifts to roughly 6% near
+    V=2.44 before crossing back, so the endpoints of 1.6<V<2.6 look better
+    than the middle.
+
+    The two indices are used as given, so any wavelength dependence of the
+    core and cladding belongs to the caller; `Dispersion` evaluates them from
+    the Sellmeier coefficients at each wavelength.
 
     Args:
         n_core: core index of refraction          [-]
@@ -62,8 +88,8 @@ def Waveguide_Dispersion(n_core, n_clad, r_core, λ, q=1e20, approx=False):
         waveguide dispersion [s/m**2]   (multiply by 1e6 to get ps/(km*nm))
     """
     c = scipy.constants.speed_of_light
-    Δ = (n_core**2 - n_clad**2) / 2 / n_core**2
-    V = 2 * np.pi / λ * r_core * np.sqrt(n_core**2 - n_clad**2)
+    Δ = ofb.relative_refractive_index(n_core, n_clad)
+    V = ofb.V_parameter(r_core, ofb.numerical_aperture(n_core, n_clad), λ)
 
     # Find the equivalent step index fiber parameters
     esi_Delta = ofb.esi_Delta(Δ, q)
@@ -81,7 +107,9 @@ def Dispersion(core, n_clad, r_core, λ, q=1e20, approx=False):
     Calculate the material and waveguide dispersion.
 
     This is a convenience routine that finds the total dispersion for
-    a specific type of core glass and refractive index difference.
+    a specific type of core glass and refractive index difference.  The core
+    index is evaluated from the Sellmeier coefficients at every wavelength,
+    unlike `Waveguide_Dispersion`, which takes the indices as given.
 
     The returned dispersion is in units of [s/m**2].  To convert to
     [ps/km/nm], multiply by 1e6.
