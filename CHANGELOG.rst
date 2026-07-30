@@ -14,7 +14,7 @@ Unreleased
 * add unit tests for refraction.py
 * make test runs the unit tests instead of doing nothing
 * add make coverage to report unit test coverage of the package in the terminal
-* add make update-notebooks to re-execute the docs notebooks in place
+* add make update-notebooks to format the docs notebooks with black and re-execute them in place
 * share NB_TIMEOUT between note-test and update-notebooks
 * fix first_derivative() appending its padding value in the wrong place and dividing by a negative step
 * add unit tests for graded_index.py

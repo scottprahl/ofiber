@@ -128,8 +128,14 @@ readme:
 # between two runs of unchanged notebooks, and they alone add ~70 changed lines
 # per notebook.  Cell metadata is left otherwise intact, since some cells carry
 # tags that nbsphinx acts on.
+#
+# black runs first so the committed outputs belong to the formatted source.
+# It rewrites cell source only, leaving outputs and execution counts alone,
+# and it reads line-length from pyproject.toml like every other black run.
 .PHONY: update-notebooks
 update-notebooks:
+	@echo "==> Formatting $(NOTEBOOKS) with black"
+	$(RUN) black $(NOTEBOOKS)
 	@echo "==> Executing $(NOTEBOOKS) in place"
 	$(RUN) jupyter nbconvert --to notebook --execute --inplace \
 	    --ExecutePreprocessor.timeout=$(NB_TIMEOUT) \
