@@ -28,6 +28,7 @@ HOST            := 127.0.0.1
 PORT            := 8000
 
 PYTEST_OPTS     :=
+UNIT_TESTS      := tests --ignore=tests/test_all_notebooks.py
 COV_OPTS        := --cov=$(PACKAGE) --cov-report=term-missing --cov-report=html:$(COV_DIR)
 SPHINX_OPTS     := -T -E -b html -d $(DOCS_DIR)/_build/doctrees -D language=en
 
@@ -78,8 +79,7 @@ dist:
 
 .PHONY: test
 test:
-	@:
-#	$(RUN) pytest $(PYTEST_OPTS) tests --ignore=tests/test_all_notebooks.py
+	$(RUN) pytest $(PYTEST_OPTS) $(UNIT_TESTS)
 
 # Notebooks are excluded here on purpose: ExecutePreprocessor runs each one in a
 # separate Jupyter kernel process, which coverage.py cannot observe, so including
@@ -88,12 +88,9 @@ test:
 coverage:
 	@$(RM) .coverage
 	@$(RMR) "$(COV_DIR)"
-	@$(RUN) pytest $(PYTEST_OPTS) $(COV_OPTS) tests --ignore=tests/test_all_notebooks.py; \
-	  status=$$?; \
-	  if [ $$status -eq 5 ]; then echo "⚠️  no unit tests collected -- coverage is 0%"; \
-	  elif [ $$status -ne 0 ]; then exit $$status; fi
-	@test -f "$(COV_DIR)/index.html" && echo "==> HTML report at $(COV_DIR)/index.html" || true
-	@command -v open >/dev/null 2>&1 && test -f "$(COV_DIR)/index.html" && open "$(COV_DIR)/index.html" || true
+	$(RUN) pytest $(PYTEST_OPTS) $(COV_OPTS) $(UNIT_TESTS)
+	@echo "==> HTML report at $(COV_DIR)/index.html"
+	@command -v open >/dev/null 2>&1 && open "$(COV_DIR)/index.html" || true
 
 .PHONY: note-test
 note-test:
