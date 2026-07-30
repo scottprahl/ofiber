@@ -473,7 +473,7 @@ def _d2_sellmeier(b, c, lambda0):
     dy = 0
     d2y = 0
     for i in range(3):
-        dy = b[i] * c[i] / (lam2 - c[i]) ** 2  # 1/um
+        dy += b[i] * c[i] / (lam2 - c[i]) ** 2  # 1/um
         d2y += b[i] * c[i] * (3 * lam2 + c[i]) / (lam2 - c[i]) ** 3  # 1/um**2
 
     total = d2y / nn - lam2 * dy**2 / nn**3  # 1/um**2
