@@ -52,7 +52,7 @@ import matplotlib.pyplot as plt
 import scipy.optimize
 from scipy import special
 
-_all_ = (
+__all__ = (
     "LP_mode_value",
     "LP_mode_values",
     "plot_LP_modes",
@@ -212,26 +212,26 @@ def LP_mode_value(V, ell, em):
     Returns:
         guided normalized propagation constant for mode (ell,em)  [-]
     """
-    if em < 1:
+    if np.any(np.asarray(em) < 1):
         raise ValueError("The mode number 'em' must be one or greater.")
 
     if np.isscalar(V) + np.isscalar(ell) + np.isscalar(em) < 2:
         raise ValueError("only one of V, ell, and em can be an array")
 
     if not np.isscalar(V):
-        b = np.zeros_like(V)
+        b = np.zeros_like(V, dtype=float)
         for i, VV in enumerate(V):
             b[i] = LP_mode_value(VV, ell, em)
         return b
 
     if not np.isscalar(ell):
-        b = np.zeros_like(ell)
+        b = np.zeros_like(ell, dtype=float)
         for i, ll in enumerate(ell):
             b[i] = LP_mode_value(V, ll, em)
         return b
 
     if not np.isscalar(em):
-        b = np.zeros_like(em)
+        b = np.zeros_like(em, dtype=float)
         for i, mm in enumerate(em):
             b[i] = LP_mode_value(V, ell, mm)
         return b
@@ -561,7 +561,7 @@ def bending_loss_db(n1, Delta, a, Rc, lambda0):
     if np.isscalar(a):
         alpha = _bending_loss_db_scalar(n1, Delta, a, Rc, lambda0)
     else:
-        alpha = np.empty_like(a)
+        alpha = np.empty_like(a, dtype=float)
         for i, aa in enumerate(a):
             alpha[i] = _bending_loss_db_scalar(n1, Delta, aa, Rc, lambda0)
     return alpha
@@ -637,7 +637,7 @@ def PetermannW(V):
     if np.isscalar(V):
         wp = _PetermannW_scalar(V)
     else:
-        wp = np.empty_like(V)
+        wp = np.empty_like(V, dtype=float)
         for i, VV in enumerate(V):
             wp[i] = _PetermannW_scalar(VV)
     return wp
@@ -711,7 +711,7 @@ def V_d2bV_by_V(V, ell):
     if np.isscalar(V):
         return _V_d2bV_by_V_scalar(V, ell)
 
-    v_by_v = np.empty_like(V)
+    v_by_v = np.empty_like(V, dtype=float)
     for i, VV in enumerate(V):
         v_by_v[i] = _V_d2bV_by_V_scalar(VV, ell)
 
@@ -724,7 +724,8 @@ def V_d2bV_by_V_Approx(V):
 
     This value is needed to determine the waveguide dispersion.  This
     approximation is for the fundamental mode in the fiber and is good
-    to 1% when 1.4<V<2.4.  Approximation by Marcuse (1979)
+    to 1% when 1.35<V<2.08, degrading to 6% by V=2.4.
+    Approximation by Marcuse (1979)
 
     Args:
         V:      V-parameter of the fiber     [--]
@@ -953,26 +954,26 @@ def FF_node_polar_angle(V, ell, em):
     Returns:
         polar angle Θ_N of first far-field zero for mode (ℓ,m)          [-]
     """
-    if em < 1:
+    if np.any(np.asarray(em) < 1):
         raise ValueError("The mode number 'em' must be one or greater.")
 
     if np.isscalar(V) + np.isscalar(ell) + np.isscalar(em) < 2:
         raise ValueError("only one of V, ell, and em can be an array")
 
     if not np.isscalar(V):
-        kasin = np.zeros_like(V)
+        kasin = np.zeros_like(V, dtype=float)
         for i, VV in enumerate(V):
             kasin[i] = FF_node_polar_angle(VV, ell, em)
         return kasin
 
     if not np.isscalar(ell):
-        kasin = np.zeros_like(ell)
+        kasin = np.zeros_like(ell, dtype=float)
         for i, ll in enumerate(ell):
             kasin[i] = FF_node_polar_angle(V, ll, em)
         return kasin
 
     if not np.isscalar(em):
-        kasin = np.zeros_like(em)
+        kasin = np.zeros_like(em, dtype=float)
         for i, mm in enumerate(em):
             kasin[i] = FF_node_polar_angle(V, ell, mm)
         return kasin

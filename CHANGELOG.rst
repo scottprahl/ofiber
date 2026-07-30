@@ -22,6 +22,11 @@ Unreleased ()
 * export ray_delay() from the package, previously called velocity() and missing from __all__
 * fix the material dispersion of ray_delay(), which did not reduce to the plain form at zero dispersion
 * add a profile_dispersion argument to ray_delay() so the delay-equalising exponent comes out at q = 2 - 2P
+* fix __all__ in cylinder_step.py, misspelled _all_, which leaked np, plt, scipy and special into ofiber
+* add unit tests for cylinder_step.py
+* fix integer arrays of V, ell or em returning zeros from LP_mode_value(), PetermannW(), V_d2bV_by_V(), bending_loss_db() and FF_node_polar_angle()
+* fix the em check in LP_mode_value() and FF_node_polar_angle() raising on an array, which made the em branch unreachable
+* correct the accuracy range in the V_d2bV_by_V_Approx() docstring, 1% holds for 1.35<V<2.08 rather than 1.4<V<2.4
 
 0.9.1 (2026-01-14)
 ------------------
