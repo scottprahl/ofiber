@@ -8,6 +8,14 @@ Unreleased ()
 * raise package Python support metadata to 3.10 through 3.14 and update docs/lite dependency ranges
 * update CI/runtime Python defaults to 3.14 and the test matrix to 3.10 and 3.14
 * add release dates to each changelog heading using release or tag dates
+* fix missing += in _d2_sellmeier so d2n() sums all three Sellmeier terms again
+* restore the full Schott names of 44 glasses that were truncated to six characters
+* find_glass() prefers an exact name and raises ValueError instead of quietly returning SiO2
+* add unit tests for refraction.py
+* make test runs the unit tests instead of doing nothing
+* add make coverage to report unit test coverage of the package
+* add make update-notebooks to re-execute the docs notebooks in place
+* share NB_TIMEOUT between note-test and update-notebooks
 
 0.9.1 (2026-01-14)
 ------------------
