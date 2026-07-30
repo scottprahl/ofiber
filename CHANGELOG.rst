@@ -1,8 +1,8 @@
 Changelog
 ==========
 
-Unreleased
-----------
+1.0.0 (2026-07-30)
+------------------
 * migrate Makefile to a uv-first workflow with shared RUN wrappers and no .venv/.ready bootstrap prerequisite
 * add RM/RMR cleanup variables and replace hardcoded rm cleanup commands
 * raise package Python support metadata to 3.10 through 3.14 and update docs/lite dependency ranges
@@ -53,12 +53,13 @@ Unreleased
 * use scipy.constants in noise.py instead of four-digit values for q, k, h and c, matching the rest of the package
 * replace the 4.34 and 4.343 dB conversions in cylinder_step.py with an exact 10/ln(10), they disagreed with each other
 * use scipy.constants.speed_of_light rather than 3e8 in 1-Refractive-Index.ipynb
-* explain in Waveguide_Dispersion() why q defaults to 1e20 rather than np.inf, which makes esi_Delta nan
+* default q to np.inf in Waveguide_Dispersion() and Dispersion(), replacing the 1e20 stand-in for a step index fiber
 * correct the accuracy claim for approx=True in Waveguide_Dispersion(), the error peaks near 6% at V=2.44
 * list the functions in the dispersion module docstring and note where the silica material zero falls
 * add unit tests for dispersion.py, completing 100% statement and branch coverage of the package
 * build Delta and V in Waveguide_Dispersion() from the basics routines instead of repeating their formulas
 * run the unit tests in CI rather than only pip check, and execute every notebook in a second job
+* test on ubuntu, macos and windows in CI, forcing the Agg matplotlib backend so headless runners agree
 * require the tests to pass before the pypi workflow publishes a release
 * drop the package-wide automodapi from docs/ofiber.rst, which documented every function a second time
 * accept q=np.inf in esi_Delta(), esi_radius() and esi_V_parameter() so dispersion and basics share one step-index sentinel

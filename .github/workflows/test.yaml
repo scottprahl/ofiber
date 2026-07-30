@@ -35,12 +35,26 @@ jobs:
         run: make lint
 
   test:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     name: Build and test
 
     strategy:
+      # let every platform report, rather than cancelling the rest on a failure
+      fail-fast: false
       matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
         python-version: ['3.10', '3.14']
+
+    env:
+      # importing ofiber imports matplotlib.pyplot, which would otherwise pick a
+      # GUI backend on the macOS and Windows runners.  The two test modules that
+      # call matplotlib.use("Agg") do so only when they are imported, by which
+      # point an earlier test module has already imported ofiber.
+      MPLBACKEND: Agg
+
+    defaults:
+      run:
+        shell: bash  # available on all three runners, so one recipe fits all
 
     steps:
       - name: Checkout code
