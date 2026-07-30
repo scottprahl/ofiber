@@ -338,6 +338,35 @@ def test_waveguide_dispersion_term_matches_its_approximation():
     assert abs(ofiber.V_d2bV_by_V_Approx(2.4) / ofiber.V_d2bV_by_V(2.4, 0) - 1) == pytest.approx(0.06, abs=0.005)
 
 
+@pytest.mark.parametrize("V", [1.0, 1.5, 2.0, 2.405, 3.0, 4.0, 5.0, 8.0])
+def test_waveguide_dispersion_term_matches_a_numerical_second_derivative(V):
+    """
+    Verify eqn 10.14 against differencing b(V)*V directly.
+
+    This does not reuse the closed form at all, so it independently confirms
+    the sign change near V=3.01: V*d2(bV)/dV2 really does go negative once
+    the fiber is well past the LP11 cutoff, which is outside the single mode
+    range this term is normally used in.
+    """
+    h = 1e-4
+
+    def bV(x):
+        return ofiber.LP_mode_value(x, 0, 1) * x
+
+    numerical = V * (bV(V + h) - 2 * bV(V) + bV(V - h)) / h**2
+    assert ofiber.V_d2bV_by_V(V, 0) == pytest.approx(numerical, abs=1e-5)
+
+
+def test_waveguide_dispersion_term_changes_sign_past_the_single_mode_range():
+    """Verify the term is positive where single mode fibers operate and negative beyond."""
+    assert ofiber.V_d2bV_by_V(2.405, 0) > 0
+    assert ofiber.V_d2bV_by_V(4.0, 0) < 0
+    V = np.linspace(1.0, 8.0, 4001)
+    crossings = V[np.where(np.diff(np.sign(ofiber.V_d2bV_by_V(V, 0))) != 0)[0]]
+    assert len(crossings) == 1
+    assert crossings[0] == pytest.approx(3.007, abs=0.01)
+
+
 def test_waveguide_dispersion_term_falls_through_the_single_mode_range():
     """Verify the term decreases with V where the fiber is single mode."""
     V = np.linspace(1.4, 2.4, 30)
