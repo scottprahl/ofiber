@@ -37,6 +37,16 @@ Unreleased ()
 * correct the TM signatures in the planar_step docstring and label them magnetic rather than electric
 * fix the symmetric branch of the mode plots being drawn every pi/2 instead of every pi
 * fix TM_mode_plot() scaling its x axis by (n1/n2)**2, xi never exceeds V/2
+* V_d2bV_by_V() returns nan rather than 0 for an unguided mode, since 0 is a legal value
+* document that FF_node_polar_angle() returns k*a*sin(theta), not the polar angle itself
+* correct the Dispersion() docstring, it returns material and waveguide dispersion but not their sum
+* correct the glass() docstring, which referenced a nonexistent ofiber.glass_index and inverted find_glass and glass_name
+* correct LP_mode_value() pointing at itself instead of _LP_mode_value for the calculation details
+* correct the cutoff_wavelength() docstring, the default is the LP11 cutoff and LP01 has no cutoff at all
+* add V_parameter() to the basics docstring, drop the duplicated critical_angle entry and stray colons
+* describe m in R_par(), R_per() and R_unpolarized() as the relative index of the two media
+* fix R_par(), R_per() and R_unpolarized() returning nan past the critical angle instead of total reflection
+* add unit tests for basics.py
 
 0.9.1 (2026-01-14)
 ------------------

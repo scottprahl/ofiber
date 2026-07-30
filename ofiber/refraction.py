@@ -308,11 +308,12 @@ def glass(number):
     Return an array of Sellmeier coefficients for glass.
 
     The glasses all have a number.  This number is used to look up
-    the Sellmeier coefficients for glass.  The number can be looked
-    up with `ofiber.glass_name`.
+    the Sellmeier coefficients for glass.  Find the number for a name
+    with `ofiber.find_glass`, and the name for a number with
+    `ofiber.glass_name`.
 
     Use like this::
-        num = ofiber.glass_index("SiO2")
+        num = ofiber.find_glass("SiO2")
         glass = ofiber.refraction.glass(num)       # SiO2
         n = ofiber.refraction.n(glass,632.8e-9)
 

@@ -202,7 +202,7 @@ def LP_mode_value(V, ell, em):
     and the mode numbers ell and em.
 
     This is a wrapper function that handles V, ell, or em being possible
-    arrays.  See `LP_mode_value` for details.
+    arrays.  See `_LP_mode_value` for details of the calculation itself.
 
     Args:
         V:   V-parameter for optical fiber    [-]
@@ -670,16 +670,19 @@ def _V_d2bV_by_V_scalar(V, ell):
     This private function only works for scalar values of V and ell. It
     finds V*d^2(bV)/dV^2 for mode ell of a step-index fiber using eqn 10.14
 
+    If the mode is not guided then nan is returned.  Zero would be
+    indistinguishable from a fiber that simply has no waveguide dispersion.
+
     Args:
         V:   V-parameter of the fiber     [--]
         ell: azimuthal mode number.
 
     Returns:
-        V*d^2(bV)/dV^2                       [--]
+        V*d^2(bV)/dV^2, or nan if mode ell is not guided   [--]
     """
     b = LP_mode_value(V, ell, 1)
     if b is None:
-        return 0
+        return np.nan
 
     U = V * np.sqrt(1 - b)
     W = V * np.sqrt(b)
@@ -701,12 +704,14 @@ def V_d2bV_by_V(V, ell):
     This value is needed to determine the waveguide dispersion.  This
     routine is a convenience function that works when V is an array.
 
+    Entries where mode ell is not guided come back as nan.
+
     Args:
         V:      V-parameter of the fiber     [--]
         ell: azimuthal mode number.
 
     Returns:
-        V*d^2(bV)/dV^2                       [--]
+        V*d^2(bV)/dV^2, or nan where mode ell is not guided   [--]
     """
     if np.isscalar(V):
         return _V_d2bV_by_V_scalar(V, ell)
@@ -869,7 +874,11 @@ def _FF_node_polar_angle(V, ell, em):
         em:  radial mode number m        (positive integer)             [-]
 
     Returns:
-        polar angle Θ_N of first far-field zero for mode (ℓ,m)          [-]
+        k*a*sin(Θ_N) for the first far-field zero of mode (ℓ,m)        [-]
+
+    Note:
+        This is the dimensionless product k*a*sin(Θ_N), not the angle
+        Θ_N itself.  Recover the angle with arcsin(result/(k*a)).
     """
     if ell < 0:
         ell *= -1  # negative ells are same as positive ones
@@ -952,7 +961,11 @@ def FF_node_polar_angle(V, ell, em):
         em:  radial mode number m        (positive integer)             [-]
 
     Returns:
-        polar angle Θ_N of first far-field zero for mode (ℓ,m)          [-]
+        k*a*sin(Θ_N) for the first far-field zero of mode (ℓ,m)        [-]
+
+    Note:
+        This is the dimensionless product k*a*sin(Θ_N), not the angle
+        Θ_N itself.  Recover the angle with arcsin(result/(k*a)).
     """
     if np.any(np.asarray(em) < 1):
         raise ValueError("The mode number 'em' must be one or greater.")

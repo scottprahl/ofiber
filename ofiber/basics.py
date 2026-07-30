@@ -2,7 +2,7 @@
 
 
 """
-Calculate simple optical fibers parameters.
+Calculate simple optical fiber parameters.
 
 See <https://ofiber.readthedocs.io> for usage examples.
 
@@ -14,12 +14,12 @@ Basic parameters that can be found are::
     numerical_aperture(n_core, n_clad)
     numerical_aperture_from_Delta(n_core, Delta)
     relative_refractive_index(n_core, n_clad)
+    V_parameter(a, NA, lambda0)
 
 If you want Δ (Delta), then use `relative_refractive_index`
 
 Some are just generic Fresnel equations::
 
-    critical_angle(n_core, n_clad)
     R_par(m, theta)
     R_per(m, theta)
     R_unpolarized(m, theta)
@@ -27,10 +27,13 @@ Some are just generic Fresnel equations::
 And finally, some apply to graded index fibers where 'esi' is short for
 'equivalent step index'::
 
-    esi_Delta(Delta, q):
+    esi_Delta(Delta, q)
     esi_radius(a, q)
-    esi_V_parameter(V, q):
+    esi_V_parameter(V, q)
     numerical_aperture_graded_index(n_core, n_clad, q, r_over_a)
+
+The three esi routines agree with one another: building a V-parameter from
+`esi_radius` and `esi_Delta` reproduces `esi_V_parameter` exactly.
 """
 
 import numpy as np
@@ -65,6 +68,8 @@ def acceptance_angle(NA, n_outside=1):
     The face of the optical fiber is in a medium that defaults to
     air, but whose index can be specified.
 
+    If NA exceeds n_outside then no such cone exists and nan is returned.
+
     Args:
         NA : numerical aperture of the fiber  [--]
         n_outside : (optional) refractive index of medium outside fiber [--]
@@ -93,18 +98,25 @@ def cutoff_wavelength(a, NA, ell=0, q=np.inf):
     """
     Calculate the cutoff wavelength for an optical fiber.
 
-    The default operation is for this function to calculate the cutoff
-    wavelength for the fundamental mode of a step-index fiber.  The cutoff
-    wavelength for higher order modes may be found by specifying a different
-    value of ell.
+    By default this is the wavelength above which a step-index fiber carries
+    only the fundamental mode.  The fundamental mode LP_01 itself has no
+    cutoff; what the default returns is the cutoff of LP_11, found from the
+    first zero of J_0 at V=2.405, and below that wavelength LP_11 also
+    propagates.
+
+    More generally, ell selects the Bessel function whose first zero sets the
+    cutoff, so ell gives the cutoff wavelength of mode LP_(ell+1),1.  Using
+    ell=1 and the first zero of J_1 at V=3.832 gives the cutoff of LP_21.
 
     If the cutoff wavelength for a graded index fiber is desired, then specify
-    a different value for q.
+    a different value for q.  The cutoff V is then larger by sqrt(1+2/q), so a
+    parabolic fiber (q=2) has a cutoff wavelength sqrt(2) times shorter than a
+    step-index fiber of the same radius and numerical aperture.
 
     Args:
         a :   radius of the fiber                               [m]
         NA :  numerical aperture of the fiber                   [-]
-        ell : (optional) mode number                            [-]
+        ell : (optional) mode number, truncated to an integer   [-]
         q :   (optional) parameter for graded index fiber       [-]
 
     Returns:
@@ -193,7 +205,8 @@ def numerical_aperture_graded_index(n_core, n_clad, q, r_over_a):
     Calculate the numerical aperture of a graded-index optical fiber.
 
     The numerical aperture varies across the face of a graded-index fiber.
-    This give the result at the fractional distance across the fiber core.
+    This gives the result at the fractional distance across the fiber core,
+    falling from the full numerical aperture on axis to zero at r_over_a=1.
 
     Args:
         n_core :  the index of refraction of the fiber core      [-]
@@ -213,7 +226,7 @@ def relative_refractive_index(n_core, n_clad):
 
     Args:
         n_core :  the index of refraction of the fiber core      [-]
-        n_clad:  the index of refraction of the fiber cladding   [-]
+        n_clad :  the index of refraction of the fiber cladding   [-]
 
     Returns:
         the relative refractive index (Delta)                    [-]
@@ -228,8 +241,13 @@ def R_par(m, theta):
     This is the fraction of reflected intensity (not field) for light with an
     electric field parallel to the plane of incidence.
 
+    When m is less than 1 and theta exceeds the critical angle the square root
+    turns imaginary, np.emath.sqrt follows it onto the complex branch, and the
+    reflectance comes back as exactly 1 for total internal reflection.
+
     Args:
-        m :     complex index of refraction   [-]
+        m :     index of the far medium relative to the near one,
+                which may be complex                  [-]
         theta : angle from normal to surface  [radians]
 
     Returns:
@@ -238,7 +256,7 @@ def R_par(m, theta):
     m2 = m * m
     c = np.cos(theta)
     s = np.sin(theta)
-    d = np.sqrt(m2 - s * s)
+    d = np.emath.sqrt(m2 - s * s)  # complex past the critical angle
     return abs((m2 * c - d) / (m2 * c + d)) ** 2
 
 
@@ -249,8 +267,13 @@ def R_per(m, theta):
     This is the fraction of reflected intensity (not field) for light with an
     electric field perpendicular to the plane of incidence.
 
+    When m is less than 1 and theta exceeds the critical angle the square root
+    turns imaginary, np.emath.sqrt follows it onto the complex branch, and the
+    reflectance comes back as exactly 1 for total internal reflection.
+
     Args:
-        m :     complex index of refraction   [-]
+        m :     index of the far medium relative to the near one,
+                which may be complex                  [-]
         theta : angle from normal to surface  [radians]
 
     Returns:
@@ -259,7 +282,7 @@ def R_per(m, theta):
     m2 = m * m
     c = np.cos(theta)
     s = np.sin(theta)
-    d = np.sqrt(m2 - s * s)
+    d = np.emath.sqrt(m2 - s * s)  # complex past the critical angle
     return abs((c - d) / (c + d)) ** 2
 
 
@@ -271,7 +294,8 @@ def R_unpolarized(m, theta):
     incident light.
 
     Args:
-        m :     complex index of refraction   [-]
+        m :     index of the far medium relative to the near one,
+                which may be complex                  [-]
         theta : angle from normal to surface  [radians]
 
     Returns:

@@ -344,9 +344,20 @@ def test_waveguide_dispersion_term_falls_through_the_single_mode_range():
     assert np.all(np.diff(ofiber.V_d2bV_by_V(V, 0)) < 0)
 
 
-def test_waveguide_dispersion_term_is_zero_without_a_mode():
-    """Verify an unguided fiber contributes no waveguide dispersion."""
-    assert ofiber.V_d2bV_by_V(2.0, 5) == 0
+def test_waveguide_dispersion_term_is_nan_without_a_mode():
+    """
+    Verify an unguided mode gives nan rather than zero.
+
+    Zero is a legal value of V d2(bV)/dV2, so it could not be told apart from
+    a fiber that simply has no waveguide dispersion at that V.
+    """
+    assert np.isnan(ofiber.V_d2bV_by_V(2.0, 5))
+    assert np.all(np.isnan(ofiber.V_d2bV_by_V(np.array([2.0, 2.2]), 5)))
+
+
+def test_waveguide_dispersion_term_is_finite_where_a_mode_exists():
+    """Verify the nan guard does not swallow guided modes."""
+    assert np.all(np.isfinite(ofiber.V_d2bV_by_V(np.linspace(1.4, 2.4, 11), 0)))
 
 
 # --------------------------------------------------------------------------

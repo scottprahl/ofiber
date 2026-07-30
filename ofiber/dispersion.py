@@ -95,7 +95,8 @@ def Dispersion(core, n_clad, r_core, λ, q=1e20, approx=False):
         approx: approximate when True             [True/False]
 
     Returns:
-        material, waveguide, and total dispersion [s/m**2]
+        material and waveguide dispersion, as a pair; their sum is the
+        total dispersion                          [s/m**2]
     """
     n_core = ofr.n(core, λ)
     Dm = Material_Dispersion(core, λ)
