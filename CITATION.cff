@@ -1,8 +1,8 @@
 cff-version: 1.2.0
 message: If you use this software, please cite it as below.
 title: 'ofiber: A Python module for light propagation in optical fibers'
-version: 0.9.1
-date-released: '2026-01-14'
+version: 1.0.0
+date-released: '2026-07-30'
 doi: 10.5281/zenodo.8368598
 url: https://doi.org/10.5281/zenodo.8368598
 repository-code: https://github.com/scottprahl/ofiber
@@ -30,6 +30,6 @@ preferred-citation:
     orcid: https://orcid.org/0000-0003-1468-6851
   title: 'ofiber: A Python module for light propagation in optical fibers'
   year: 2026
-  version: 0.9.1
+  version: 1.0.0
   doi: 10.5281/zenodo.8368598
   url: https://doi.org/10.5281/zenodo.8368598

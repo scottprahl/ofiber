@@ -120,7 +120,7 @@ Citation
 
 If you use ``ofiber`` in academic, instructional, or applied technical work, please cite:
 
-Prahl, S. (2026). *ofiber: A Python module for modeling guided-wave light propagation in optical fibers* (Version 0.9.1) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.8368598
+Prahl, S. (2026). *ofiber: A Python module for modeling guided-wave light propagation in optical fibers* (Version 1.0.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.8368598
 
 BibTeX
 ^^^^^^
@@ -131,7 +131,7 @@ BibTeX
      author    = {Scott Prahl},
      title     = {ofiber: A Python module for modeling guided-wave light propagation in optical fibers},
      year      = {2026},
-     version   = {0.9.1},
+     version   = {1.0.0},
      doi       = {10.5281/zenodo.8368598},
      url       = {https://github.com/scottprahl/ofiber},
      publisher = {Zenodo}
