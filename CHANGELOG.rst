@@ -16,6 +16,12 @@ Unreleased ()
 * add make coverage to report unit test coverage of the package
 * add make update-notebooks to re-execute the docs notebooks in place
 * share NB_TIMEOUT between note-test and update-notebooks
+* fix first_derivative() appending its padding value in the wrong place and dividing by a negative step
+* add unit tests for graded_index.py
+* fix power_law_profile() so a scalar radius outside the core also returns the cladding index
+* export ray_delay() from the package, previously called velocity() and missing from __all__
+* fix the material dispersion of ray_delay(), which did not reduce to the plain form at zero dispersion
+* add a profile_dispersion argument to ray_delay() so the delay-equalising exponent comes out at q = 2 - 2P
 
 0.9.1 (2026-01-14)
 ------------------
