@@ -47,6 +47,11 @@ Unreleased ()
 * describe m in R_par(), R_per() and R_unpolarized() as the relative index of the two media
 * fix R_par(), R_per() and R_unpolarized() returning nan past the critical angle instead of total reflection
 * add unit tests for basics.py
+* note in the noise docstrings that I0 is the post-gain current for shot_noise but the primary one for best_APD_gain
+* correct the thermal_min_power() summary, it reaches the requested signal-to-noise ratio rather than one
+* list the noise functions in the module docstring and explain Np in quantum_min_power()
+* use scipy.constants in noise.py instead of four-digit values for q, k, h and c, matching the rest of the package
+* add unit tests for noise.py
 
 0.9.1 (2026-01-14)
 ------------------

@@ -6,10 +6,32 @@ Useful routines for noise in optical communications.
 
 See <https://ofiber.readthedocs.io> for usage examples.
 
+Noise currents in a photodetector::
+
+    shot_noise(I0, Idark, bandwidth, M=1, x=0)
+    thermal_noise(T, Rload, bandwidth)
+    NEP(Responsivity, Rload, Idark, T)
+    best_APD_gain(I0, Rload, Idark, x, T)
+
+Bit error rates and the powers needed to reach them::
+
+    BER_at_SNR(snr)
+    SNR_at_BER(ber)
+    thermal_min_power(bitrate, responsivity, capacitance, T, snr)
+    quantum_min_power(bitrate, ber, lambda0)
+
+`BER_at_SNR` and `SNR_at_BER` are exact inverses of one another.
+
+Beware that I0 means different things in two of these.  `shot_noise` wants
+the current after avalanche gain, since it divides by M to recover the
+primary current, while `best_APD_gain` wants the primary photocurrent
+before any gain is applied.
+
 Based on chapter 13 of A. Ghatak, K. Thyagarajan, An Introduction to
 Fiber Optics, Cambridge University Press, 1998
 """
 
+import scipy.constants
 import scipy.special
 import numpy as np
 
@@ -29,9 +51,16 @@ def shot_noise(I0, Idark, bandwidth, M=1, x=0):
     """
     Return the noise current associated with shot/poisson noise.
 
+    The avalanche gain M multiplies the primary photocurrent, so I0 is the
+    current measured after gain and I0/M recovers the primary current.  Idark
+    is the primary dark current and is multiplied along with it.  The factor
+    M**(2+x) is the usual M**2 gain together with the excess noise factor
+    F(M) = M**x.  With the defaults M=1 and x=0 this is the shot noise of a
+    PIN detector, sqrt(2 q (I0 + Idark) B).
+
     Args:
-        I0:    current         (A)
-        Idark:  dark current    (A)
+        I0:    current after avalanche gain  (A)
+        Idark:  primary dark current    (A)
         bandwidth:  bandwidth   (Hz)
         M:      APD Gain factor (--)
         x:      excess noise (0.3 for Si, 0.7 for InGaAs, 1.0 for Ge APDs)
@@ -39,7 +68,7 @@ def shot_noise(I0, Idark, bandwidth, M=1, x=0):
     Returns:
         shot_noise       (A)
     """
-    q = 1.602e-19  # Coulomb
+    q = scipy.constants.e  # Coulomb
     return np.sqrt(2 * q * (I0 / M + Idark) * bandwidth * M ** (2 + x))
 
 
@@ -55,7 +84,7 @@ def thermal_noise(T, Rload, bandwidth):
     Returns:
         thermal_noise       (A)
     """
-    k = 1.38e-23  # J/K
+    k = scipy.constants.k  # J/K
     return np.sqrt(4 * k * T * bandwidth / Rload)
 
 
@@ -72,8 +101,8 @@ def NEP(Responsivity, Rload, Idark, T):
     Returns:
         power       (W/sqrt(Hz))
     """
-    q = 1.602e-19  # Coulomb
-    k = 1.38e-23  # J/K
+    q = scipy.constants.e  # Coulomb
+    k = scipy.constants.k  # J/K
     return 1 / Responsivity * np.sqrt(4 * k * T / Rload + 2 * q * Idark)
 
 
@@ -81,17 +110,26 @@ def best_APD_gain(I0, Rload, Idark, x, T):
     """
     Return best gain for an avalanche photodiode.
 
+    This is the gain that maximises the signal-to-noise ratio, where more gain
+    buys signal until the excess noise F(M) = M**x overtakes the fixed thermal
+    noise of the load.  Unlike `shot_noise`, I0 here is the primary
+    photocurrent before any gain.
+
+    The excess noise x must be greater than zero; with x=0 more gain always
+    helps and there is no optimum.
+
     Args:
-        I0:    current         (A)
+        I0:    primary photocurrent, before gain  (A)
         Rload: load resistance (Ohms)
         Idark: dark current    (A)
         x:     excess noise (0.3 for Si, 0.7 for InGaAs, 1.0 for Ge APDs)
-        T:     Temperature
+        T:     temperature     (Kelvin)
+
     Returns:
         optimal gain (--)
     """
-    q = 1.602e-19  # Coulomb
-    k = 1.38e-23  # J/K
+    q = scipy.constants.e  # Coulomb
+    k = scipy.constants.k  # J/K
     return (4 * k * T / (x * q * Rload * (I0 + Idark))) ** (1 / (x + 2))
 
 
@@ -123,9 +161,10 @@ def SNR_at_BER(ber):
 
 def thermal_min_power(bitrate, responsivity, capacitance, T, snr):
     """
-    Return the minimum optical power needed to achieve a signal-to-noise of 1.
+    Return the minimum optical power needed to reach a signal-to-noise ratio.
 
-    The assumption is that thermal noise dominates.
+    The assumption is that thermal noise dominates, with the load resistance
+    set so the detector bandwidth matches the bit rate.
 
     Args:
         bitrate:       bits per second           (Hz)
@@ -137,7 +176,7 @@ def thermal_min_power(bitrate, responsivity, capacitance, T, snr):
     Returns:
         optical power                            (W)
     """
-    k = 1.38e-23  # J/K
+    k = scipy.constants.k  # J/K
     val = 2 * np.pi * k * T * capacitance * snr
     return bitrate / responsivity * np.sqrt(val)
 
@@ -145,6 +184,10 @@ def thermal_min_power(bitrate, responsivity, capacitance, T, snr):
 def quantum_min_power(bitrate, ber, lambda0):
     """
     Return the minimum optical power needed to achieve a bit error rate.
+
+    In the quantum limit a receiver errs only when no photon arrives, so a bit
+    carrying Np photons has an error rate of exp(-Np)/2.  Inverting that gives
+    Np = -ln(2*ber) photons per bit, and the power follows as h*nu*Np*bitrate.
 
     Args:
         bitrate:   bits per second      (Hz)
@@ -154,8 +197,8 @@ def quantum_min_power(bitrate, ber, lambda0):
     Returns:
         optical power                   (W)
     """
-    h = 6.626e-34  # J*s
-    c = 2.998e8  # m/s
+    h = scipy.constants.h  # J*s
+    c = scipy.constants.c  # m/s
     nu = c / lambda0  # Hz
     Np = -np.log(2 * ber)
     return h * nu * Np * bitrate
