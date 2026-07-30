@@ -201,59 +201,59 @@ ALL_GLASS_NAMES = np.array(
         "LF5",
         "LF5HTi",
         "LLF1",
-        "LLF1HT",
-        "N-BAF1",
+        "LLF1HTi",
+        "N-BAF10",
         "N-BAF4",
-        "N-BAF5",
-        "N-BAF5",
+        "N-BAF51",
+        "N-BAF52",
         "N-BAK1",
         "N-BAK2",
         "N-BAK4",
-        "N-BALF",
-        "N-BALF",
-        "N-BASF",
-        "N-BASF",
+        "N-BALF4",
+        "N-BALF5",
+        "N-BASF2",
+        "N-BASF64",
         "N-BK10",
         "N-F2",
         "N-FK5",
-        "N-FK51",
+        "N-FK51A",
         "N-FK58",
         "N-K5",
         "N-KF9",
-        "N-KZFS",
-        "N-KZFS",
-        "N-KZFS",
-        "N-KZFS",
-        "N-KZFS",
+        "N-KZFS11",
+        "N-KZFS2",
+        "N-KZFS4",
+        "N-KZFS5",
+        "N-KZFS8",
         "N-LAF2",
-        "N-LAF2",
-        "N-LAF3",
-        "N-LAF3",
-        "N-LAF3",
+        "N-LAF21",
+        "N-LAF33",
+        "N-LAF34",
+        "N-LAF35",
         "N-LAF7",
-        "N-LAK1",
-        "N-LAK1",
-        "N-LAK1",
-        "N-LAK2",
-        "N-LAK2",
-        "N-LAK3",
-        "N-LAK3",
+        "N-LAK10",
+        "N-LAK12",
+        "N-LAK14",
+        "N-LAK21",
+        "N-LAK22",
+        "N-LAK33B",
+        "N-LAK34",
         "N-LAK7",
         "N-LAK8",
         "N-LAK9",
-        "N-LASF",
-        "N-LASF",
-        "N-LASF",
-        "N-LASF",
-        "N-LASF",
-        "N-LASF",
-        "N-LASF",
-        "N-LASF",
-        "N-LASF",
+        "N-LASF31A",
+        "N-LASF40",
+        "N-LASF41",
+        "N-LASF43",
+        "N-LASF44",
+        "N-LASF45",
+        "N-LASF46A",
+        "N-LASF46B",
+        "N-LASF9",
         "N-PK51",
-        "N-PK52",
+        "N-PK52A",
         "N-PSK3",
-        "N-PSK5",
+        "N-PSK53A",
         "N-SF1",
         "N-SF10",
         "N-SF11",
@@ -265,7 +265,7 @@ ALL_GLASS_NAMES = np.array(
         "N-SF57",
         "N-SF6",
         "N-SF66",
-        "N-SF6H",
+        "N-SF6HT",
         "N-SF8",
         "N-SK11",
         "N-SK14",
@@ -279,17 +279,17 @@ ALL_GLASS_NAMES = np.array(
         "N-ZK7",
         "N-ZK7A",
         "P-BK7",
-        "P-LAF3",
-        "P-LAK3",
-        "P-LASF",
-        "P-LASF",
-        "P-LASF",
+        "P-LAF37",
+        "P-LAK35",
+        "P-LASF47",
+        "P-LASF50",
+        "P-LASF51",
         "P-SF68",
         "P-SF69",
         "P-SF8",
         "P-SK57",
-        "P-SK57",
-        "P-SK58",
+        "P-SK57Q1",
+        "P-SK58A",
         "P-SK60",
         "SF1",
         "SF10",
@@ -343,22 +343,31 @@ def find_glass(name):
     """
     Look up the index of the glass with a particular name.
 
-    The index of the first glass that matches the string is returned.
-    Matching is case insensitive
+    An exact match is preferred.  Without one, the index of the first glass
+    whose name contains the string is returned, so that "BK7" finds "N-BK7".
+    Matching is case insensitive in both cases.
 
     Args:
-        name: string containing
+        name: the name of a glass in ofiber.refraction.ALL_GLASS_NAMES
+
     Returns:
-        the index of the first glass that matches
+        the index of the matching glass
+
+    Raises:
+        ValueError: if no glass name matches
     """
     target = name.upper()
+    candidates = [str(each).upper() for each in ALL_GLASS_NAMES]
 
-    for i, i_glass_name in enumerate(ALL_GLASS_NAMES):
-        if target in i_glass_name.upper():
+    # exact first, so that "SF1" is not shadowed by "N-SF1"
+    if target in candidates:
+        return candidates.index(target)
+
+    for i, candidate in enumerate(candidates):
+        if target in candidate:
             return i
 
-    print("'%s' not found in " % target, ALL_GLASS_NAMES)
-    return 0
+    raise ValueError("'%s' is not a known glass, see ofiber.ALL_GLASS_NAMES" % name)
 
 
 def doped_glass(x):

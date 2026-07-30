@@ -325,25 +325,35 @@ def test_find_glass_ignores_case(name):
     assert ofiber.find_glass(name) == SIO2
 
 
-@pytest.mark.xfail(strict=True, reason="substring match returns N-SF1 before the exact name SF1")
-def test_find_glass_prefers_an_exact_name_over_a_substring():
+@pytest.mark.parametrize("name", ["SF1", "SF2", "SF4", "SF5", "SF10", "SF11", "F2", "K7", "N-BK7"])
+def test_find_glass_prefers_an_exact_name_over_a_substring(name):
     """Verify an exact name wins over a longer name that contains it."""
-    assert ofiber.glass_name(ofiber.find_glass("SF1")) == "SF1"
+    assert ofiber.glass_name(ofiber.find_glass(name)) == name
 
 
-@pytest.mark.xfail(strict=True, reason="find_glass prints and returns 0, silently yielding SiO2")
+def test_find_glass_still_matches_on_a_substring():
+    """Verify the documented fallback, which is how the notebooks find N-BK7."""
+    assert ofiber.find_glass("BK7") == BK7
+
+
 def test_find_glass_rejects_an_unknown_name():
     """Verify an unknown glass name raises rather than returning a valid index."""
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="not a known glass"):
         ofiber.find_glass("not-a-real-glass")
 
 
-@pytest.mark.xfail(strict=True, reason="12 names are truncated to 6 characters and collide")
 def test_glass_names_are_unique():
     """Verify every glass is reachable by an unambiguous name."""
-    names = list(ofiber.ALL_GLASS_NAMES)
+    names = [str(name) for name in ofiber.ALL_GLASS_NAMES]
     duplicates = sorted({name for name in names if names.count(name) > 1})
     assert duplicates == []
+
+
+def test_every_glass_name_round_trips_through_find_glass():
+    """Verify find_glass recovers the index of every name in the table."""
+    for i, name in enumerate(ofiber.ALL_GLASS_NAMES):
+        found = ofiber.find_glass(str(name))
+        assert found == i, "%s resolved to %s" % (name, ofiber.glass_name(found))
 
 
 # --------------------------------------------------------------------------
