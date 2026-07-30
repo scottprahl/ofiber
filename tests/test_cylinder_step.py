@@ -294,7 +294,7 @@ def test_gaussian_irradiance_is_normalized():
 def test_mode_field_diameter_is_twice_the_radius():
     """Verify MFD and MFR stay in step."""
     for V in (1.5, 2.0, 2.5):
-        assert ofiber.MFD(V) == pytest.approx(2 * ofiber.MFR(V), rel=1e-15)
+        assert ofiber.MFD(V) == pytest.approx(2 * ofiber.MFR(V), rel=1e-15, abs=0)
 
 
 def test_mode_field_radius_shrinks_as_V_grows():
@@ -453,7 +453,7 @@ def test_far_field_irradiance_falls_off_with_distance():
     b = ofiber.LP_mode_value(V, 0, 1)
     near = ofiber.FF_polar_irradiance_x(1.0, 0.1, 0, 1.55e-6, 4e-6, V, b)
     far = ofiber.FF_polar_irradiance_x(2.0, 0.1, 0, 1.55e-6, 4e-6, V, b)
-    assert far == pytest.approx(near / 4, rel=1e-12)
+    assert far == pytest.approx(near / 4, rel=1e-12, abs=0)
 
 
 def test_far_field_node_requires_a_guided_mode():

@@ -122,7 +122,7 @@ def test_graded_index_cutoff_scales_by_sqrt_one_plus_two_over_q(q):
 def test_a_huge_q_approaches_the_step_index_cutoff():
     """Verify a very large q recovers the step-index result."""
     a, NA = 4e-6, 0.12
-    assert ofiber.cutoff_wavelength(a, NA, q=1e12) == pytest.approx(ofiber.cutoff_wavelength(a, NA), rel=1e-9)
+    assert ofiber.cutoff_wavelength(a, NA, q=1e12) == pytest.approx(ofiber.cutoff_wavelength(a, NA), rel=1e-9, abs=0)
 
 
 def test_cutoff_wavelength_grows_with_core_and_aperture():
@@ -208,7 +208,7 @@ def test_the_three_esi_routines_are_mutually_consistent(q):
     """
     a, Delta = 5e-6, 0.01
     scale = ofiber.esi_radius(a, q) / a * np.sqrt(ofiber.esi_Delta(Delta, q) / Delta)
-    assert scale == pytest.approx(ofiber.esi_V_parameter(1.0, q), rel=1e-12)
+    assert scale == pytest.approx(ofiber.esi_V_parameter(1.0, q), rel=1e-12, abs=0)
 
 
 @pytest.mark.parametrize("q", [1e6, 1e9])

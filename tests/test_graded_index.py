@@ -284,7 +284,7 @@ def test_axial_ray_delay_is_the_core_index_over_c(q):
     An axial ray has beta = n_core and never leaves the axis, so its delay
     cannot depend on q.  The two q-dependent terms of eq. 5.4 must cancel.
     """
-    assert ray_delay(N_CORE, q, N_CORE) == pytest.approx(N_CORE / scipy.constants.speed_of_light, rel=1e-12)
+    assert ray_delay(N_CORE, q, N_CORE) == pytest.approx(N_CORE / scipy.constants.speed_of_light, rel=1e-12, abs=0)
 
 
 @pytest.mark.parametrize("q", [1.0, 2.0, 4.0])
@@ -292,7 +292,7 @@ def test_axial_ray_delay_with_dispersion_is_the_group_index_over_c(q):
     """Verify a dispersive axial ray travels at the group velocity c/N1."""
     md = 0.021
     got = ray_delay(N_CORE, q, N_CORE, material_dispersion=md)
-    assert got == pytest.approx((N_CORE + md) / scipy.constants.speed_of_light, rel=1e-12)
+    assert got == pytest.approx((N_CORE + md) / scipy.constants.speed_of_light, rel=1e-12, abs=0)
 
 
 def test_material_dispersion_scales_the_whole_delay():
@@ -329,7 +329,7 @@ def test_axial_ray_is_unaffected_by_profile_dispersion(q, P):
     """
     md = 0.021
     got = ray_delay(N_CORE, q, N_CORE, material_dispersion=md, profile_dispersion=P)
-    assert got == pytest.approx((N_CORE + md) / scipy.constants.speed_of_light, rel=1e-12)
+    assert got == pytest.approx((N_CORE + md) / scipy.constants.speed_of_light, rel=1e-12, abs=0)
 
 
 @pytest.mark.parametrize("P", [-0.2, -0.1, 0.0, 0.1, 0.2, 0.3])
