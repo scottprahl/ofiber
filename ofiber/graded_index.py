@@ -8,9 +8,9 @@ See <https://ofiber.readthedocs.io> for usage examples.
 
 This needs more testing.
 """
+
 import scipy.constants
 import numpy as np
-
 
 __all__ = ("power_law_profile", "first_derivative", "curvature", "transverse_location", "ray_delay")
 
@@ -19,7 +19,7 @@ def power_law_profile(n_core, nclad, q, a, x):
     """
     Calculate the index of refraction at a particular radius.
 
-    Outside the core the index is the cladding index.  Clamping |x|/a at 1
+    Outside the core the index is the cladding index.  Clamping abs(x)/a at 1
     delivers that for scalars and arrays alike, because n_core**2*(1-2*delta)
     is exactly nclad**2, and it avoids overflow when q is large.
 

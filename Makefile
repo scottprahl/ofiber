@@ -16,7 +16,6 @@ DOIT_DB         := .jupyterlite.doit.db
 OUT_DIR         := $(OUT_ROOT)/$(PACKAGE)
 HTML_DIR        := $(DOCS_DIR)/_build/html
 LITE_CONFIG     := $(PACKAGE)/jupyter_lite_config.json
-COV_DIR         := htmlcov
 
 # --- GitHub Pages deploy config ---
 PAGES_BRANCH    := gh-pages
@@ -35,10 +34,11 @@ NB_TIMEOUT      := 600
 
 PYTEST_OPTS     :=
 UNIT_TESTS      := tests --ignore=tests/test_all_notebooks.py
-COV_OPTS        := --cov=$(PACKAGE) --cov-report=term-missing --cov-report=html:$(COV_DIR)
+COV_OPTS        := --cov=$(PACKAGE) --cov-report=term-missing
 SPHINX_OPTS     := -T -E -b html -d $(DOCS_DIR)/_build/doctrees -D language=en
 
 PYLINT_TARGETS  := $(PACKAGE)/*.py tests/*.py .github/scripts/update_citation.py
+BLACK_TARGETS   := $(PYLINT_TARGETS)
 YAML_TARGETS    := .github/workflows/citation.yaml .github/workflows/pypi.yaml .github/workflows/test.yaml .readthedocs.yaml
 RST_TARGETS     := README.rst CHANGELOG.rst $(DOCS_DIR)/index.rst $(DOCS_DIR)/changelog.rst
 
@@ -52,6 +52,14 @@ help:
 	@echo "  update-notebooks - Re-execute docs notebooks, saving outputs in place"
 	@echo "  venv           - Install project dependencies with uv extras"
 	@echo ""
+	@echo "Lint Targets:"
+	@echo "  lint           - Run every linter"
+	@echo "  black-check    - Check formatting without rewriting files"
+	@echo "  pylint-check   - Lint python files"
+	@echo "  rst-check      - Validate all RST files"
+	@echo "  ruff-check     - Lint all .py and .ipynb files"
+	@echo "  yaml-check     - Validate YAML files"
+	@echo ""
 	@echo "Test Targets:"
 	@echo "  test           - Run pytest on python files"
 	@echo "  coverage       - Run unit tests and report $(PACKAGE) coverage"
@@ -60,11 +68,7 @@ help:
 	@echo "Packaging Targets:"
 	@echo "  rcheck         - Distribution release checks"
 	@echo "  manifest-check - Validate MANIFEST"
-	@echo "  pylint-check   - Same as lint above"
 	@echo "  pyroma-check   - Validate overall packaging"
-	@echo "  rst-check      - Validate all RST files"
-	@echo "  ruff-check     - Lint all .py and .ipynb files"
-	@echo "  yaml-check     - Validate YAML files"
 	@echo ""
 	@echo "JupyterLite Targets:"
 	@echo "  lite           - Build JupyterLite site into $(OUT_DIR)"
@@ -94,10 +98,7 @@ test:
 .PHONY: coverage
 coverage:
 	@$(RM) .coverage
-	@$(RMR) "$(COV_DIR)"
 	$(RUN) pytest $(PYTEST_OPTS) $(COV_OPTS) $(UNIT_TESTS)
-	@echo "==> HTML report at $(COV_DIR)/index.html"
-	@command -v open >/dev/null 2>&1 && open "$(COV_DIR)/index.html" || true
 
 .PHONY: note-test
 note-test:
@@ -135,6 +136,20 @@ update-notebooks:
 	    --ExecutePreprocessor.record_timing=False $(NOTEBOOKS)
 	@echo "✅ Outputs refreshed -- review with 'git diff --stat $(DOCS_DIR)'"
 
+# --check leaves files alone; run 'black $(BLACK_TARGETS)' to actually reformat
+.PHONY: black-check
+black-check:
+	$(RUN) black --check --diff $(BLACK_TARGETS)
+
+.PHONY: lint
+lint:
+	@$(MAKE) black-check
+	@$(MAKE) ruff-check
+	@$(MAKE) pylint-check
+	@$(MAKE) rst-check
+	@$(MAKE) yaml-check
+	@echo "✅ Lint complete"
+
 .PHONY: pylint-check
 pylint-check:
 	$(RUN) pylint $(PYLINT_TARGETS)
@@ -164,10 +179,7 @@ pyroma-check:
 rcheck:
 	@echo "Running all release checks..."
 	@$(MAKE) realclean
-	@$(MAKE) ruff-check
-	@$(MAKE) pylint-check
-	@$(MAKE) rst-check
-	@$(MAKE) yaml-check
+	@$(MAKE) lint
 	@$(MAKE) manifest-check
 	@$(MAKE) pyroma-check
 	@$(MAKE) html
@@ -247,7 +259,7 @@ clean: lite-clean
 	@find . -name '.ipynb_checkpoints' -type d -prune -exec $(RMR) {} +
 	@find . -name '.pytest_cache' -type d -prune -exec $(RMR) {} +
 	@$(RMR) .ruff_cache
-	@$(RMR) "$(COV_DIR)"
+	@$(RMR) htmlcov  # only if someone ran coverage html by hand
 	@$(RM) .coverage
 	@$(RMR) docs/api
 	@$(RMR) docs/_build

@@ -1,8 +1,8 @@
 Changelog
 ==========
 
-Unreleased ()
--------------
+Unreleased
+----------
 * migrate Makefile to a uv-first workflow with shared RUN wrappers and no .venv/.ready bootstrap prerequisite
 * add RM/RMR cleanup variables and replace hardcoded rm cleanup commands
 * raise package Python support metadata to 3.10 through 3.14 and update docs/lite dependency ranges
@@ -13,7 +13,7 @@ Unreleased ()
 * find_glass() prefers an exact name and raises ValueError instead of quietly returning SiO2
 * add unit tests for refraction.py
 * make test runs the unit tests instead of doing nothing
-* add make coverage to report unit test coverage of the package
+* add make coverage to report unit test coverage of the package in the terminal
 * add make update-notebooks to re-execute the docs notebooks in place
 * share NB_TIMEOUT between note-test and update-notebooks
 * fix first_derivative() appending its padding value in the wrong place and dividing by a negative step
@@ -58,6 +58,17 @@ Unreleased ()
 * list the functions in the dispersion module docstring and note where the silica material zero falls
 * add unit tests for dispersion.py, completing 100% statement and branch coverage of the package
 * build Delta and V in Waveguide_Dispersion() from the basics routines instead of repeating their formulas
+* run the unit tests in CI rather than only pip check, and execute every notebook in a second job
+* require the tests to pass before the pypi workflow publishes a release
+* drop the package-wide automodapi from docs/ofiber.rst, which documented every function a second time
+* accept q=np.inf in esi_Delta(), esi_radius() and esi_V_parameter() so dispersion and basics share one step-index sentinel
+* raise RuntimeError rather than StopIteration when the far-field node search finds no sign change
+* fix an RST substitution error from writing ``|x|`` in the power_law_profile() docstring
+* add a black-check target that reports formatting without rewriting files
+* add a lint target that runs black, ruff, pylint, rstcheck and yamllint, and have rcheck defer to it
+* run make lint in CI as its own job, using the official astral-sh/setup-uv action with caching
+* update the CI actions, checkout v4 to v7 and setup-python v5 to v7
+* reformat with black, which had drifted in six files
 * add unit tests for noise.py
 
 0.9.1 (2026-01-14)

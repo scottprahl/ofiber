@@ -10,6 +10,30 @@ on:
   workflow_dispatch:  # allow manual triggering
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    name: Lint
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.14'
+
+      # make lint drives black, ruff, pylint, rstcheck and yamllint through
+      # uv, so the versions match what the Makefile uses locally.
+      # setup-uv has no moving v8 or v9 tag, only v1..v7, so pin the release.
+      - name: Install uv
+        uses: astral-sh/setup-uv@v9.0.0
+        with:
+          enable-cache: true
+
+      - name: Run every linter
+        run: make lint
+
   test:
     runs-on: ubuntu-latest
     name: Build and test
@@ -20,10 +44,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -32,6 +56,31 @@ jobs:
           pip install pytest
           pip install -e .  # current package in editable mode
 
-      - name: Tests
+      - name: Check dependency consistency
+        run: pip check
+
+      - name: Unit tests
+        run: pytest --verbose tests --ignore=tests/test_all_notebooks.py
+
+  notebooks:
+    runs-on: ubuntu-latest
+    name: Execute notebooks
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.14'
+
+      # the notebooks are the documentation, so one that stops running is a
+      # broken readthedocs build waiting to happen
+      - name: Install package and notebook machinery
         run: |
-          pip check
+          pip install pytest nbformat nbconvert ipykernel
+          pip install -e .
+
+      - name: Run every notebook
+        run: pytest --verbose tests/test_all_notebooks.py

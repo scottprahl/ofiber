@@ -921,7 +921,7 @@ def _FF_node_polar_angle(V, ell, em):
         hi = (j + 1) * inc
         f2 = _FF_polar_x(hi, V, ell, b)
     else:
-        raise StopIteration(r"No sign change in %d iterations" % ntry)
+        raise RuntimeError(r"No sign change in %d iterations" % ntry)
 
     return scipy.optimize.brentq(_FF_polar_x, lo, hi, args=(V, ell, b))  # kasinThetaN
     # We do not suppress any errors from this subroutine, as we want to know if it's working

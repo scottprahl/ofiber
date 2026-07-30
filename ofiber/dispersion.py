@@ -9,25 +9,25 @@ See <https://ofiber.readthedocs.io> for usage examples.
 The three routines are::
 
     Material_Dispersion(core, λ)
-    Waveguide_Dispersion(n_core, n_clad, r_core, λ, q=1e20, approx=False)
-    Dispersion(core, n_clad, r_core, λ, q=1e20, approx=False)
+    Waveguide_Dispersion(n_core, n_clad, r_core, λ, q=np.inf, approx=False)
+    Dispersion(core, n_clad, r_core, λ, q=np.inf, approx=False)
 
 All return [s/m**2]; multiply by 1e6 for the more familiar [ps/(km*nm)].
 The total dispersion is the sum of the material and waveguide terms, and
 `Dispersion` returns the two separately so they can be plotted apart.
 
-A step-index fiber is signalled by a huge q rather than by np.inf, because
-`ofiber.esi_Delta` evaluates to nan at infinity.
+A step-index fiber is signalled by q=np.inf, the same sentinel
+`ofiber.cutoff_wavelength` uses.
 
 Based on chapter 10 of A. Ghatak, K. Thyagarajan, An Introduction to Fiber
 Optics, Cambridge University Press, 1998
 """
 
+import numpy as np
 import scipy.constants
 import ofiber.refraction as ofr
 import ofiber.cylinder_step as ofc
 import ofiber.basics as ofb
-
 
 __all__ = (
     "Material_Dispersion",
@@ -55,13 +55,13 @@ def Material_Dispersion(core, λ):
     return -λ * ofr.d2n(core, λ) / c
 
 
-def Waveguide_Dispersion(n_core, n_clad, r_core, λ, q=1e20, approx=False):
+def Waveguide_Dispersion(n_core, n_clad, r_core, λ, q=np.inf, approx=False):
     """
     Calculate the waveguide dispersion of a fiber.
 
-    The default value of q represents a step index fiber; np.inf would seem
-    the natural choice but `ofiber.esi_Delta` is nan there.  Other values
-    allow parabolic (q=2) or triangular (q=1) profiles.
+    The default value of q represents a step index fiber, matching the
+    sentinel `ofiber.cutoff_wavelength` uses.  Other values allow parabolic
+    (q=2) or triangular (q=1) profiles.
 
     The waveguide dispersion is for the fundamental mode of the fiber, and is
     negative for an ordinary fiber, so it pulls the zero of the total
@@ -102,7 +102,7 @@ def Waveguide_Dispersion(n_core, n_clad, r_core, λ, q=1e20, approx=False):
     return -n_clad * esi_Delta / c / λ * vtemp
 
 
-def Dispersion(core, n_clad, r_core, λ, q=1e20, approx=False):
+def Dispersion(core, n_clad, r_core, λ, q=np.inf, approx=False):
     """
     Calculate the material and waveguide dispersion.
 

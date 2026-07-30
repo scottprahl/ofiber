@@ -188,21 +188,21 @@ def test_waveguide_dispersion_peaks_partway_through_the_single_mode_range():
 
 
 def test_the_default_q_behaves_as_a_step_index_fiber():
-    """Verify the huge default q is indistinguishable from an even larger one."""
+    """Verify the default is infinity and a huge finite q converges to it."""
     args = (1.4531, 1.4492, 4.1e-6, 1.3e-6)
     assert ofiber.Waveguide_Dispersion(*args) == pytest.approx(
         ofiber.Waveguide_Dispersion(*args, q=1e30), rel=1e-9, abs=0
     )
+    assert ofiber.Waveguide_Dispersion(*args) == ofiber.Waveguide_Dispersion(*args, q=np.inf)
 
 
-def test_infinite_q_is_not_a_usable_step_index_sentinel():
-    """
-    Verify np.inf gives nan, which is why the default is a large finite q.
-
-    esi_Delta multiplies q*(2+q)/(1+q)**2, and that is nan at infinity.
-    """
-    assert np.isnan(ofiber.esi_Delta(0.0027, np.inf))
-    assert np.isnan(ofiber.Waveguide_Dispersion(1.4531, 1.4492, 4.1e-6, 1.3e-6, q=np.inf))
+def test_infinite_q_is_the_step_index_sentinel():
+    """Verify np.inf means step index here, the same as in cutoff_wavelength."""
+    args = (1.4531, 1.4492, 4.1e-6, 1.3e-6)
+    assert ofiber.Waveguide_Dispersion(*args, q=np.inf) == pytest.approx(
+        ofiber.Waveguide_Dispersion(*args, q=1e20), rel=1e-12, abs=0
+    )
+    assert np.isfinite(ofiber.Waveguide_Dispersion(*args, q=np.inf))
 
 
 def test_grading_the_profile_strengthens_the_waveguide_dispersion():

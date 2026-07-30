@@ -37,12 +37,24 @@ MODES_AT_6p5 = {
 
 # committed output of the same notebook for V = 12.5
 MODES_AT_12p5 = {
-    (0, 1): 0.9683, (0, 2): 0.8336, (0, 3): 0.5942, (0, 4): 0.2597,
-    (1, 1): 0.9196, (1, 2): 0.7319, (1, 3): 0.4427, (1, 4): 0.0735,
-    (2, 1): 0.8558, (2, 2): 0.6155, (2, 3): 0.2791,
-    (3, 1): 0.7777, (3, 2): 0.4850, (3, 3): 0.1070,
-    (4, 1): 0.6860, (4, 2): 0.3415,
-    (5, 1): 0.5812, (5, 2): 0.1863,
+    (0, 1): 0.9683,
+    (0, 2): 0.8336,
+    (0, 3): 0.5942,
+    (0, 4): 0.2597,
+    (1, 1): 0.9196,
+    (1, 2): 0.7319,
+    (1, 3): 0.4427,
+    (1, 4): 0.0735,
+    (2, 1): 0.8558,
+    (2, 2): 0.6155,
+    (2, 3): 0.2791,
+    (3, 1): 0.7777,
+    (3, 2): 0.4850,
+    (3, 3): 0.1070,
+    (4, 1): 0.6860,
+    (4, 2): 0.3415,
+    (5, 1): 0.5812,
+    (5, 2): 0.1863,
 }
 
 # the first two zeros of J_0 and J_1 set the LP mode cutoffs
@@ -630,7 +642,7 @@ def test_far_field_node_reports_a_failed_search(monkeypatch):
     """
     # pylint: disable=protected-access
     monkeypatch.setattr(ofiber.cylinder_step, "_FF_polar_x", lambda *args: 1.0)
-    with pytest.raises(StopIteration):
+    with pytest.raises(RuntimeError):
         ofiber.FF_node_polar_angle(6.5, 0, 1)
 
 

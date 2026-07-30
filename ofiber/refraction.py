@@ -21,7 +21,6 @@ Use like this::
 
 import numpy as np
 
-
 __all__ = (
     "ALL_GLASS_NAMES",
     "d2n",

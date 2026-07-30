@@ -27,6 +27,7 @@ The original is at::
 
     https://github.com/alchemyst/Dynamics-and-Control/blob/master/test_all_notebooks.py
 """
+
 import os
 import os.path
 import pathlib

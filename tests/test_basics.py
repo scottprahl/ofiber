@@ -211,6 +211,19 @@ def test_the_three_esi_routines_are_mutually_consistent(q):
     assert scale == pytest.approx(ofiber.esi_V_parameter(1.0, q), rel=1e-12, abs=0)
 
 
+def test_esi_routines_are_exact_at_infinite_q():
+    """Verify an infinite q, the step index sentinel, leaves everything unchanged."""
+    assert ofiber.esi_radius(5e-6, np.inf) == 5e-6
+    assert ofiber.esi_Delta(0.01, np.inf) == 0.01
+    assert ofiber.esi_V_parameter(3.0, np.inf) == 3.0
+
+
+def test_esi_routines_accept_an_array_containing_infinity():
+    """Verify a mixed array of finite and infinite q works elementwise."""
+    got = ofiber.esi_V_parameter(1.0, np.array([1.0, 2.0, np.inf]))
+    assert np.allclose(got, [1 / np.sqrt(3), 1 / np.sqrt(2), 1.0])
+
+
 @pytest.mark.parametrize("q", [1e6, 1e9])
 def test_esi_routines_tend_to_the_step_index_values(q):
     """Verify a very large q leaves radius, Delta and V essentially unchanged."""

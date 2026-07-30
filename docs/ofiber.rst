@@ -16,5 +16,3 @@ API for `ofiber` package
 .. automodapi:: ofiber.planar_step
 
 .. automodapi:: ofiber.refraction
-
-.. automodapi:: ofiber

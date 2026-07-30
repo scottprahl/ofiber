@@ -39,7 +39,6 @@ The three esi routines agree with one another: building a V-parameter from
 import numpy as np
 from scipy.special import jn_zeros
 
-
 __all__ = (
     "acceptance_angle",
     "critical_angle",
@@ -132,6 +131,9 @@ def esi_Delta(Delta, q):
     """
     Calculate equivalent step index (esi) Delta for a graded-index fiber.
 
+    An infinite q is a step index fiber, for which the equivalent Delta is
+    just Delta.
+
     Args:
         Delta :  relative refractive index         [-]
         q :      parameter for graded index fiber  [-]
@@ -139,12 +141,17 @@ def esi_Delta(Delta, q):
     Returns:
         equivalent relative refractive index   [-]
     """
-    return q * (2 + q) / (1 + q) ** 2 * Delta
+    with np.errstate(invalid="ignore"):
+        scale = q * (2 + q) / (1 + q) ** 2
+    return Delta * np.where(np.isinf(q), 1.0, scale)
 
 
 def esi_radius(a, q):
     """
     Calculate equivalent step index (esi) radius for a graded-index fiber.
+
+    An infinite q is a step index fiber, for which the equivalent radius is
+    just a.
 
     Args:
         a :   radius of the fiber                  [m]
@@ -153,12 +160,16 @@ def esi_radius(a, q):
     Returns:
         equivalent step index radius               [m]
     """
-    return a * (1 + q) / (2 + q)
+    with np.errstate(invalid="ignore"):
+        scale = (1 + q) / (2 + q)
+    return a * np.where(np.isinf(q), 1.0, scale)
 
 
 def esi_V_parameter(V, q):
     """
     Calculate equivalent step index (esi) V for a graded-index fiber.
+
+    An infinite q is a step index fiber, for which the equivalent V is just V.
 
     Args:
         V :       V parameter                       [-]
@@ -167,7 +178,9 @@ def esi_V_parameter(V, q):
     Returns:
         equivalent step index V-parameter           [-]
     """
-    return V * np.sqrt(q / (q + 2))
+    with np.errstate(invalid="ignore"):
+        scale = np.sqrt(q / (q + 2))
+    return V * np.where(np.isinf(q), 1.0, scale)
 
 
 def numerical_aperture(n_core, n_clad):
