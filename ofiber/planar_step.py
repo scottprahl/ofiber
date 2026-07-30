@@ -30,13 +30,18 @@ The transverse electric field routines are::
     TE_mode_plot(V)
     TE_propagation_constant(V, mode)
 
-The transverse electric routines are::
+The transverse magnetic field routines are::
 
-    TM_crossing(V, mode)
-    TM_crossings(V)
+    TM_crossing(V, n1, n2, mode)
+    TM_crossings(V, n1, n2)
     TM_field(V, n1, n2, d, x, mode)
-    TM_mode_plot(V)
-    TM_propagation_constant(V, mode, n1, n2)
+    TM_mode_plot(V, n1, n2)
+    TM_propagation_constant(V, n1, n2, mode)
+
+A mode that the waveguide cannot guide has no eigenvalue, and the crossing
+routines report that as 0.  The field routines turn it into an array of nan,
+since a zero eigenvalue would otherwise give a flat field indistinguishable
+from a real mode.
 
 Based on chapter 7 of Ghatak and Thyagarajan, *An Introduction to
 Fiber Optics*, Cambridge University Press, 1998.
@@ -75,10 +80,13 @@ def _base_mode_plot(V):
     _, ax = plt.subplots(figsize=(8, 8))
     ax.set_aspect("equal")
 
+    # the symmetric branches of xi*tan(xi) repeat every pi, on (0, pi/2),
+    # (pi, 3pi/2) and so on; stepping by pi/2 would also draw the intervals
+    # between them, where xi*tan(xi) is negative and merely clipped by ylim
     xi = np.linspace(abit, np.pi / 2 - abit, 50)
     while xi[0] < V / 2:
         plt.plot(xi, xi * np.tan(xi), color="red")
-        xi += np.pi / 2
+        xi += np.pi
 
     xi = np.linspace(np.pi / 2, np.pi - abit, 50)
     while xi[0] < V / 2:
@@ -211,9 +219,10 @@ def TM_mode_plot(V, n1, n2):
     ystr = ystr + r"$(n_1/n_2)^2\sqrt{V^2/4-\xi^2}$"
     aplt.ylabel(ystr)
     aplt.title("TM Modes in Planar Film Waveguide (V=%.2f)" % V)
+    # the ellipse rises to (n1/n2)**2 * V/2 but xi itself never exceeds V/2
     ymax = (n1 / n2) ** 2 * V / 2
     aplt.ylim(0, ymax + 1)
-    aplt.xlim(0, ymax + 1)
+    aplt.xlim(0, V / 2 + 1)
 
     return aplt
 
@@ -309,6 +318,10 @@ def _basic_field(V, d, x, mode, xi):
     """
     Calculate a field in a planar waveguide.
 
+    An xi of 0 is the crossing routines' way of saying the mode does not
+    exist.  Propagating that would give kappa=0 and a flat field of 1 across
+    the waveguide, so nan is returned instead.
+
     Args:
         V    : the V-parameter for the waveguide
         d    : thickness of the waveguide
@@ -317,8 +330,11 @@ def _basic_field(V, d, x, mode, xi):
         xi   : kappa*d/2 for this mode
 
     Returns:
-        the field at each position x
+        the field at each position x, or nan if the mode is not guided
     """
+    if xi == 0:
+        return np.full(np.shape(x), np.nan)
+
     gdby2 = np.sqrt((V / 2) ** 2 - xi**2)  # gamma*d/2
     xgamma = 2 / d * gdby2 * abs(x)  # gamma*x
     kappa = 2 / d * xi
@@ -375,14 +391,20 @@ def TE_propagation_constant(V, mode):
     """
     Calculate the propagation constants for TE modes in a planar waveguide.
 
+    A mode that is not guided has no eigenvalue and is reported as 0.
+
     Args:
-        V    : the V-parameter for the waveguide
+        V    : the V-parameter for the waveguide, scalar or array
         mode : specific mode
 
     Returns:
-        an array of propagation constants for each value of V
+        the propagation constant for each value of V
     """
-    b = np.empty_like(V)
+    if np.isscalar(V):
+        xi = TE_crossing(V, mode)
+        return 0.0 if xi == 0 else 1 - (2 * xi / V) ** 2
+
+    b = np.empty_like(V, dtype=float)
     for i, VV in enumerate(V):
         xi = TE_crossing(VV, mode)
         if xi == 0:
@@ -396,16 +418,22 @@ def TM_propagation_constant(V, n1, n2, mode):
     """
     Calculate the propagation constants for TM modes in a planar waveguide.
 
+    A mode that is not guided has no eigenvalue and is reported as 0.
+
     Args:
-        V    : the V-parameter for the waveguide
+        V    : the V-parameter for the waveguide, scalar or array
         n1   : index of waveguide
         n2   : index of material next to waveguide
         mode : specific mode
 
     Returns:
-        an array of propagation constants for each value of V
+        the propagation constant for each value of V
     """
-    b = np.empty_like(V)
+    if np.isscalar(V):
+        xi = TM_crossing(V, n1, n2, mode)
+        return 0.0 if xi == 0 else 1 - (2 * xi / V) ** 2
+
+    b = np.empty_like(V, dtype=float)
     for i, VV in enumerate(V):
         xi = TM_crossing(VV, n1, n2, mode)
         if xi == 0:

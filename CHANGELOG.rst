@@ -30,6 +30,13 @@ Unreleased ()
 * fix TE_planar_parabolic_field() calling np.math.factorial, removed in numpy 2.0
 * fix parabolic_propagation_constants() counting modes with an unrelated formula and passing a float to np.empty
 * add unit tests for planar_parabolic.py
+* add unit tests for planar_step.py
+* fix TE_field() and TM_field() returning a flat field for a mode the waveguide cannot guide, nan is now returned
+* fix TE_propagation_constant() and TM_propagation_constant() raising TypeError on a scalar V
+* fix integer arrays of V returning zeros from TE_propagation_constant() and TM_propagation_constant()
+* correct the TM signatures in the planar_step docstring and label them magnetic rather than electric
+* fix the symmetric branch of the mode plots being drawn every pi/2 instead of every pi
+* fix TM_mode_plot() scaling its x axis by (n1/n2)**2, xi never exceeds V/2
 
 0.9.1 (2026-01-14)
 ------------------
