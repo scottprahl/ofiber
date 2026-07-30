@@ -52,6 +52,10 @@ import matplotlib.pyplot as plt
 import scipy.optimize
 from scipy import special
 
+# dB per neper; transverse and longitudinal losses below reach the same
+# factor through np.log10, so keep this exact rather than rounding it
+_DB_PER_NEPER = 10 / np.log(10)
+
 __all__ = (
     "LP_mode_value",
     "LP_mode_values",
@@ -489,7 +493,7 @@ def angular_misalignment_loss_db(n, w, theta, lambda0):
     Returns:
         angular misalignment loss in dB    [-]
     """
-    return 4.34 * (np.pi * w * theta * n / lambda0) ** 2
+    return _DB_PER_NEPER * (np.pi * w * theta * n / lambda0) ** 2
 
 
 def longitudinal_misalignment_loss_db(n, w, D, lambda0):
@@ -535,7 +539,7 @@ def _bending_loss_db_scalar(n1, Delta, a, Rc, lambda0):
         return np.nan
     U = V * np.sqrt(1 - b)
     W = V * np.sqrt(b)
-    val = 4.343 * np.sqrt(np.pi / 4 / a / Rc)
+    val = _DB_PER_NEPER * np.sqrt(np.pi / 4 / a / Rc)
     val *= (U / V / special.kn(1, W)) ** 2
     val *= W**-1.5
     val *= np.exp(-2 * W**3 * Rc / 3 / k0**2 / a**3 / n1**2)
