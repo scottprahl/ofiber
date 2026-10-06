@@ -506,7 +506,7 @@ def test_far_field_polar_irradiance_matches_azimuthal_quadrature(ell):
     theta = np.array([0.02, 0.08, 0.2])
     numerical = [
         quad(
-            lambda phi: ofiber.FF_irradiance_x(1.0, angle, phi, ell, 1.55e-6, 4e-6, V, b),
+            lambda phi, angle=angle: ofiber.FF_irradiance_x(1.0, angle, phi, ell, 1.55e-6, 4e-6, V, b),
             0,
             2 * np.pi,
             epsabs=0,
