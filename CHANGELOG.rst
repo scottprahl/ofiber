@@ -1,6 +1,11 @@
 Changelog
 ==========
 
+Unreleased
+----------
+* fix FF_polar_irradiance_x() underestimating the azimuthal integral by a factor of two for ell = 0
+* verify far-field azimuthal integrals against numerical quadrature for zero and nonzero mode orders
+
 1.0.0 (2026-07-30)
 ------------------
 * migrate Makefile to a uv-first workflow with shared RUN wrappers and no .venv/.ready bootstrap prerequisite
