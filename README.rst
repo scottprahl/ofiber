@@ -2,6 +2,10 @@
    :target: https://pypi.org/project/ofiber/
    :alt: PyPI
 
+.. |pyversions-badge| image:: https://img.shields.io/pypi/pyversions/ofiber?color=68CA66&logo=python&logoColor=white
+   :target: https://pypi.org/project/ofiber/
+   :alt: Supported Python versions
+
 .. |github-badge| image:: https://img.shields.io/github/v/tag/scottprahl/ofiber?label=github&color=68CA66
    :target: https://github.com/scottprahl/ofiber
    :alt: GitHub
@@ -37,11 +41,12 @@
 ofiber
 =======
 
-|pypi-badge| |github-badge| |conda-badge| |doi-badge|
-
-|license-badge| |test-badge| |readthedocs-badge| |downloads-badge|
-
-|lite|
+=================  ==============================================================================================
+**Testing**        |test-badge|
+**Package**        |pypi-badge| |pyversions-badge| |conda-badge| |downloads-badge| |license-badge| |github-badge|
+**Documentation**  |readthedocs-badge| |doi-badge|
+**Explore**        |lite|
+=================  ==============================================================================================
 
 ``ofiber`` is a Python library for analyzing guided-wave propagation in optical fibers and related dielectric waveguiding structures.
 It provides analytical and numerical tools for mode analysis, dispersion engineering, and far-field radiation modeling.
