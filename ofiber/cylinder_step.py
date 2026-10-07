@@ -767,6 +767,7 @@ def _FF_polar_x(kasin, V, ell, b):
     Returns:
         The calculated polar field distribution
     """
+    ell = np.abs(ell)  # negative ells are same as positive ones
     Vb = V * np.sqrt(1 - b)
     ell1 = ell + 1
 

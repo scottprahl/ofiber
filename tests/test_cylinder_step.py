@@ -518,6 +518,45 @@ def test_far_field_polar_irradiance_matches_azimuthal_quadrature(ell):
     assert np.allclose(polar, numerical, rtol=1e-10, atol=0)
 
 
+def test_far_field_is_the_same_for_negative_ell():
+    """Verify LP_-1 and LP_1 give the same far field, since LP_mode_value gives them the same b."""
+    V = 6.5
+    b = ofiber.LP_mode_value(V, 1, 1)
+    theta = np.linspace(0.01, 0.5, 40)
+    plus = ofiber.FF_irradiance_x(1.0, theta, 0.3, 1, 1.55e-6, 4e-6, V, b)
+    minus = ofiber.FF_irradiance_x(1.0, theta, 0.3, -1, 1.55e-6, 4e-6, V, b)
+    assert np.array_equal(plus, minus)
+
+
+@pytest.mark.parametrize("ell", [0, 1, 2])
+def test_far_field_radial_factor_matches_hankel_transform(ell):
+    """Verify Chen eq. 10.13 against a numerical Hankel transform of the mode field.
+
+    The far field of an LP mode is proportional to the order-ell Hankel
+    transform of its radial field, which is integrated here directly from
+    LP_radial_field over core and cladding.  Lommel's integrals and the
+    eigenvalue equation reduce that transform to -V**2 * _FF_polar_x.
+    """
+    V = 6.5
+    b = ofiber.LP_mode_value(V, ell, 1)
+    W = V * np.sqrt(b)
+    scale = np.sqrt(ofiber.LP_total_irradiance(V, b, ell))  # undo field normalization
+
+    def transform(kasin):
+        def integrand(rho):
+            return scale * ofiber.LP_radial_field(V, b, ell, rho) * special.jv(ell, kasin * rho) * rho
+
+        core = quad(integrand, 0, 1, epsabs=0, epsrel=1e-11)[0]
+        clad = quad(integrand, 1, 1 + 50 / W, epsabs=0, epsrel=1e-11, limit=200)[0]
+        return core + clad
+
+    kasin = np.array([0.5, 2.0, 4.0, 7.0])
+    numerical = np.array([transform(x) for x in kasin])
+    # pylint: disable=protected-access
+    analytic = -(V**2) * ofiber.cylinder_step._FF_polar_x(kasin, V, ell, b)
+    assert np.allclose(analytic, numerical, rtol=1e-7, atol=0)
+
+
 def test_far_field_node_requires_a_guided_mode():
     """Verify an unguided combination gives nan rather than a plausible angle."""
     assert np.isnan(ofiber.FF_node_polar_angle(2.0, 5, 1))
