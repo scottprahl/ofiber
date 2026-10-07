@@ -1,8 +1,8 @@
 Changelog
 ==========
 
-Unreleased
-----------
+1.0.1 (2026-10-07)
+------------------
 * fix FF_polar_irradiance_x() underestimating the azimuthal integral by a factor of two for ell = 0
 * verify far-field azimuthal integrals against numerical quadrature for zero and nonzero mode orders
 * fold negative ell to abs(ell) in _FF_polar_x() so FF_irradiance_x() and FF_polar_irradiance_x() give the same far field for -ell and ell
