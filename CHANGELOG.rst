@@ -1,6 +1,13 @@
 Changelog
 ==========
 
+Unreleased
+----------
+* fix FF_polar_irradiance_x() underestimating the azimuthal integral by a factor of two for ell = 0
+* verify far-field azimuthal integrals against numerical quadrature for zero and nonzero mode orders
+* fold negative ell to abs(ell) in _FF_polar_x() so FF_irradiance_x() and FF_polar_irradiance_x() give the same far field for -ell and ell
+* verify the _FF_polar_x() radial factor (Chen eq. 10.13) against a numerical Hankel transform of LP_radial_field()
+
 1.0.0 (2026-07-30)
 ------------------
 * migrate Makefile to a uv-first workflow with shared RUN wrappers and no .venv/.ready bootstrap prerequisite

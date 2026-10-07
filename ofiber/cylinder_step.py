@@ -767,6 +767,7 @@ def _FF_polar_x(kasin, V, ell, b):
     Returns:
         The calculated polar field distribution
     """
+    ell = np.abs(ell)  # negative ells are same as positive ones
     Vb = V * np.sqrt(1 - b)
     ell1 = ell + 1
 
@@ -814,8 +815,8 @@ def FF_polar_irradiance_x(r, theta, ell, lambda0, a, V, b):
 
     The magnitude of the field is squared and normalized by the square
     of the electric field magnitude. The integral of cos^2(ell*phi) over
-    phi from 0 to 2𝜋 is 𝜋 and we get a slightly simpler result than
-    the function above.
+    phi from 0 to 2𝜋 is 2𝜋 when ell is zero and 𝜋 for nonzero integer
+    ell, giving a slightly simpler result than the function above.
 
     Args:
         r: radial distance from the fiber axis (microns).
@@ -832,7 +833,8 @@ def FF_polar_irradiance_x(r, theta, ell, lambda0, a, V, b):
     k = 2 * np.pi / lambda0
     kasin = k * a * np.sin(theta)
     FF_ell = _FF_polar_x(kasin, V, ell, b)
-    return np.pi * (FF_ell * (k * a * V) ** 2 / (k * r)) ** 2
+    azimuthal_integral = np.where(np.asarray(ell) == 0, 2 * np.pi, np.pi)
+    return azimuthal_integral * (FF_ell * (k * a * V) ** 2 / (k * r)) ** 2
 
 
 def _FF_node_polar_angle(V, ell, em):

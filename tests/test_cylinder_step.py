@@ -23,6 +23,7 @@ import matplotlib
 import numpy as np
 import pytest
 from scipy import special
+from scipy.integrate import quad
 import ofiber
 
 matplotlib.use("Agg")
@@ -495,6 +496,65 @@ def test_far_field_irradiance_falls_off_with_distance():
     near = ofiber.FF_polar_irradiance_x(1.0, 0.1, 0, 1.55e-6, 4e-6, V, b)
     far = ofiber.FF_polar_irradiance_x(2.0, 0.1, 0, 1.55e-6, 4e-6, V, b)
     assert far == pytest.approx(near / 4, rel=1e-12, abs=0)
+
+
+@pytest.mark.parametrize("ell", [0, 1, 2, -1])
+def test_far_field_polar_irradiance_matches_azimuthal_quadrature(ell):
+    """Verify the polar integral independently for zero and nonzero azimuthal orders."""
+    V = 6.5
+    b = ofiber.LP_mode_value(V, ell, 1)
+    theta = np.array([0.02, 0.08, 0.2])
+    numerical = [
+        quad(
+            lambda phi, angle=angle: ofiber.FF_irradiance_x(1.0, angle, phi, ell, 1.55e-6, 4e-6, V, b),
+            0,
+            2 * np.pi,
+            epsabs=0,
+            epsrel=1e-10,
+        )[0]
+        for angle in theta
+    ]
+    polar = ofiber.FF_polar_irradiance_x(1.0, theta, ell, 1.55e-6, 4e-6, V, b)
+    assert np.allclose(polar, numerical, rtol=1e-10, atol=0)
+
+
+def test_far_field_is_the_same_for_negative_ell():
+    """Verify LP_-1 and LP_1 give the same far field, since LP_mode_value gives them the same b."""
+    V = 6.5
+    b = ofiber.LP_mode_value(V, 1, 1)
+    theta = np.linspace(0.01, 0.5, 40)
+    plus = ofiber.FF_irradiance_x(1.0, theta, 0.3, 1, 1.55e-6, 4e-6, V, b)
+    minus = ofiber.FF_irradiance_x(1.0, theta, 0.3, -1, 1.55e-6, 4e-6, V, b)
+    assert np.array_equal(plus, minus)
+
+
+@pytest.mark.parametrize("ell", [0, 1, 2])
+def test_far_field_radial_factor_matches_hankel_transform(ell):
+    """Verify Chen eq. 10.13 against a numerical Hankel transform of the mode field.
+
+    The far field of an LP mode is proportional to the order-ell Hankel
+    transform of its radial field, which is integrated here directly from
+    LP_radial_field over core and cladding.  Lommel's integrals and the
+    eigenvalue equation reduce that transform to -V**2 * _FF_polar_x.
+    """
+    V = 6.5
+    b = ofiber.LP_mode_value(V, ell, 1)
+    W = V * np.sqrt(b)
+    scale = np.sqrt(ofiber.LP_total_irradiance(V, b, ell))  # undo field normalization
+
+    def transform(kasin):
+        def integrand(rho):
+            return scale * ofiber.LP_radial_field(V, b, ell, rho) * special.jv(ell, kasin * rho) * rho
+
+        core = quad(integrand, 0, 1, epsabs=0, epsrel=1e-11)[0]
+        clad = quad(integrand, 1, 1 + 50 / W, epsabs=0, epsrel=1e-11, limit=200)[0]
+        return core + clad
+
+    kasin = np.array([0.5, 2.0, 4.0, 7.0])
+    numerical = np.array([transform(x) for x in kasin])
+    # pylint: disable=protected-access
+    analytic = -(V**2) * ofiber.cylinder_step._FF_polar_x(kasin, V, ell, b)
+    assert np.allclose(analytic, numerical, rtol=1e-7, atol=0)
 
 
 def test_far_field_node_requires_a_guided_mode():
