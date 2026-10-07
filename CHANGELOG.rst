@@ -1,6 +1,14 @@
 Changelog
 ==========
 
+Unreleased
+----------
+* drop Python 3.10 support: requires-python is now >=3.11 and the 3.10 classifier is removed
+* test on Python 3.11 through 3.14 in test.yaml, with a non-blocking Python 3.15 preview job
+* run the pypi.yaml pre-publish tests on Python 3.11 and 3.14 instead of 3.10 and 3.14
+* add the Programming Language :: Python :: 3.15 classifier to pyproject.toml
+* group README.rst badges into a Testing/Package/Documentation/Explore table and add a supported-Python-versions badge
+
 1.0.1 (2026-10-07)
 ------------------
 * fix FF_polar_irradiance_x() underestimating the azimuthal integral by a factor of two for ell = 0
